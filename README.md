@@ -78,6 +78,7 @@ Open `http://localhost:5173`. The Vite dev server proxies `/assets/*` to `http:/
 - URL-synced filter state + `location.state` back-navigation
 - Analytics instrumentation — typed event bus, GTM-compatible `window.dataLayer`, 10 events across all 3 pages
 - `docs/analytics-plan.md` — full instrumentation strategy, conversion funnel, 7 production events, experimentation table
+- **Two live A/B experiments** — `hero-cta` (hero CTA copy: "Browse the Resource Library" vs. "Explore Resources") and `signup-cta` (submit button: "Get Access" vs. "Register Now"). Variants are assigned on first visit via `localStorage`, persist across reloads, and fire an `experiment_exposure` analytics event once per session. Adding a third experiment is two lines in `experiments.ts` and one `useVariant()` call at the target component.
 
 ---
 
