@@ -27,6 +27,10 @@
   --mer-error-800: #991B1B;  /* 8.31:1 on white — AAA */
   --mer-error-100: #FEE2E2;
 
+  --mer-gold-300: #EABC00;   /* 7.30:1 on navy — AAA for text on dark */
+  --mer-gold-800: #B8860B;   /* warm gold — decorative/non-text use only */
+  --mer-cream:    #F5F0E8;   /* off-white — text/elements on dark backgrounds */
+
   /* ── Semantic color tokens ── */
   --color-bg:          var(--mer-white);
   --color-bg-muted:    var(--mer-gray-100);
@@ -36,9 +40,9 @@
   --color-fg:          var(--mer-gray-900);
   --color-fg-muted:    var(--mer-gray-700);
   --color-fg-subtle:   var(--mer-gray-600);
-  --color-fg-inverse:  var(--mer-white);
-  --color-fg-inverse-muted:  rgba(255,255,255,0.75);
-  --color-fg-inverse-subtle: rgba(255,255,255,0.6);
+  --color-fg-inverse:  var(--mer-cream);
+  --color-fg-inverse-muted:  rgba(245,240,232,0.75);
+  --color-fg-inverse-subtle: rgba(245,240,232,0.6);
 
   --color-brand:        var(--mer-navy-800);
   --color-brand-hover:  var(--mer-navy-700);
@@ -54,6 +58,8 @@
   --color-link-visited: var(--mer-navy-700);
 
   --color-kicker:       var(--mer-teal-800);
+  --color-kicker-inverse: var(--mer-gold-300);   /* gold eyebrow on dark backgrounds */
+  --color-gold:           var(--mer-gold-800);   /* warm gold decorative accent */
 
   --color-error:        var(--mer-error-800);
   --color-error-bg:     var(--mer-error-100);

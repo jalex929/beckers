@@ -19,7 +19,7 @@ export default function HomePage() {
       {/* Hero */}
       <section className={styles.hero}>
         <div className={styles.heroInner}>
-          <p className={styles.eyebrow}>Becker's Healthcare</p>
+          <p className={styles.eyebrow}>Meridian Health Intelligence</p>
           <h1 className={styles.heroTitle}>Discover Healthcare's Leading Resources</h1>
           <p className={styles.heroSub}>
             Access expert webinars, whitepapers, and podcasts curated for healthcare professionals.

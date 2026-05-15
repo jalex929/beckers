@@ -12,8 +12,8 @@
 }
 
 .live {
-  background: var(--mer-teal-800);
-  color: var(--mer-white);
+  background: var(--mer-gold-300);
+  color: var(--mer-navy-800);
 }
 
 .onDemand {

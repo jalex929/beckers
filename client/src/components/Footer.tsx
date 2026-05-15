@@ -7,7 +7,7 @@ export default function Footer() {
       <div className={styles.inner}>
         <div className={styles.brand}>
           <span className={styles.brandName}>Meridian</span>
-          <p className={styles.tagline}>Professional · Trusted · Engaging</p>
+          <p className={styles.tagline}>Clarity in the business of healthcare.</p>
         </div>
         <nav className={styles.links} aria-label="Footer navigation">
           <Link to="/assets" className={styles.link}>Resource Library</Link>

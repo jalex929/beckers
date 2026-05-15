@@ -65,7 +65,7 @@
 
 .active {
   color: var(--color-fg-inverse);
-  border-bottom-color: var(--color-accent);
+  border-bottom-color: var(--color-gold);
 }
 
 @media (max-width: 640px) {
