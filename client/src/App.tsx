@@ -1,9 +1,16 @@
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import HomePage from './pages/HomePage'
 import AssetsPage from './pages/AssetsPage'
 import SignupPage from './pages/SignupPage'
+
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => { window.scrollTo(0, 0) }, [pathname])
+  return null
+}
 
 function NotFound() {
   return (
@@ -17,6 +24,7 @@ function NotFound() {
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <div className="app-shell">
         <a href="#main-content" className="skip-link">Skip to main content</a>
         <Header />
