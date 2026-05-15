@@ -107,85 +107,23 @@ Semantic aliases: `--color-brand`, `--color-accent`, `--color-fg-inverse`, `--co
 - [x] **README design decisions** — Brand, color system, architecture tradeoffs, next steps (4 paragraphs)
 - [x] **Bug fix** — `--bh-navy-700` stale token in `AssetsPage.module.css` → `--mer-navy-700`
 - [x] **Bug fix** — SignupPage `.stateError` was `--color-accent` (teal) → `--color-error` (red)
+- [x] **TypeScript** — Created `client/src/vite-env.d.ts`; resolved all 7 CSS module TS2307 errors; zero type errors on `tsc --noEmit`
+- [x] **Token cleanup** — Replaced remaining `--bh-navy-500` in `HomePage.module.css` → `--mer-navy-500`; no `--bh-*` references remain
+- [x] **Accessibility** — `aria-pressed={typeFilter === t.value}` on all AssetsPage filter buttons
+- [x] **404 route** — Inline `NotFound` component + `<Route path="*">` catch-all in `App.tsx`
+- [x] **Responsive** — typeGrid collapses to 2-col at 640px, 1-col at 420px; verified hero, controls, and card grid at 390px
+- [x] **Content-type icons** — SVGs (events/webinars/whitepapers/podcasts) from design system rendered in AssetBadge; dark-background variants use `filter: brightness(0) invert(1)` for white icons
+- [x] **Sticky filter bar** — AssetsPage `.controls` is `position: sticky; top: 64px` with tinted background and bottom border
+- [x] **Skeleton loading** — `SkeletonCard` component with shimmer animation replaces loading text in HomePage + AssetsPage; respects `prefers-reduced-motion`
+- [x] **Card animations** — Fade-up on entry (`@keyframes fadeUp`) with 60ms staggered delay by card index; respects `prefers-reduced-motion`
+- [x] **Search highlighting** — Matching substrings in card title and description wrapped in `<mark>` with gold background when a search query is active; uses index-parity split approach for reliable `g`-flag regex matching
+- [x] **Clear recently viewed** — `clearRecentlyViewed()` exported from hook; Clear button in Recently Viewed section header on HomePage
 
 ---
 
 ## Open tickets
 
-### 🔴 P0 — Bugs / must fix before submission
-
-#### P0-1: TypeScript strict checks — run and fix all errors
-- Run `cd client && npx tsc --noEmit` to surface any type errors
-- Known potential issue: `useRecentlyViewed` `refresh` function in `useEffect` dep array in `HomePage.tsx` may trigger an ESLint exhaustive-deps warning. Fix by wrapping `refresh` in `useCallback` in the hook, or memoizing via `useRef`.
-- **Files**: `client/src/hooks/useRecentlyViewed.ts`, `client/src/pages/HomePage.tsx`
-
-#### P0-2: Lint pass — clean up any remaining `--bh-*` token references
-- Run `grep -r "bh-navy\|bh-red\|bh-ice\|bh-gray" client/src` to find any leftover original BHR tokens
-- All tokens in our system use `--mer-*` prefix (raw) or `--color-*` (semantic)
-- **Files**: any CSS modules
-
----
-
-### 🟠 P1 — Essential polish (brief requirements)
-
-#### P1-1: Responsive layout verification — 1280px and 390px
-- Brief explicitly requires "no broken layouts" at desktop and mobile
-- **Test at 390px (iPhone 14):**
-  - Hero title should drop from `--fs-5xl` (56px) to `--fs-3xl` (36px) — already coded in HomePagemodule.css `@media (max-width: 640px)`
-  - `AssetsPage` controls already collapse at 768px — verify search/sort stack correctly
-  - `SignupPage` layout already goes to 1-col at 900px — verify form field row also collapses (it does, at 900px)
-  - **Check**: typeGrid on HomePage has no mobile breakpoint — 4 cards in `minmax(220px, 1fr)` may be tight at 390px → may need `grid-template-columns: 1fr 1fr` or `1fr`
-  - **Check**: AssetCard title text — long titles may overflow at narrow widths
-- **Test at 1280px:** Should look roughly like a normal wide viewport. No known issues but verify visually.
-- **Files**: `client/src/pages/HomePage.module.css`, `client/src/pages/AssetsPage.module.css`, `client/src/pages/SignupPage.module.css`
-
-#### P1-2: Add `aria-pressed` to filter buttons on AssetsPage
-- Current filter buttons are `<button>` but lack `aria-pressed` — screen readers can't tell which is active
-- Fix: add `aria-pressed={typeFilter === t.value}` to each button in AssetsPage
-- **File**: `client/src/pages/AssetsPage.tsx:90-97`
-
-#### P1-3: Add a catch-all 404 route
-- Currently unknown URLs silently render nothing (blank main area)
-- Add a `<Route path="*">` in `App.tsx` with a minimal "Page not found" message and link back to home
-- **File**: `client/src/App.tsx`
-
----
-
-### 🟡 P2 — Nice to have / differentiators
-
-#### P2-1: Content-type icons in AssetCard and AssetBadge
-- The design system at `design_system/assets/icons/` has SVGs for: `events`, `webinars`, `whitepapers`, `podcasts`
-- Copy them to `client/src/assets/icons/` and import as React components (or `<img>`)
-- Show the appropriate icon alongside or inside the AssetBadge
-- **Files**: `client/src/components/AssetBadge.tsx`, `client/src/assets/icons/`
-
-#### P2-2: Skeleton loading cards instead of plain text
-- Current loading state is just `<p>Loading resources…</p>`
-- Replace with 3 shimmer skeleton cards (grey animated placeholders) that match the AssetCard dimensions
-- CSS `@keyframes shimmer` with a gradient sweep — no extra libraries needed
-- **Files**: new `client/src/components/SkeletonCard.tsx` + `.module.css`, update `HomePage.tsx`, `AssetsPage.tsx`
-
-#### P2-3: Sticky filter bar on AssetsPage on scroll
-- As user scrolls down through many results, the filter/search controls scroll off-screen
-- Make `.controls` sticky (`position: sticky; top: 64px;` — accounts for 64px header height) with a white background and subtle bottom border
-- Simple CSS change, high impact
-- **File**: `client/src/pages/AssetsPage.module.css`
-
-#### P2-4: Card entry animations
-- Subtle fade-up on cards when they enter the viewport (or on page load)
-- Use CSS `@keyframes` + `animation-delay` staggered by card index via inline style
-- Keep motion minimal — respect `prefers-reduced-motion`
-- **File**: `client/src/components/AssetCard.module.css`, `AssetCard.tsx`
-
-#### P2-5: Search result term highlighting
-- When a search query is active on AssetsPage, bold/highlight the matching substring in card title and description
-- Requires a helper that splits the string around the match and wraps the match in `<mark>` or `<strong>`
-- **File**: `client/src/pages/AssetsPage.tsx`, `client/src/components/AssetCard.tsx`
-
-#### P2-6: "Clear recently viewed" button on HomePage
-- Give users a way to clear their recently viewed history
-- A small "Clear" link next to the section title that calls `localStorage.removeItem('meridian_recently_viewed')` and re-calls `refresh()`
-- **Files**: `client/src/pages/HomePage.tsx`, `client/src/hooks/useRecentlyViewed.ts` (export `clearRecentlyViewed()`)
+*All P0, P1, and P2 tickets closed. No open issues.*
 
 ---
 
@@ -201,8 +139,8 @@ Semantic aliases: `--color-brand`, `--color-accent`, `--color-fg-inverse`, `--co
 - [x] Sort by date (bonus)
 - [x] Recently viewed with localStorage (bonus)
 - [x] README design decisions section
-- [ ] **Responsive layout verified at 1280px and 390px** → P1-1
-- [ ] TypeScript / lint clean → P0-1, P0-2
+- [x] **Responsive layout verified at 1280px and 390px**
+- [x] TypeScript / lint clean — zero errors on `tsc --noEmit`, no stale `--bh-*` tokens
 
 ---
 
