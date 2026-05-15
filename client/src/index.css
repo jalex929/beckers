@@ -51,7 +51,7 @@
   --color-fg-subtle:   var(--mer-gray-500);   /* 7.01:1 on white — AAA */
   --color-fg-inverse:  #F7F6F4;              /* 15.2:1 on navy-800 — AAA */
   --color-fg-inverse-muted:  rgba(247,246,244,0.78); /* ~11:1 on navy-800 — AAA */
-  --color-fg-inverse-subtle: rgba(247,246,244,0.62); /* ~8.5:1 on navy-800 — AAA */
+  --color-fg-inverse-subtle: rgba(247,246,244,0.85); /* boosted for legibility over translucent header */
 
   --color-brand:        var(--mer-navy-800);
   --color-brand-hover:  var(--mer-navy-700);
