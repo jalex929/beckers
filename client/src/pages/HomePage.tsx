@@ -7,12 +7,16 @@ import { useRecentlyViewed, clearRecentlyViewed } from '../hooks/useRecentlyView
 import AssetCard from '../components/AssetCard'
 import SkeletonCard from '../components/SkeletonCard'
 import styles from './HomePage.module.css'
+import eventsIcon from '../assets/icons/events.svg'
+import webinarsIcon from '../assets/icons/webinars.svg'
+import whitepaperIcon from '../assets/icons/whitepapers.svg'
+import podcastsIcon from '../assets/icons/podcasts.svg'
 
 const TYPES = [
-  { label: 'Live Webinars', value: 'Live Webinar', description: 'Join interactive sessions with industry experts in real time.' },
-  { label: 'On-Demand Webinars', value: 'On-Demand Webinar', description: 'Watch recorded presentations at your own pace, anytime.' },
-  { label: 'Whitepapers', value: 'Whitepaper', description: 'Deep-dive research and analysis on critical healthcare topics.' },
-  { label: 'Podcasts', value: 'on-demand podcast', description: 'Listen to conversations with leaders shaping healthcare.' },
+  { label: 'Live Webinars', value: 'Live Webinar', description: 'Join interactive sessions with industry experts in real time.', icon: eventsIcon },
+  { label: 'On-Demand Webinars', value: 'On-Demand Webinar', description: 'Watch recorded presentations at your own pace, anytime.', icon: webinarsIcon },
+  { label: 'Whitepapers', value: 'Whitepaper', description: 'Deep-dive research and analysis on critical healthcare topics.', icon: whitepaperIcon },
+  { label: 'Podcasts', value: 'on-demand podcast', description: 'Listen to conversations with leaders shaping healthcare.', icon: podcastsIcon },
 ]
 
 export default function HomePage() {
@@ -108,6 +112,7 @@ export default function HomePage() {
                 to={`/assets?type=${encodeURIComponent(t.value)}`}
                 className={styles.typeCard}
               >
+                <img src={t.icon} alt="" aria-hidden="true" className={styles.typeIcon} />
                 <span className={styles.typeLabel}>{t.label}</span>
                 <span className={styles.typeDescription}>{t.description}</span>
               </Link>

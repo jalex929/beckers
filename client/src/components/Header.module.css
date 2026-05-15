@@ -85,4 +85,5 @@
 
 @media (max-width: 640px) {
   .brandSub { display: none; }
+  .nav { gap: var(--sp-4); }
 }
