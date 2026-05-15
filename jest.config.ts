@@ -6,6 +6,11 @@ const config: Config = {
   roots: ["<rootDir>/src"],
   testMatch: ["**/__tests__/**/*.test.ts"],
   collectCoverageFrom: ["src/**/*.ts", "!src/server.ts"],
+  globals: {
+    "ts-jest": {
+      tsconfig: "tsconfig.server.json",
+    },
+  },
 };
 
 export default config;
