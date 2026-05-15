@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { Asset } from '../types';
 
-const API_BASE = 'http://localhost:3000';
+const API_BASE = '';
 
 export function useAssets() {
   const [assets, setAssets] = useState<Asset[]>([]);
