@@ -62,8 +62,8 @@
 }
 
 .filterActive:hover {
-  background: var(--mer-navy-700);
-  border-color: var(--mer-navy-700);
+  background: var(--color-brand-hover);
+  border-color: var(--color-brand-hover);
   color: var(--color-fg-inverse);
 }
 
@@ -88,7 +88,7 @@
 .searchInput:focus {
   outline: none;
   border-color: var(--color-brand);
-  box-shadow: 0 0 0 3px rgba(9,31,62,0.12);
+  box-shadow: 0 0 0 3px rgba(26,31,46,0.12);
 }
 
 .sortSelect {

@@ -65,7 +65,7 @@
 
 .active {
   color: var(--color-fg-inverse);
-  border-bottom-color: var(--color-gold);
+  border-bottom-color: var(--mer-coral-700);
 }
 
 @media (max-width: 640px) {

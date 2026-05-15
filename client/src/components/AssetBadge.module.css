@@ -12,8 +12,8 @@
 }
 
 .live {
-  background: var(--mer-gold-300);
-  color: var(--mer-navy-800);
+  background: var(--mer-coral-700);
+  color: var(--mer-white);
 }
 
 .onDemand {
@@ -22,9 +22,9 @@
 }
 
 .whitepaper {
-  background: var(--mer-ice-100);
+  background: var(--mer-warm-100);
   color: var(--mer-navy-800);
-  border: 1px solid var(--mer-ice-300);
+  border: 1px solid var(--mer-warm-300);
 }
 
 .podcast {

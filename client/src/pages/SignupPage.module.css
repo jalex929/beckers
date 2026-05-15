@@ -159,7 +159,7 @@
 .input:focus {
   outline: none;
   border-color: var(--color-brand);
-  box-shadow: 0 0 0 3px rgba(9,31,62,0.12);
+  box-shadow: 0 0 0 3px rgba(26,31,46,0.12);
 }
 
 .inputError { border-color: var(--color-error); }
