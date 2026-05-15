@@ -31,7 +31,7 @@ export default function HomePage() {
     <div>
       {/* Hero */}
       <section className={styles.hero}>
-        <div className={styles.heroInner}>
+        <div className="container">
           <p className={styles.eyebrow}>Meridian Health Intelligence</p>
           <h1 className={styles.heroTitle}>Discover Healthcare's Leading Resources</h1>
           <p className={styles.heroSub}>
