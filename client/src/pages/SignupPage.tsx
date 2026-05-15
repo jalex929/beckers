@@ -159,8 +159,8 @@ export default function SignupPage() {
             {asset.sponsorName && (
               <p className={styles.sponsor}>Sponsored by <strong>{asset.sponsorName}</strong></p>
             )}
-            <p style={{ fontSize: '0.8rem', color: 'var(--color-fg-muted, #666)', marginTop: '0.75rem' }}>
-              {getRegistrationCount(asset.id).toLocaleString()} healthcare professionals registered
+            <p className={styles.registrationCount}>
+              <span className={styles.registrationNumber}>{getRegistrationCount(asset.id).toLocaleString()}</span> healthcare professionals registered
             </p>
             {asset.speakers && asset.speakers.length > 0 && (
               <div className={styles.speakers}>
