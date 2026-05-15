@@ -48,11 +48,11 @@ The Vite dev server proxies `/assets/*` to `http://localhost:3000` automatically
 
 ### Test suite
 
-Vitest — 5 files, 27 tests covering all three pages plus Header and Footer.
+Vitest — 5 files, 31 tests covering all three pages plus Header and Footer.
 
 ### Analytics instrumentation
 
-Typed event bus with GTM-compatible `window.dataLayer`, 12 event shapes, full funnel instrumented from `asset_card_clicked` through `signup_started` → `signup_submitted` → `signup_completed`. Events include `context` and `position` properties for clean A/B test segmentation without post-hoc data joins.
+Typed event bus with GTM-compatible `window.dataLayer`, 12 actively firing event shapes (plus `page_viewed` defined but not wired — see docs), full funnel instrumented from `asset_card_clicked` through `signup_started` → `signup_submitted` → `signup_completed`. Events include `context` and `position` properties for clean A/B test segmentation without post-hoc data joins.
 
 ### Experiment infrastructure
 

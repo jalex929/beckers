@@ -15,7 +15,7 @@ The homepage opens with a full-width hero that runs a live A/B experiment on CTA
 
 ### Resource Library
 
-The library is built around four coordinated interaction surfaces. A type filter chip group syncs its value to the URL via `useSearchParams`, so filtered views are shareable and browser back returns to the exact filter state, not the root page. A debounced search input (300ms) fires over the filtered result set and highlights matching terms inline in each card title. Cards are sortable by date. Pagination uses a load-more pattern at 9 assets per page; a "Showing X of Y" result count is always visible. A skeleton loading state holds layout stable during fetches and communicates the shape of incoming content before it arrives. The filter bar is sticky on scroll.
+The library is built around four coordinated interaction surfaces. A multi-select type filter lets users combine content types (e.g. Whitepapers + Podcasts simultaneously) — active selections sync to the URL via `useSearchParams`, so filtered views are shareable and browser back returns to the exact filter state, not the root page. A debounced search input (300ms) fires over the filtered result set and highlights matching terms inline in each card title. A sort control offers 'Coming up soon' (filters to future-dated assets only, sorted ascending) alongside the default order. Pagination uses a load-more pattern at 9 assets per page; a "Showing X of Y" result count is always visible. A skeleton loading state holds layout stable during fetches and communicates the shape of incoming content before it arrives. The filter bar is sticky on scroll.
 
 ### Signup Page
 
@@ -23,19 +23,19 @@ The signup page is structured in two columns: an asset detail panel on the left 
 
 ### Analytics Event Bus
 
-A typed event bus exposes 12 named events covering the full conversion funnel: `session_started`, `page_viewed`, `search_performed`, `filter_applied`, `asset_card_clicked`, `load_more_clicked`, `signup_started`, `signup_field_error`, `signup_submitted`, `signup_succeeded`, `signup_failed`, and `experiment_exposure`. Every event fires to `window.dataLayer` in GTM-compatible format with a consistent shape: event name, timestamp, and a typed payload. The schema is documented in `docs/analytics-plan.md`.
+A typed event bus covers the full conversion funnel with 12 actively firing events: `asset_card_clicked`, `filter_applied`, `search_used`, `sort_changed`, `load_more_clicked`, `signup_started`, `signup_submitted`, `signup_completed`, `signup_failed`, `recommendation_clicked`, `recently_viewed_cleared`, and `experiment_exposure`. A thirteenth event — `page_viewed` — is defined in the schema but not yet wired (covered in Section 2). Every event fires to `window.dataLayer` in GTM-compatible format with a consistent shape: event name, timestamp, and a typed payload. The schema is documented in `docs/analytics-plan.md`.
 
 ### Experiment Infrastructure
 
-A `useVariant` hook handles variant assignment, exposure deduplication, and retrieval. Assignment is stable via localStorage keyed to experiment ID. Exposure events fire once per session via a sessionStorage guard to prevent inflation. The experiment registry is a single typed object — adding a new experiment is one entry. Two experiments are running: CTA copy on the hero, and a visual treatment on the asset card. The architecture mirrors how a production feature flag client like LaunchDarkly or Statsig would be structured, with the localStorage backend standing in for a flag service.
+A `useVariant` hook handles variant assignment, exposure deduplication, and retrieval. Assignment is stable via localStorage keyed to experiment ID. Exposure events fire once per session via a sessionStorage guard to prevent inflation. The experiment registry is a single typed object — adding a new experiment is one entry. Two experiments are running: `hero-cta` (hero button copy — control: 'Browse the Resource Library' / variant: 'Explore Resources') and `signup-cta` (signup form submit button copy — control: 'Get Access' / variant: 'Register Now'). The architecture mirrors how a production feature flag client like LaunchDarkly or Statsig would be structured, with the localStorage backend standing in for a flag service.
 
 ### Test Suite
 
-27 tests across 5 files, written with Vitest. Coverage includes: the analytics bus (event shape, deduplication, dataLayer writes), the `useVariant` hook (assignment stability, exposure guard, correct variant return), the Homepage (correct rendering, Recently Viewed behavior, clear action), the Resource Library (filtering, search, sort, load-more, result count), and the Signup form (validation, submission flow, inline success state).
+31 tests across 5 files, written with Vitest. Coverage includes: the Header (nav links, brand mark), the Footer (nav links, tagline), the Homepage (hero rendering, Recently Viewed behavior, clear action), the Resource Library (filter chips, search input, sort options, load-more, result count), and the Signup form (form fields, validation, submission flow, speaker rendering, inline success state). Analytics and experiment hook coverage is documented but not yet unit-tested — those are integration concerns better validated against a live analytics destination.
 
 ### Documentation
 
-Four documents in `docs/`: a decision log covering 10 architectural decisions with rationale and tradeoffs; an analytics plan documenting the full event schema; a what-I-prioritized document that is honest about the sprint boundary; and a react-usage document explaining component and hook patterns.
+Four documents in `docs/`: a decision log covering 13 architectural decisions with rationale and tradeoffs; an analytics plan documenting the full event schema; a what-I-prioritized document that is honest about the sprint boundary; and a react-usage document explaining component and hook patterns.
 
 ---
 
