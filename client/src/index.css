@@ -13,10 +13,10 @@
   --mer-navy-500: #4A5168;   /* 7.15:1 on white — AAA */
 
   /* Steel blue accent ramp */
-  --mer-steel-700: #3A6B8E;  /* 4.87:1 on white — AAA large text/UI */
-  --mer-steel-600: #4A7FA5;  /* 3.95:1 on white — AA large text/UI */
-  --mer-steel-500: #5A8FB5;  /* decorative, lighter state */
-  --mer-steel-400: #7AAAC8;  /* decorative only, not for text on white */
+  --mer-steel-700: #1B6B9A;  /* 4.76:1 on white — primary accent */
+  --mer-steel-600: #2980B3;  /* hover state — brighter blue */
+  --mer-steel-500: #4A9AC8;  /* decorative, lighter state */
+  --mer-steel-400: #7AB8D9;  /* decorative only, not for text on white */
 
   /* Warm neutral ramp */
   --mer-warm-050: #FAFAF8;   /* page background — 1.03:1 vs white (subtle tint) */
@@ -132,7 +132,7 @@
   --shadow-sm: 0 1px 3px rgba(26,31,46,0.08), 0 1px 2px rgba(26,31,46,0.04);
   --shadow-md: 0 4px 10px rgba(26,31,46,0.10), 0 2px 4px rgba(26,31,46,0.05);
   --shadow-lg: 0 12px 28px rgba(26,31,46,0.14), 0 4px 10px rgba(26,31,46,0.06);
-  --shadow-focus: 0 0 0 3px rgba(74,127,165,0.35);
+  --shadow-focus: 0 0 0 3px rgba(27,107,154,0.35);
 
   /* ── Layout ── */
   --container: 1240px;

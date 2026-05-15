@@ -21,10 +21,10 @@
   --bh-navy-600:       #1E3A6D;   /* secondary navy — rails, sub-nav */
   --bh-navy-500:       #2E4D86;   /* link-ish navy */
 
-  --bh-steel-700:      #3A6B8E;   /* primary accent — links, CTAs */
-  --bh-steel-600:      #4A7FA5;   /* hover state */
-  --bh-steel-500:      #5A8FB5;   /* lighter decorative */
-  --bh-steel-400:      #7AAAC8;   /* decorative only */
+  --bh-steel-700:      #1B6B9A;   /* primary accent — links, CTAs */
+  --bh-steel-600:      #2980B3;   /* hover state */
+  --bh-steel-500:      #4A9AC8;   /* lighter decorative */
+  --bh-steel-400:      #7AB8D9;   /* decorative only */
 
   /* ---------- Color: Ice / neutrals (from swatch strip) ---- */
   --bh-ice-050:        #F5F8FC;   /* page background tint */

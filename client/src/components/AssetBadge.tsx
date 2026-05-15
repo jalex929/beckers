@@ -28,7 +28,7 @@ const ICONS: Record<AssetType, string> = {
 
 // These badge variants use white text — icon must be inverted to white
 const ICON_INVERSE: Record<AssetType, boolean> = {
-  'Live Webinar': false,
+  'Live Webinar': true,
   'On-Demand Webinar': true,
   'Whitepaper': false,
   'on-demand podcast': true,
