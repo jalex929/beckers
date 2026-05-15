@@ -38,6 +38,8 @@ Terminal 1: `npm run dev` (backend, port 3000)
 Terminal 2: `npm run dev:client` (frontend, port 5173)
 Tests: `cd client && npm test`
 
+When the frontend starts, navigate manually to **http://localhost:5173** in your browser. If your editor or terminal shows an "Open in browser" or "Open port" prompt, dismiss it and navigate directly — opening via that prompt can resolve to the wrong host and break the API proxy.
+
 ---
 
 ## Design Decisions
