@@ -150,6 +150,24 @@ Semantic aliases: `--color-brand`, `--color-accent`, `--color-fg-inverse`, `--co
 
 ---
 
+## Experiment infrastructure + signup conversion patterns (added 2026-05-15)
+
+- [x] **`client/src/utils/experiments.ts`** — typed experiment registry. `EXPERIMENTS` object with two active tests: `hero-cta` (control vs. explore) and `signup-cta` (control vs. register). `ExperimentId` and `VariantOf<T>` utility types for type-safe callsites.
+- [x] **`client/src/hooks/useVariant.ts`** — variant assignment hook. Persists bucket to `localStorage` (`meridian_experiments`) on first visit so the same user gets the same variant across reloads. Fires `experiment_exposure` analytics event once per session via `sessionStorage` guard. Fully typed via `VariantOf<T>`.
+- [x] **`experiment_exposure` event** — added to `analytics.ts` union; fires with `experiment_id` and `variant` so conversion rates can be computed per bucket in any downstream analytics tool.
+- [x] **`hero-cta` experiment live** — HomePage hero CTA now renders "Browse the Resource Library" (control) or "Explore Resources" (explore) based on assigned variant.
+- [x] **`signup-cta` experiment live** — SignupPage submit button renders "Get Access" (control) or "Register Now" (register) based on assigned variant.
+- [x] **Urgency label** — Live Webinar assets with `executionDate` within 30 days show "In N days / Tomorrow / Today" in the asset detail panel. Derived from `executionDate` diff at render time.
+- [x] **Registration count** — Deterministic pseudo-random count (50–199) derived from asset ID hash. Shows as "N healthcare professionals registered" in the asset panel. Each asset shows a consistent, distinct number.
+- [x] **Trust line** — "Free to access · Secure · No spam" micro-copy below the submit button on SignupPage.
+- [x] **HomePage test updated** — `renders hero CTA link` now matches either variant label via regex so the test is stable regardless of which bucket is assigned at runtime.
+
+**Pending docs (tracked, not yet written):**
+- [ ] `docs/what-i-prioritized.md` — why certain features were emphasized, others deferred, alignment to Growth & Experimentation role
+- [ ] `docs/decision-log.md` — tradeoffs, prioritization rationale, deferred ideas
+
+---
+
 ## Submission checklist (from brief)
 
 - [x] Three pages implemented
