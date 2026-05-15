@@ -300,6 +300,7 @@ export default function SignupPage() {
                 <button type="submit" disabled={submitting} className={styles.submitBtn}>
                   {submitting ? 'Submitting…' : submitLabel}
                 </button>
+                <p className={styles.requiredKey}><span className={styles.required} aria-hidden="true">*</span> Required</p>
               </form>
             )}
           </div>

@@ -237,6 +237,13 @@
 .submitBtn:hover:not(:disabled) { background: var(--color-accent-hover); }
 .submitBtn:disabled { opacity: 0.6; cursor: not-allowed; }
 
+.requiredKey {
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  color: var(--color-fg-subtle);
+  margin-top: var(--sp-3);
+}
+
 /* Success state */
 .success {
   display: flex;
