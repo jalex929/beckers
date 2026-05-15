@@ -152,7 +152,31 @@ The two user intents are distinct: someone planning their calendar wants the soo
 
 ---
 
-## 13. "New to the library": sort only, no date cutoff
+## 13. Urgency badges on listing cards, not just the detail page
+
+**Options considered:** Show urgency only on the signup page (where it already existed) · Show urgency on all asset cards everywhere · Show urgency only on Live Webinar cards within 30 days on the listing page
+
+**Chosen:** Urgency pill on listing cards for Live Webinars with executionDate within 30 days
+
+**Why:** The listing page is the primary discovery surface. A user scanning 9 cards needs a quick visual signal that distinguishes "this is happening soon, act now" from "this is available on-demand, browse at your leisure." Placing the urgency label only on the signup detail page means the user has already committed to investigating — the signal arrives too late to influence browsing priority. On the listing, the pill creates a natural visual hierarchy: the eye is drawn to the time-sensitive card first, which aligns with the conversion goal (Live Webinars have fixed capacity and a deadline). The 30-day cutoff prevents every Live Webinar from showing urgency — only genuinely imminent events get the treatment.
+
+**Trade-off accepted:** Adds one more visual element to cards that are already information-dense. Mitigated by making it selective (only one card in the current dataset qualifies) and compact (small pill, warm accent color that reads as a gentle alert rather than a warning).
+
+---
+
+## 14. Persistent scrollbar to prevent layout shift
+
+**Options considered:** Accept the momentary layout shift when navigating between pages · Use `overflow-y: scroll` on `<html>` to always reserve scrollbar space
+
+**Chosen:** Always-visible scrollbar via `overflow-y: scroll`
+
+**Why:** When navigating from a short page (homepage hero visible without scrolling) to a tall page (resource listing with many cards), the scrollbar appears and pushes content ~15px left. This creates a visible jerk on every navigation — the kind of micro-interaction that makes a product feel unpolished. Reserving scrollbar space eliminates the shift entirely. The visual cost is a permanently visible scrollbar track, which is standard on content-heavy editorial sites and does not feel out of place.
+
+**Trade-off accepted:** On pages that don't need scrolling, a disabled scrollbar track is visible. Visually neutral on all modern browsers (macOS overlay scrollbars are invisible unless hovered; Windows/Linux show a subtle track). Net positive for layout stability.
+
+---
+
+## 15. "New to the library": sort only, no date cutoff
 
 **Options considered:** Sort all assets by lastModifiedDate descending · Filter to assets modified within the last 30/60/90 days, then sort
 

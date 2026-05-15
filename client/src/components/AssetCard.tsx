@@ -17,6 +17,15 @@ function formatDate(dateStr?: string) {
   return new Date(dateStr).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
 }
 
+function getUrgencyLabel(dateStr?: string, assetType?: string): string | null {
+  if (assetType !== 'Live Webinar' || !dateStr) return null
+  const days = Math.ceil((new Date(dateStr).getTime() - Date.now()) / 86400000)
+  if (days < 0 || days > 30) return null
+  if (days === 0) return 'Today'
+  if (days === 1) return 'Tomorrow'
+  return `In ${days} days`
+}
+
 function highlightText(text: string, query: string) {
   if (!query.trim()) return text
   const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
@@ -30,6 +39,7 @@ function highlightText(text: string, query: string) {
 export default function AssetCard({ asset, index = 0, highlight, context = 'assets_page' as AssetCardContext }: Props) {
   const location = useLocation()
   const date = formatDate(asset.executionDate)
+  const urgency = getUrgencyLabel(asset.executionDate, asset.assetType)
   const from = location.pathname + location.search
 
   return (
@@ -39,6 +49,7 @@ export default function AssetCard({ asset, index = 0, highlight, context = 'asse
     >
       <div className={styles.meta}>
         <AssetBadge type={asset.assetType} />
+        {urgency && <span className={styles.urgency}>{urgency}</span>}
         {date && <time className={styles.date} dateTime={asset.executionDate}>{date}</time>}
       </div>
       <h3 className={styles.title}>

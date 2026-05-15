@@ -50,6 +50,18 @@ I built *Meridian Health Intelligence* as a standalone product brand rather than
 
 ---
 
+## Usability Micro-Decisions That Compound
+
+Two late-stage changes illustrate the kind of attention that separates "functional" from "polished":
+
+**Layout stability via persistent scrollbar.** Navigating between pages with different content heights caused a ~15px horizontal shift as the browser scrollbar appeared and disappeared. One CSS declaration (`overflow-y: scroll` on `<html>`) eliminates it. The user never notices its absence — but they would notice the jerk.
+
+**Urgency badges surfaced at the browse layer, not just the detail layer.** The "In N days" label was originally only visible after clicking into an asset's signup page. Moving it to the listing card means users can prioritize time-sensitive content during scanning without clicking into each one. It turns passive browsing into informed triage — the user sees "this webinar is in 3 days" while still in discovery mode, which compresses the path from browse to conversion. In the current dataset, exactly one card qualifies, which means the badge stands out without visual fatigue.
+
+Both are examples of a pattern: the first implementation that works is rarely the one that feels right. Usability polish is the discipline of revisiting "done" work with fresh eyes and asking whether the experience matches what a user would expect, not just what the spec required.
+
+---
+
 ## What I Intentionally Left Out
 
 **`page_viewed` tracking.** Requires a scroll-listener component inside `<BrowserRouter>` to access React Router's location context. The event is defined in the analytics schema and documented in `docs/analytics-plan.md`. Skipped because wiring it properly takes more infrastructure than the value justifies here.

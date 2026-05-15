@@ -184,9 +184,14 @@ Semantic aliases: `--color-brand`, `--color-accent`, `--color-fg-inverse`, `--co
 - [x] **Further reading section** — bottom of README links `analytics-plan.md`, `what-i-prioritized.md`, and `decision-log.md` with one-line descriptions so evaluators know where to go.
 - [x] **Live experiments documented** — bonus features list now describes both running A/B tests (hero-cta, signup-cta), variant persistence, and the `experiment_exposure` event.
 
+## Usability polish (added 2026-05-15)
+
+- [x] **Scrollbar layout stability** — `overflow-y: scroll` on `<html>` so the scrollbar is always reserved. Eliminates the horizontal jerk when navigating between pages where content height changes (e.g., homepage → resource listing).
+- [x] **Urgency badges on listing cards** — Live Webinar cards with an `executionDate` within 30 days now show an urgency pill ("Today" / "Tomorrow" / "In N days") directly on the AssetCard in the listing grid — not just on the signup detail page. Creates visual priority in the browse experience and reinforces the conversion funnel at the discovery stage.
+
 ## Pending
 
-- [ ] **Accessibility focus state pass** — keyboard navigation focus rings across filter buttons, search input, nav links, cards, and signup form. Waiting for Bolt to finish current CSS work before touching module CSS files.
+- [ ] **Accessibility focus state pass** — keyboard navigation focus rings across filter buttons, search input, nav links, cards, and signup form.
 
 ---
 
