@@ -55,8 +55,8 @@
 }
 
 .filterActive:hover {
-  background: var(--bh-navy-700);
-  border-color: var(--bh-navy-700);
+  background: var(--mer-navy-700);
+  border-color: var(--mer-navy-700);
   color: var(--color-fg-inverse);
 }
 
