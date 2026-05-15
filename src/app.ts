@@ -11,8 +11,13 @@ app.use("/assets", assetsRouter);
 const clientDist = path.join(__dirname, "..", "client", "dist");
 app.use(express.static(clientDist));
 
-app.get(/^(?!\/assets).*/, (_req, res) => {
-  res.sendFile(path.join(clientDist, "index.html"));
+app.get(/^(?!\/assets).*/, (_req, res, next) => {
+  const indexPath = path.join(clientDist, "index.html");
+  res.sendFile(indexPath, (err) => {
+    if (err) {
+      next(err);
+    }
+  });
 });
 
 app.use(
