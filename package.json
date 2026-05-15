@@ -2,9 +2,10 @@
   "name": "asset-lead-gen-service",
   "version": "1.0.0",
   "scripts": {
-    "build": "cd client && npm install && npm run build && cd .. && tsc",
+    "build": "npm --prefix client install && npm --prefix client run build && tsc",
+    "build:client": "npm --prefix client install && npm --prefix client run build",
     "start": "node dist/server.js",
-    "dev": "ts-node-dev --respawn src/server.ts",
+    "dev": "npm run build:client && ts-node-dev --respawn src/server.ts",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint src/**/*.ts"

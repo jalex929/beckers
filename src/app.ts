@@ -11,11 +11,13 @@ app.use("/assets", assetsRouter);
 const clientDist = path.join(__dirname, "..", "client", "dist");
 app.use(express.static(clientDist));
 
-app.get(/^(?!\/assets).*/, (_req, res, next) => {
+app.get(/^(?!\/assets).*/, (_req, res) => {
   const indexPath = path.join(clientDist, "index.html");
   res.sendFile(indexPath, (err) => {
     if (err) {
-      next(err);
+      res.status(503).send(
+        "Frontend not built yet. Run: npm run build:client"
+      );
     }
   });
 });
