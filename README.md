@@ -4,6 +4,10 @@
 
 This repo is the original Express + TypeScript API starter with a React 18 + TypeScript + Vite frontend added under `client/`. The frontend is a healthcare resource library called **Meridian Health Intelligence**, built on top of the provided API with no modifications to the backend.
 
+**Live site:** https://fox-beckers.netlify.app
+
+All requirements from the brief are implemented — three pages, full API integration, form validation, filtering, search, and success states. The sections below cover what was built and the design decisions behind it. For anyone who wants to go further, there is additional documentation in the [`docs/`](./docs/) folder covering analytics strategy, prioritization rationale, and a full decision log — but that's optional depth, not a requirement of the brief.
+
 ---
 
 ## How to run
@@ -363,3 +367,15 @@ npm run build      # compile TypeScript to dist/
 npm start          # run the compiled server (requires build first)
 npm run lint       # lint src/**/*.ts
 ```
+
+---
+
+## Further reading
+
+The brief requirements are fully met — the docs below are optional context for anyone who wants to understand the product thinking behind the build in more depth.
+
+| Document | What's inside |
+|---|---|
+| [`docs/analytics-plan.md`](./docs/analytics-plan.md) | Full event schema, conversion funnel diagram, 7 additional production instrumentation patterns, and an A/B test hypothesis table with primary and secondary metrics |
+| [`docs/what-i-prioritized.md`](./docs/what-i-prioritized.md) | Why the listing page was the primary surface, the reasoning behind the lean signup form, why experiment infrastructure was prioritized over more UI features, and what was intentionally left out |
+| [`docs/decision-log.md`](./docs/decision-log.md) | 10 specific architectural and product decisions — options considered, what was chosen, and the trade-off accepted for each |
