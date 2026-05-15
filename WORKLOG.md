@@ -162,9 +162,8 @@ Semantic aliases: `--color-brand`, `--color-accent`, `--color-fg-inverse`, `--co
 - [x] **Trust line** — "Free to access · Secure · No spam" micro-copy below the submit button on SignupPage.
 - [x] **HomePage test updated** — `renders hero CTA link` now matches either variant label via regex so the test is stable regardless of which bucket is assigned at runtime.
 
-**Pending docs (tracked, not yet written):**
-- [ ] `docs/what-i-prioritized.md` — why certain features were emphasized, others deferred, alignment to Growth & Experimentation role
-- [ ] `docs/decision-log.md` — tradeoffs, prioritization rationale, deferred ideas
+- [x] **`docs/what-i-prioritized.md`** — why the listing page was the primary surface, why the form is lean, why experiment infra over more UI polish, why Meridian sub-brand, why recently viewed, and what was intentionally left out with reasoning
+- [x] **`docs/decision-log.md`** — 10 decisions logged: sub-brand, CSS Modules vs. Tailwind, URL-synced filters, load-more vs. infinite scroll, typed analytics bus, localStorage for recently viewed, useVariant vs. third-party service, deterministic registration count, Vitest vs. Jest, location.state back-nav
 
 ---
 
