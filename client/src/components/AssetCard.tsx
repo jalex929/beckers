@@ -49,8 +49,8 @@ export default function AssetCard({ asset, index = 0, highlight, context = 'asse
     >
       <div className={styles.meta}>
         <AssetBadge type={asset.assetType} />
-        {urgency && <span className={styles.urgency}>{urgency}</span>}
         {date && <time className={styles.date} dateTime={asset.executionDate}>{date}</time>}
+        {urgency && <span className={styles.urgency}>{urgency}</span>}
       </div>
       <h3 className={styles.title}>
         {highlight ? highlightText(asset.name, highlight) : asset.name}
