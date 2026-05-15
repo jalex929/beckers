@@ -142,6 +142,7 @@
 
 html {
   scroll-behavior: auto;
+  overflow-y: scroll;
 }
 
 *, *::before, *::after {
