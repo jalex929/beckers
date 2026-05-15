@@ -44,15 +44,18 @@ asset-lead-gen-interview-take-home-main/
 │       ├── hooks/
 │       │   ├── useAssets.ts    useAssets(), useAsset(id), submitSignup()
 │       │   └── useRecentlyViewed.ts  localStorage, up to 4 assets
+│       ├── assets/icons/           events.svg, webinars.svg, whitepapers.svg, podcasts.svg
 │       ├── components/
 │       │   ├── Header.tsx / .module.css
 │       │   ├── Footer.tsx / .module.css
-│       │   ├── AssetCard.tsx / .module.css  (passes location state for back-nav)
-│       │   └── AssetBadge.tsx / .module.css
-│       └── pages/
-│           ├── HomePage.tsx / .module.css   Hero + Recently Viewed + Featured + Browse by Type
-│           ├── AssetsPage.tsx / .module.css Filter | Search (debounced 300ms) | Sort | Load More
-│           └── SignupPage.tsx / .module.css Asset detail + 5-field form + success + related
+│       │   ├── AssetCard.tsx / .module.css  (index prop, highlight prop, fadeUp animation)
+│       │   ├── AssetBadge.tsx / .module.css (SVG icons, inverse filter for dark variants)
+│       │   └── SkeletonCard.tsx / .module.css  (shimmer loading placeholder)
+│       ├── pages/
+│       │   ├── HomePage.tsx / .module.css   Hero + Recently Viewed (+ Clear) + Featured + Browse by Type
+│       │   ├── AssetsPage.tsx / .module.css Filter | Search | Sort | Load More | Sticky controls | Skeletons
+│       │   └── SignupPage.tsx / .module.css Asset detail + 5-field form + success + related
+│       └── vite-env.d.ts           CSS module type declarations
 ├── design_system/              Becker's brand reference (READ ONLY — do not modify)
 │   ├── colors_and_type.css     Original BHR tokens (we derived our Meridian system from this)
 │   ├── assets/icons/           SVG icons: events, webinars, whitepapers, podcasts
@@ -118,6 +121,8 @@ Semantic aliases: `--color-brand`, `--color-accent`, `--color-fg-inverse`, `--co
 - [x] **Card animations** — Fade-up on entry (`@keyframes fadeUp`) with 60ms staggered delay by card index; respects `prefers-reduced-motion`
 - [x] **Search highlighting** — Matching substrings in card title and description wrapped in `<mark>` with gold background when a search query is active; uses index-parity split approach for reliable `g`-flag regex matching
 - [x] **Clear recently viewed** — `clearRecentlyViewed()` exported from hook; Clear button in Recently Viewed section header on HomePage
+- [x] **Search highlight color** — Softened from full `--mer-gold-300` to `rgba(234,188,0,0.25)` tint so it doesn't compete with active UI elements
+- [x] **README rewrite** — Full submission-ready README: Meridian intro, two-terminal setup, feature inventory, 7-paragraph design decisions section (brand, color, architecture, conversion thinking, accessibility, progressive enhancement, AI workflow disclosure)
 
 ---
 
