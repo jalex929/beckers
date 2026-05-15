@@ -24,10 +24,10 @@
 .heroTitle {
   font-family: var(--font-serif);
   font-size: var(--fs-5xl);
-  font-weight: var(--fw-bold);
+  font-weight: var(--fw-semibold);
   line-height: 1.1;
   color: var(--color-fg-inverse);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   text-wrap: balance;
 }
 
