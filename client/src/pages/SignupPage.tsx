@@ -1,6 +1,7 @@
-import { useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useParams, useLocation } from 'react-router-dom'
 import { useAsset, useAssets, submitSignup } from '../hooks/useAssets'
+import { recordView } from '../hooks/useRecentlyViewed'
 import AssetBadge from '../components/AssetBadge'
 import AssetCard from '../components/AssetCard'
 import styles from './SignupPage.module.css'
@@ -17,8 +18,14 @@ const EMPTY_FORM: SignupPayload = {
 
 export default function SignupPage() {
   const { id } = useParams<{ id: string }>()
+  const location = useLocation()
+  const backTo = (location.state as { from?: string } | null)?.from ?? '/assets'
   const { asset, loading, error } = useAsset(id ?? '')
   const { assets: allAssets } = useAssets()
+
+  useEffect(() => {
+    if (asset) recordView(asset)
+  }, [asset])
 
   const [form, setForm] = useState<SignupPayload>(EMPTY_FORM)
   const [fieldErrors, setFieldErrors] = useState<Partial<SignupPayload>>({})
@@ -78,7 +85,7 @@ export default function SignupPage() {
     return (
       <div className={styles.page}>
         <div className="container">
-          <Link to="/assets" className={styles.backLink}>← Back to Resources</Link>
+          <Link to={backTo} className={styles.backLink}>← Back to Resources</Link>
           <p className={styles.stateError}>{error ?? 'Resource not found.'}</p>
         </div>
       </div>
@@ -88,7 +95,7 @@ export default function SignupPage() {
   return (
     <div className={styles.page}>
       <div className="container">
-        <Link to="/assets" className={styles.backLink}>← Back to Resources</Link>
+        <Link to={backTo} className={styles.backLink}>← Back to Resources</Link>
 
         <div className={styles.layout}>
           {/* Asset Detail Panel */}

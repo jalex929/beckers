@@ -299,3 +299,15 @@ npm run build      # compile TypeScript to dist/
 npm start          # run the compiled server (requires build first)
 npm run lint       # lint src/**/*.ts
 ```
+
+---
+
+## Frontend design decisions
+
+**Brand.** Rather than reproducing the Becker's Hospital Review visual identity directly, I created a distinct sub-brand — *Meridian Health Intelligence* — that shares the same voice and editorial authority while standing on its own. The name and visual system are designed to feel like a credible, trust-first healthcare intelligence platform.
+
+**Color system.** Deep navy (`#0B2D6B`, 13.11:1 on white) anchors the brand and conveys institutional trust; teal (`#0A5968`, 7.95:1) serves as the on-light-background accent for links and CTAs. Gold (`#EABC00`) is reserved exclusively for elements on dark backgrounds — hero CTA, nav active state, and content-type badges — where it achieves a 7.30:1 contrast ratio against navy (WCAG 2.1 AAA). Every foreground/background pairing in the interface meets AAA, with contrast ratios annotated in `client/src/index.css`. Warm cream (`#F5F0E8`) replaces white for text on navy to eliminate harshness while still clearing AAA thresholds.
+
+**Architecture tradeoffs.** CSS Modules were chosen over a utility-first approach (Tailwind) to keep the component API clean and the design token system central — all tokens live in a single `:root` block in `index.css` so they're auditable in one place. The filter state is synced to URL params on the Resource Library page so browser back/forward and shareable links work correctly; asset detail pages pass `location.state.from` back to the resource list so the filter position is preserved on navigation. A localStorage-backed "Recently Viewed" section on the homepage personalizes the return experience without any server state.
+
+**What I'd improve with more time.** I'd add skeleton loading states (shimmer cards instead of plain text), paginate the API rather than loading all assets client-side, introduce a tag/topic facet alongside the type filter, and add keyboard-navigable filter chips with proper `aria-pressed` semantics. On the visual side, I'd explore subtle entry animations for cards and a sticky filter bar on scroll.

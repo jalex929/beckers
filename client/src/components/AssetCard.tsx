@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import AssetBadge from './AssetBadge'
 import styles from './AssetCard.module.css'
 import type { Asset } from '../types'
@@ -13,7 +13,10 @@ function formatDate(dateStr?: string) {
 }
 
 export default function AssetCard({ asset }: Props) {
+  const location = useLocation()
   const date = formatDate(asset.executionDate)
+  const from = location.pathname + location.search
+
   return (
     <article className={styles.card}>
       <div className={styles.meta}>
@@ -25,7 +28,7 @@ export default function AssetCard({ asset }: Props) {
       {asset.sponsorName && (
         <p className={styles.sponsor}>Sponsored by {asset.sponsorName}</p>
       )}
-      <Link to={`/assets/${asset.id}`} className={styles.cta}>
+      <Link to={`/assets/${asset.id}`} state={{ from }} className={styles.cta}>
         Get Access →
       </Link>
     </article>

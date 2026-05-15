@@ -1,5 +1,7 @@
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAssets } from '../hooks/useAssets'
+import { useRecentlyViewed } from '../hooks/useRecentlyViewed'
 import AssetCard from '../components/AssetCard'
 import styles from './HomePage.module.css'
 
@@ -12,7 +14,13 @@ const TYPES = [
 
 export default function HomePage() {
   const { assets, loading, error } = useAssets()
+  const { items: recentlyViewed, refresh } = useRecentlyViewed()
   const featured = assets.slice(0, 3)
+
+  // Refresh recently viewed when returning to this page
+  useEffect(() => {
+    refresh()
+  }, [])
 
   return (
     <div>
@@ -27,6 +35,23 @@ export default function HomePage() {
           <Link to="/assets" className={styles.heroCta}>Browse the Resource Library</Link>
         </div>
       </section>
+
+      {/* Recently Viewed — only shown once user has viewed at least one asset */}
+      {recentlyViewed.length > 0 && (
+        <section className={styles.recentSection}>
+          <div className="container">
+            <div className={styles.sectionHeader}>
+              <h2 className={styles.sectionTitle}>Recently Viewed</h2>
+              <Link to="/assets" className={styles.sectionLink}>View all resources →</Link>
+            </div>
+            <div className={styles.grid}>
+              {recentlyViewed.map(asset => (
+                <AssetCard key={asset.id} asset={asset} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Featured Resources */}
       <section className={styles.featured}>
