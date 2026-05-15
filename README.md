@@ -1,6 +1,97 @@
-# asset-lead-gen-interview-take-home
+# Meridian Health Intelligence — Take-Home Submission
 
-"Take Home" technical interview question
+**Jay Fox — UX Engineer (Growth & Experimentation), Becker's Healthcare**
+
+This repo is the original Express + TypeScript API starter with a React 18 + TypeScript + Vite frontend added under `client/`. The frontend is a healthcare resource library called **Meridian Health Intelligence**, built on top of the provided API with no modifications to the backend.
+
+---
+
+## How to run
+
+Two terminals are required.
+
+**Terminal 1 — Backend (Express + TypeScript, port 3000)**
+
+```bash
+npm install
+npm run dev
+```
+
+You should see:
+```
+[assetService] Loaded 10 assets and 10 signups from stub data
+Server listening on port 3000
+```
+
+**Terminal 2 — Frontend (React + Vite, port 5173)**
+
+```bash
+cd client
+npm install
+npm run dev
+```
+
+Open `http://localhost:5173`. The Vite dev server proxies `/assets/*` to `http://localhost:3000` automatically — no CORS configuration required.
+
+---
+
+## What was built
+
+### Three pages
+
+**Homepage (`/`)** — Hero section with navy background and gold CTA, Recently Viewed rail (localStorage-backed, up to 4 items, with a Clear button), Featured Resources, and a Browse by Type grid.
+
+**Resource Library (`/assets`)** — Filter by content type (4 types, URL-synced with `aria-pressed` toggle buttons), debounced search (300ms), sort by date (newest/oldest), load-more pagination (9 per page), result count, empty state, skeleton loading cards, sticky controls bar, and search term highlighting in card titles and descriptions.
+
+**Asset Signup (`/assets/:id`)** — Asset detail panel (sticky on desktop), 5-field validated form, POST to the API, inline success state with signup date, related resources filtered by type, and a smart back-link that restores filter state from `location.state`.
+
+### Components and systems
+
+| Component | Description |
+|-----------|-------------|
+| `AssetBadge` | 4 type variants with corresponding SVG icons; white-filtered for dark-background use |
+| `AssetCard` | Fade-up entry animation staggered by index; respects `prefers-reduced-motion`; optional search highlight via `<mark>` |
+| `SkeletonCard` | Shimmer placeholder matching card anatomy; respects `prefers-reduced-motion` |
+| `Header` / `Footer` | Sticky header with active nav state in gold; brand wordmark and tagline |
+| `useAssets` / `useAsset` | Data-fetching hooks with loading and error state |
+| `useRecentlyViewed` | localStorage hook with cap and clear |
+
+### Bonus features delivered
+
+- Debounced search (300ms, no excessive re-renders)
+- Sort by date (newest / oldest)
+- Related resources on signup success
+- Recently Viewed with localStorage + Clear button
+- Search term highlighting (gold-tint `<mark>`)
+- Skeleton loading cards with shimmer animation
+- Sticky filter bar (accounts for 64px header)
+- Card entry animations with stagger
+- Content-type icons in badges
+- `aria-pressed` on filter toggle buttons
+- 404 catch-all route
+- Mobile responsive (verified at 390px and 1280px)
+- Zero TypeScript errors (`tsc --noEmit` clean)
+- URL-synced filter state + `location.state` back-navigation
+
+---
+
+## Design decisions
+
+**Brand.** I created a distinct sub-brand — *Meridian Health Intelligence* — rather than reproducing Becker's Hospital Review's identity directly. The rationale is product-level: a resource library sits in a different editorial register than a news publication. It should feel like a credible intelligence platform that shares Becker's authority and voice but has its own visual posture. "Meridian" implies orientation, expertise, and precision — appropriate for a library of clinical and operational content aimed at healthcare decision-makers. The name gives the product something to stand on without diluting the parent brand.
+
+**Color system.** The token system is built around three intentional pairings, each meeting WCAG 2.1 AAA. Deep navy (`#0B2D6B`, 13.11:1 on white) anchors the brand and carries institutional weight — appropriate for a healthcare context where trust is load-bearing, not decorative. Teal (`#0A5968`, 7.95:1 on white) serves as the on-light-background accent for links and interactive elements. Gold (`#EABC00`) is reserved exclusively for elements placed on dark backgrounds — the hero CTA, the active nav state, and content-type badge labels — where it achieves 7.30:1 against navy (AAA). Putting gold on white would fail contrast; the constraint is by design, not oversight. Warm cream (`#F5F0E8`) replaces pure white for body text on navy, reducing optical harshness while still clearing AAA thresholds. All contrast ratios are annotated inline in `client/src/index.css` so any future contributor can audit them without running a separate tool.
+
+**Architecture.** CSS Modules over Tailwind — the decision comes down to where the design token system lives. With Tailwind, tokens scatter into utility classes and the canonical source of truth fragments across files. With CSS Modules backed by a single `:root` block, every token is auditable in one place and component styles reference the system rather than re-encode it. Filter state is synced to URL search params on the Resource Library page so browser back/forward and shareable filtered links work correctly without any additional routing logic. Asset detail pages read `location.state.from` on mount and pass it back to the Back button so the user lands exactly where they left the list. No global state library was needed — `useAssets`, `useAsset`, and `useRecentlyViewed` cover all the state requirements with straightforward React hooks.
+
+**Conversion and analytics thinking.** The Resource Library is the primary conversion surface. Filter, search, sort, and card click events are all well-defined instrumentation points — not implemented here, but the component structure makes them trivial to add (each action is discrete, not buried in derived state). The signup form is minimal friction by design: 5 fields, inline validation on blur, inline success state on submit with no page reload. The "Recently Viewed" rail on the homepage is lightweight personalization without server state — it reduces the number of clicks for a returning visitor to find where they left off. Search term highlighting in card titles and descriptions is a trust signal: users see their query reflected back, which increases confidence that results are relevant rather than generic.
+
+**Accessibility.** Semantic HTML throughout — `<nav>`, `<main>`, `<article>`, `<button>` used for their intended roles. Filter buttons use `aria-pressed` (toggle state) rather than `role="tab"` (selection) because the behavior is toggling, not switching contexts. Search and sort controls have explicit `aria-label` attributes. Decorative icons carry `aria-hidden="true"`. All card animation and skeleton shimmer effects are wrapped in a `prefers-reduced-motion` media query — the experience degrades to an instant render, not a broken one.
+
+**Progressive enhancement.** Skeleton cards instead of a spinner preserve layout stability — the page doesn't reflow when content arrives, and users get a sense of what's coming. The sticky filter bar solves a real usability problem: without it, users who scroll past the first page of results have to scroll back to the top to change filters. Debounced search (300ms) keeps the interaction responsive without triggering a re-fetch on every keystroke. Staggered card entry animations (80ms delay per index) make the list feel sequential rather than simultaneous — it reads as content loading in, not a flash of 9 items appearing at once.
+
+**AI-assisted workflow.** This project used Claude Code for implementation and debugging, ChatGPT for systems thinking and documentation, and Bolt.new for initial UI scaffolding. The workflow was human-led throughout: architecture decisions, design tradeoffs, and final implementation calls were made by me; AI tools handled acceleration, not direction. Every suggestion was reviewed and validated before it was committed. I'm transparent about this because I think it's the right way to work, and because the growth engineering role almost certainly involves thinking about AI-assisted workflows in product — so it seems worth modeling.
+
+---
 
 ## Design system
 
@@ -42,49 +133,6 @@ Both kits depend on `colors_and_type.css` and scope their styles through `kit.cs
 The design system README (`design_system/README.md`) includes full content guidelines: sentence-case headlines, third-person copy, AP-style numbers, no emoji, and the "Professional · Trusted · Engaging" tone triad. Read it before writing any UI copy.
 
 ---
-
-## Frontend take-home
-
-Open [`ux-design-dev-interview-challenge.html`](./ux-design-dev-interview-challenge.html) in a browser for the full frontend assignment brief — requirements, per-page specs, API usage, and the submission checklist.
-
-## Prerequisites
-
-- [Node.js](https://nodejs.org/) v18 or higher
-- npm v9 or higher
-
-## Getting started
-
-**1. Install dependencies**
-
-```bash
-npm install
-```
-
-**2. Configure environment**
-
-```bash
-cp .env.example .env
-```
-
-The default values in `.env.example` work out of the box:
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `PORT` | `3000` | Port the HTTP server listens on |
-| `NODE_ENV` | `development` | Runtime environment |
-
-**3. Start the dev server**
-
-```bash
-npm run dev
-```
-
-The server starts with hot reload via `ts-node-dev`. You should see:
-
-```
-[assetService] Loaded 10 assets and 10 signups from stub data
-Server listening on port 3000
-```
 
 ## API
 
@@ -262,6 +310,8 @@ curl -X POST http://localhost:3000/assets/5af0e596b3c7e95aaafe42e01222f91666354f
   }'
 ```
 
+---
+
 ## Testing
 
 ### Unit tests
@@ -299,15 +349,3 @@ npm run build      # compile TypeScript to dist/
 npm start          # run the compiled server (requires build first)
 npm run lint       # lint src/**/*.ts
 ```
-
----
-
-## Frontend design decisions
-
-**Brand.** Rather than reproducing the Becker's Hospital Review visual identity directly, I created a distinct sub-brand — *Meridian Health Intelligence* — that shares the same voice and editorial authority while standing on its own. The name and visual system are designed to feel like a credible, trust-first healthcare intelligence platform.
-
-**Color system.** Deep navy (`#0B2D6B`, 13.11:1 on white) anchors the brand and conveys institutional trust; teal (`#0A5968`, 7.95:1) serves as the on-light-background accent for links and CTAs. Gold (`#EABC00`) is reserved exclusively for elements on dark backgrounds — hero CTA, nav active state, and content-type badges — where it achieves a 7.30:1 contrast ratio against navy (WCAG 2.1 AAA). Every foreground/background pairing in the interface meets AAA, with contrast ratios annotated in `client/src/index.css`. Warm cream (`#F5F0E8`) replaces white for text on navy to eliminate harshness while still clearing AAA thresholds.
-
-**Architecture tradeoffs.** CSS Modules were chosen over a utility-first approach (Tailwind) to keep the component API clean and the design token system central — all tokens live in a single `:root` block in `index.css` so they're auditable in one place. The filter state is synced to URL params on the Resource Library page so browser back/forward and shareable links work correctly; asset detail pages pass `location.state.from` back to the resource list so the filter position is preserved on navigation. A localStorage-backed "Recently Viewed" section on the homepage personalizes the return experience without any server state.
-
-**What I'd improve with more time.** I'd add skeleton loading states (shimmer cards instead of plain text), paginate the API rather than loading all assets client-side, introduce a tag/topic facet alongside the type filter, and add keyboard-navigable filter chips with proper `aria-pressed` semantics. On the visual side, I'd explore subtle entry animations for cards and a sticky filter bar on scroll.
