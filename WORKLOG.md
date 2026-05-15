@@ -167,6 +167,29 @@ Semantic aliases: `--color-brand`, `--color-accent`, `--color-fg-inverse`, `--co
 
 ---
 
+## Deployment (added 2026-05-15)
+
+- [x] **Railway (backend)** — Express API deployed at `https://beckers-production.up.railway.app`. Auto-deploys from GitHub main. `PORT` read from Railway env automatically.
+- [x] **Netlify (frontend)** — React/Vite app deployed at `https://fox-beckers.netlify.app`. Auto-deploys from GitHub main. Build: `client/` → `npm run build` → `dist/`.
+- [x] **`netlify.toml`** — build config, `/assets/*` proxy redirect to Railway (server-side rewrite, no CORS needed), SPA catch-all for React Router.
+- [x] **`DEPLOY.md`** — step-by-step Railway then Netlify setup guide with Bolt compatibility note and troubleshooting section.
+- [x] **`client/src/hooks/useAssets.ts`** — `VITE_API_BASE` prefix on all fetch calls. Empty string in dev and on Netlify (proxy handles it); set to Railway URL on hosts without proxy rules.
+- [x] **`src/app.ts`** — CORS middleware added for `localhost` and `*.netlify.app` origins (fallback for direct cross-origin calls).
+- [x] **`client/vite.config.ts`** — `build.assetsDir` changed from default `assets` to `_app` to avoid collision with the `/assets/*` Netlify redirect rule.
+- [x] **`.env.example` / `client/.env.example`** — documents `PORT` and `VITE_API_BASE` for local and non-Netlify deployments.
+
+## README polish (added 2026-05-15)
+
+- [x] **Live URL** — `https://fox-beckers.netlify.app` added to the top of README with framing that all brief requirements are met; docs are optional depth.
+- [x] **Further reading section** — bottom of README links `analytics-plan.md`, `what-i-prioritized.md`, and `decision-log.md` with one-line descriptions so evaluators know where to go.
+- [x] **Live experiments documented** — bonus features list now describes both running A/B tests (hero-cta, signup-cta), variant persistence, and the `experiment_exposure` event.
+
+## Pending
+
+- [ ] **Accessibility focus state pass** — keyboard navigation focus rings across filter buttons, search input, nav links, cards, and signup form. Waiting for Bolt to finish current CSS work before touching module CSS files.
+
+---
+
 ## Submission checklist (from brief)
 
 - [x] Three pages implemented
