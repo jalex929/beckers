@@ -41,8 +41,8 @@
 
 .heroCta {
   display: inline-block;
-  background: var(--color-accent);
-  color: var(--color-fg-inverse);
+  background: var(--mer-gold-300);
+  color: var(--mer-navy-800);
   font-family: var(--font-sans);
   font-size: var(--fs-base);
   font-weight: var(--fw-semibold);
@@ -54,7 +54,8 @@
 }
 
 .heroCta:hover {
-  background: var(--color-accent-hover);
+  background: var(--mer-gold-800);
+  color: var(--mer-white);
 }
 
 .featured {
