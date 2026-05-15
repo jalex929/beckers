@@ -9,8 +9,8 @@
 | Resource | Link |
 |----------|------|
 | Live product | https://fox-beckers.netlify.app |
-| Project brief (slideshow) | _[Insert Google Slides / Loom link here]_ |
-| Written brief | _[Insert Google Doc link here]_ |
+| Project brief (slideshow) | https://docs.google.com/presentation/d/1WszpoeiidB07kWUTQQ7XZS7I0EeUibLaKW8OWYNTXPI/edit?usp=sharing |
+| Written brief | https://docs.google.com/document/d/1029NcXSAIElm4-jYMziUmGiIAXWh__dh9rOY_4AlymE/edit?usp=sharing |
 | GitHub repo | https://github.com/jalex929/beckers |
 
 ---
