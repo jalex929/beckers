@@ -111,13 +111,13 @@ The tool boundaries were the workflow's API contracts. Just as a design handoff 
 
 ### Color system
 
-**Considered:** Reproducing BHR's palette directly, building a brand from scratch with no reference, or deriving from their existing token system while building a distinct identity.
+**Considered:** Reproducing Becker's Healthcare's palette directly, building a brand from scratch with no reference, or deriving from their existing token system while building a distinct identity.
 
-**Chose:** Derived from BHR's token system, built as a standalone brand.
+**Chose:** Derived from Becker's Healthcare's token system, built as a standalone brand.
 
 **Why:** The primary structural pair is analogous navy and teal — neighbors on the color wheel with a shared blue base. They read as unified without being identical, which is appropriate for a sub-brand or product family relationship. Gold functions as a split-complementary accent: it sits in the opposite direction from the blue family on the wheel, which creates contrast without tension. Gold is reserved exclusively for dark backgrounds where it achieves a 7.30:1 contrast ratio against the dark navy. Gold on white fails WCAG AA and — more practically — breaks the hierarchy by pulling attention away from content. Warm neutral surfaces (#F7F5F2) read as editorial, like a quality publication, rather than clinical, like a hospital interface. All ratios are annotated inline in `index.css` adjacent to the token definition.
 
-**Tradeoff:** This palette diverges from the literal BHR visual identity. The mitigation is intentional: the same type scale and navy family mean both products read as peers from the same design foundation. A reviewer looking at both would recognize the relationship without mistaking one for the other.
+**Tradeoff:** This palette diverges from the literal Becker's Healthcare visual identity. The mitigation is intentional: the same type scale and navy family mean both products read as peers from the same design foundation. A reviewer looking at both would recognize the relationship without mistaking one for the other.
 
 ### Load-more vs. infinite scroll
 
