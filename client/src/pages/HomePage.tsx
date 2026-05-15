@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { track } from '../utils/analytics'
 import { Link } from 'react-router-dom'
 import { useAssets } from '../hooks/useAssets'
 import { useRecentlyViewed, clearRecentlyViewed } from '../hooks/useRecentlyViewed'
@@ -45,7 +46,11 @@ export default function HomePage() {
               <h2 className={styles.sectionTitle}>Recently Viewed</h2>
               <div className={styles.sectionHeaderActions}>
                 <button
-                  onClick={() => { clearRecentlyViewed(); refresh() }}
+                  onClick={() => {
+                    track({ event: 'recently_viewed_cleared', properties: { item_count: recentlyViewed.length } })
+                    clearRecentlyViewed()
+                    refresh()
+                  }}
                   className={styles.clearHistoryBtn}
                 >
                   Clear
@@ -55,7 +60,7 @@ export default function HomePage() {
             </div>
             <div className={styles.grid}>
               {recentlyViewed.map((asset, idx) => (
-                <AssetCard key={asset.id} asset={asset} index={idx} />
+                <AssetCard key={asset.id} asset={asset} index={idx} context="homepage_recently_viewed" />
               ))}
             </div>
           </div>
@@ -78,7 +83,7 @@ export default function HomePage() {
           {!loading && !error && (
             <div className={styles.grid}>
               {featured.map((asset, idx) => (
-                <AssetCard key={asset.id} asset={asset} index={idx} />
+                <AssetCard key={asset.id} asset={asset} index={idx} context="homepage_featured" />
               ))}
             </div>
           )}

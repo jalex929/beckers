@@ -123,12 +123,30 @@ Semantic aliases: `--color-brand`, `--color-accent`, `--color-fg-inverse`, `--co
 - [x] **Clear recently viewed** — `clearRecentlyViewed()` exported from hook; Clear button in Recently Viewed section header on HomePage
 - [x] **Search highlight color** — Softened from full `--mer-gold-300` to `rgba(234,188,0,0.25)` tint so it doesn't compete with active UI elements
 - [x] **README rewrite** — Full submission-ready README: Meridian intro, two-terminal setup, feature inventory, 7-paragraph design decisions section (brand, color, architecture, conversion thinking, accessibility, progressive enhancement, AI workflow disclosure)
+- [x] **Frontend unit tests** — Vitest + @testing-library/react in `client/src/__tests__/`. 5 test files, 27 tests covering all static copy across Header, Footer, HomePage, AssetsPage, and SignupPage (form + error state). Each test `console.log`s the verified text so content regressions are immediately visible in CI output. Run with `npm test` from `client/`. Uses `vi.hoisted()` pattern to safely control per-describe mock state.
 
 ---
 
 ## Open tickets
 
 *All P0, P1, and P2 tickets closed. No open issues.*
+
+---
+
+## Analytics instrumentation (added 2026-05-15)
+
+- [x] **`client/src/utils/analytics.ts`** — typed event bus. Discriminated union of 12 event shapes; pushes to `window.dataLayer` (GTM-compatible); console.logs in dev. Zero runtime deps.
+- [x] **`asset_card_clicked`** — fires on every "Get Access" click with `asset_id`, `asset_type`, `asset_name`, `position`, and `context` (`homepage_featured` | `homepage_recently_viewed` | `assets_page` | `related`)
+- [x] **`filter_applied`** — fires in AssetsPage when a type filter is selected
+- [x] **`search_used`** — fires when debounced search resolves non-empty, includes `result_count` for zero-result detection
+- [x] **`sort_changed`** — fires on sort dropdown change
+- [x] **`load_more_clicked`** — fires with `page_number`, `visible_count`, `total_count`
+- [x] **`signup_started`** — fires once on first field focus (useRef guard prevents re-fire)
+- [x] **`signup_submitted`** — fires on every validated form submission
+- [x] **`signup_completed`** — fires on API success with `signup_date`
+- [x] **`signup_failed`** — fires on API error with `error_message`
+- [x] **`recently_viewed_cleared`** — fires with `item_count` before clear
+- [x] **`docs/analytics-plan.md`** — full instrumentation strategy: event schema, conversion funnel, and 7 additional events to add in a production build (scroll depth, time-to-convert, form field abandonment, session identity, UTM capture, rage click, A/B exposure), plus a 6-row experimentation opportunity table
 
 ---
 

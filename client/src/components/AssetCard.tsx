@@ -2,11 +2,14 @@ import { Link, useLocation } from 'react-router-dom'
 import AssetBadge from './AssetBadge'
 import styles from './AssetCard.module.css'
 import type { Asset } from '../types'
+import { track } from '../utils/analytics'
+import type { AssetCardContext } from '../utils/analytics'
 
 interface Props {
   asset: Asset
   index?: number
   highlight?: string
+  context?: AssetCardContext
 }
 
 function formatDate(dateStr?: string) {
@@ -24,7 +27,7 @@ function highlightText(text: string, query: string) {
   )
 }
 
-export default function AssetCard({ asset, index = 0, highlight }: Props) {
+export default function AssetCard({ asset, index = 0, highlight, context = 'assets_page' as AssetCardContext }: Props) {
   const location = useLocation()
   const date = formatDate(asset.executionDate)
   const from = location.pathname + location.search
@@ -47,7 +50,21 @@ export default function AssetCard({ asset, index = 0, highlight }: Props) {
       {asset.sponsorName && (
         <p className={styles.sponsor}>Sponsored by {asset.sponsorName}</p>
       )}
-      <Link to={`/assets/${asset.id}`} state={{ from }} className={styles.cta}>
+      <Link
+        to={`/assets/${asset.id}`}
+        state={{ from }}
+        className={styles.cta}
+        onClick={() => track({
+          event: 'asset_card_clicked',
+          properties: {
+            asset_id: asset.id,
+            asset_type: asset.assetType,
+            asset_name: asset.name,
+            position: index,
+            context,
+          },
+        })}
+      >
         Get Access →
       </Link>
     </article>

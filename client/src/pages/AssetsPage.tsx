@@ -5,6 +5,7 @@ import AssetCard from '../components/AssetCard'
 import SkeletonCard from '../components/SkeletonCard'
 import styles from './AssetsPage.module.css'
 import type { AssetType } from '../types'
+import { track } from '../utils/analytics'
 
 const ASSET_TYPES: { label: string; value: AssetType | '' }[] = [
   { label: 'All', value: '' },
@@ -35,8 +36,16 @@ export default function AssetsPage() {
   // Reset page when filters change
   useEffect(() => { setPage(1) }, [typeFilter, search, sort])
 
+  useEffect(() => {
+    if (search.trim()) {
+      track({ event: 'search_used', properties: { query: search, result_count: filtered.length } })
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search])
+
   const handleTypeFilter = useCallback((value: AssetType | '') => {
     setTypeFilter(value)
+    track({ event: 'filter_applied', properties: { filter_value: value || 'all' } })
     if (value) setSearchParams({ type: value })
     else setSearchParams({})
   }, [setSearchParams])
@@ -109,7 +118,11 @@ export default function AssetsPage() {
             />
             <select
               value={sort}
-              onChange={e => setSort(e.target.value as 'default' | 'asc' | 'desc')}
+              onChange={e => {
+                const v = e.target.value as 'default' | 'asc' | 'desc'
+                setSort(v)
+                track({ event: 'sort_changed', properties: { sort_value: v } })
+              }}
               className={styles.sortSelect}
               aria-label="Sort resources"
             >
@@ -149,12 +162,18 @@ export default function AssetsPage() {
           <>
             <div className={styles.grid}>
               {visible.map((asset, idx) => (
-                <AssetCard key={asset.id} asset={asset} index={idx} highlight={search} />
+                <AssetCard key={asset.id} asset={asset} index={idx} highlight={search} context="assets_page" />
               ))}
             </div>
             {hasMore && (
               <div className={styles.loadMore}>
-                <button onClick={() => setPage(p => p + 1)} className={styles.loadMoreBtn}>
+                <button
+                  onClick={() => {
+                    setPage(p => p + 1)
+                    track({ event: 'load_more_clicked', properties: { page_number: page + 1, visible_count: visible.length, total_count: filtered.length } })
+                  }}
+                  className={styles.loadMoreBtn}
+                >
                   Load more resources
                 </button>
               </div>

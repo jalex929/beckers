@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link, useParams, useLocation } from 'react-router-dom'
 import { useAsset, useAssets, submitSignup } from '../hooks/useAssets'
 import { recordView } from '../hooks/useRecentlyViewed'
 import AssetBadge from '../components/AssetBadge'
 import AssetCard from '../components/AssetCard'
 import styles from './SignupPage.module.css'
+import { track } from '../utils/analytics'
 import type { SignupPayload, SignupResult } from '../types'
 
 function formatDate(dateStr?: string) {
@@ -32,6 +33,7 @@ export default function SignupPage() {
   const [submitting, setSubmitting] = useState(false)
   const [result, setResult] = useState<SignupResult | null>(null)
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const hasStartedSignup = useRef(false)
 
   function validate(): boolean {
     const errors: Partial<SignupPayload> = {}
@@ -50,13 +52,30 @@ export default function SignupPage() {
     if (!validate() || !id) return
     setSubmitting(true)
     setSubmitError(null)
+    if (id && asset) {
+      track({ event: 'signup_submitted', properties: { asset_id: id, asset_type: asset.assetType } })
+    }
     try {
       const data = await submitSignup(id, form)
       setResult(data)
+      if (id && asset) {
+        track({ event: 'signup_completed', properties: { asset_id: id, asset_type: asset.assetType, signup_date: data.signupDate } })
+      }
     } catch (err) {
-      setSubmitError(err instanceof Error ? err.message : 'Signup failed. Please try again.')
+      const msg = err instanceof Error ? err.message : 'Signup failed. Please try again.'
+      setSubmitError(msg)
+      if (id) {
+        track({ event: 'signup_failed', properties: { asset_id: id, error_message: msg } })
+      }
     } finally {
       setSubmitting(false)
+    }
+  }
+
+  function handleFieldFocus() {
+    if (!hasStartedSignup.current && asset && id) {
+      hasStartedSignup.current = true
+      track({ event: 'signup_started', properties: { asset_id: id, asset_type: asset.assetType } })
     }
   }
 
@@ -147,7 +166,7 @@ export default function SignupPage() {
                   <div className={styles.related}>
                     <h3 className={styles.relatedTitle}>You might also like</h3>
                     <div className={styles.relatedGrid}>
-                      {related.map(a => <AssetCard key={a.id} asset={a} />)}
+                      {related.map(a => <AssetCard key={a.id} asset={a} context="related" />)}
                     </div>
                   </div>
                 )}
@@ -165,6 +184,7 @@ export default function SignupPage() {
                       type="text"
                       value={form.firstName}
                       onChange={handleChange('firstName')}
+                      onFocus={handleFieldFocus}
                       className={`${styles.input} ${fieldErrors.firstName ? styles.inputError : ''}`}
                       autoComplete="given-name"
                     />

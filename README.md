@@ -72,6 +72,8 @@ Open `http://localhost:5173`. The Vite dev server proxies `/assets/*` to `http:/
 - Mobile responsive (verified at 390px and 1280px)
 - Zero TypeScript errors (`tsc --noEmit` clean)
 - URL-synced filter state + `location.state` back-navigation
+- Analytics instrumentation — typed event bus, GTM-compatible `window.dataLayer`, 10 events across all 3 pages
+- `docs/analytics-plan.md` — full instrumentation strategy, conversion funnel, 7 production events, experimentation table
 
 ---
 
@@ -83,7 +85,19 @@ Open `http://localhost:5173`. The Vite dev server proxies `/assets/*` to `http:/
 
 **Architecture.** CSS Modules over Tailwind — the decision comes down to where the design token system lives. With Tailwind, tokens scatter into utility classes and the canonical source of truth fragments across files. With CSS Modules backed by a single `:root` block, every token is auditable in one place and component styles reference the system rather than re-encode it. Filter state is synced to URL search params on the Resource Library page so browser back/forward and shareable filtered links work correctly without any additional routing logic. Asset detail pages read `location.state.from` on mount and pass it back to the Back button so the user lands exactly where they left the list. No global state library was needed — `useAssets`, `useAsset`, and `useRecentlyViewed` cover all the state requirements with straightforward React hooks.
 
-**Conversion and analytics thinking.** The Resource Library is the primary conversion surface. Filter, search, sort, and card click events are all well-defined instrumentation points — not implemented here, but the component structure makes them trivial to add (each action is discrete, not buried in derived state). The signup form is minimal friction by design: 5 fields, inline validation on blur, inline success state on submit with no page reload. The "Recently Viewed" rail on the homepage is lightweight personalization without server state — it reduces the number of clicks for a returning visitor to find where they left off. Search term highlighting in card titles and descriptions is a trust signal: users see their query reflected back, which increases confidence that results are relevant rather than generic.
+**Conversion and analytics thinking.** The Resource Library is the primary conversion surface in a lead-gen product. Every interaction in this UI is a signal — which content types draw attention, which search queries fail, where in the signup flow users abandon. Those signals are the raw material of a growth experimentation practice. Without instrumentation, you are guessing.
+
+The analytics layer (`client/src/utils/analytics.ts`) is structured around three questions a growth team actually asks.
+
+*Content performance.* `asset_card_clicked` captures position and context (`homepage_featured`, `homepage_recently_viewed`, `assets_page`, `related`). Position data answers whether the first card in a grid always wins, or whether lower-ranked content can compete when placed in the right context. Context data separates organic browsing behavior on the listing page from homepage editorial decisions. Without that split, a CTA copy experiment on the listing page is indistinguishable from a layout change on the homepage — both show up as movement in the same metric.
+
+*Funnel health.* The `signup_started → signup_submitted → signup_completed` sequence is the core conversion funnel, and each gap is a different diagnostic. A high started/submitted gap means form friction — too many fields, unclear labels, a failed copy experiment. A high submitted/completed gap means API reliability or error messaging. Neither problem looks the same in aggregate numbers; you need the event sequence to tell them apart. The `signup_started` event fires on first field focus (guarded by a ref so it can't re-fire), which means it captures intent specifically — not accidental page loads.
+
+*Content gap detection.* `search_used` includes `result_count`. Zero-result searches are unfulfilled intent: queries healthcare professionals are typing into this product that return no matching content. Routing zero-result queries to a content team dashboard is a standard growth lever that most teams never build because no one instruments search with result counts.
+
+The `context` property on `asset_card_clicked` is the scaffolding for clean A/B test analysis. When you test "3 featured cards vs. 4 featured cards on the homepage," you need clicks attributed to the homepage featured slot specifically — not pooled with listing page clicks — or your experiment metric is noise. `context: 'homepage_featured'` makes that segmentation possible without a post-hoc data join. The same principle applies to the `related` context on the signup success screen: post-conversion recommendation clicks are a separate signal from discovery clicks and should never be mixed into the same funnel.
+
+Full event schema, conversion funnel diagram, and 7 additional production events (scroll depth, time-to-convert, form field abandonment per field, session identity, UTM capture, rage click detection, A/B exposure event) are documented in `docs/analytics-plan.md`.
 
 **Accessibility.** Semantic HTML throughout — `<nav>`, `<main>`, `<article>`, `<button>` used for their intended roles. Filter buttons use `aria-pressed` (toggle state) rather than `role="tab"` (selection) because the behavior is toggling, not switching contexts. Search and sort controls have explicit `aria-label` attributes. Decorative icons carry `aria-hidden="true"`. All card animation and skeleton shimmer effects are wrapped in a `prefers-reduced-motion` media query — the experience degrades to an instant render, not a broken one.
 
