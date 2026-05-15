@@ -13,8 +13,8 @@
   --mer-navy-500: #2D63C8;   /* lighter navy for links on dark */
 
   /* Steel blue accent ramp */
-  --mer-steel-700: #1B6B9A;  /* 4.76:1 on white — primary accent */
-  --mer-steel-600: #2980B3;  /* hover state — brighter blue */
+  --mer-steel-700: #105E80;  /* 7.15:1 on white — AAA */
+  --mer-steel-600: #0C6178;  /* 7.03:1 on white — AAA hover */
   --mer-steel-500: #4A9AC8;  /* decorative, lighter state */
   --mer-steel-400: #7AB8D9;  /* decorative only, not for text on white */
 
@@ -55,8 +55,8 @@
 
   --color-brand:        var(--mer-navy-800);
   --color-brand-hover:  var(--mer-navy-700);
-  --color-accent:       var(--mer-steel-700); /* 4.87:1 on white — AA large/UI */
-  --color-accent-hover: var(--mer-steel-600); /* hover state */
+  --color-accent:       var(--mer-steel-700); /* 7.15:1 on white — AAA */
+  --color-accent-hover: var(--mer-steel-600); /* 7.03:1 on white — AAA */
 
   --color-border:         var(--mer-warm-200);
   --color-border-strong:  var(--mer-warm-300);
