@@ -143,11 +143,11 @@ The tool boundaries were the workflow's API contracts. Just as a design handoff 
 
 **Considered:** Generic "Newest first" / "Oldest first" controls on executionDate · Two named sorts addressing distinct user intents
 
-**Chose:** "Coming up soon" (executionDate ascending, assets without a date pushed to end) and "New to the library" (lastModifiedDate descending)
+**Chose:** "Coming up soon" (filters to future-dated assets only, then sorts ascending by executionDate) and "New to the library" (lastModifiedDate descending)
 
 **Why:** "Newest first" by executionDate descending is misleading — it surfaces events furthest in the future, which is the opposite of what someone scanning for something imminent wants. The labels described sort direction rather than user intent. Two distinct user needs exist on a content library: someone planning their schedule wants the soonest upcoming event first; someone browsing for fresh reading wants the most recently published content first. These are different fields and different directions. Naming them by intent rather than direction makes the control self-documenting.
 
-The null-last handling in "Coming up soon" is a specific UX decision: whitepapers and podcasts without an executionDate have no meaningful "upcoming" status, so they belong at the end of this sort, not mixed in at position zero alongside live webinars happening next week.
+"Coming up soon" filters rather than sorts: only assets with a future executionDate appear in this view. Whitepapers and podcasts without an execution date are excluded entirely — they have no meaningful "upcoming" status, and placing them at the bottom of a "coming up soon" list would make the control feel broken. Past events are also excluded: showing a webinar from three months ago in a "coming up soon" view erodes trust in the control. The result count updates to reflect only the filtered set, which is the honest answer to the question the user is actually asking.
 
 **Tradeoff:** Two specific options instead of a single reversible toggle. The tradeoff is intentional — specificity produces better engagement than vague directional controls.
 
