@@ -14,7 +14,7 @@
 #
 [[redirects]]
   from   = "/assets/*"
-  to     = "https://REPLACE_WITH_RAILWAY_URL/assets/:splat"
+  to     = "https://beckers-production.up.railway.app/assets/:splat"
   status = 200
   force  = true
 
