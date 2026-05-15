@@ -27,6 +27,10 @@ export default function HomePage() {
     refresh()
   }, [])
 
+  useEffect(() => {
+    document.title = 'Meridian Health Intelligence'
+  }, [])
+
   return (
     <div>
       {/* Hero */}

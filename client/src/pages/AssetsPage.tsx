@@ -43,6 +43,10 @@ export default function AssetsPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search])
 
+  useEffect(() => {
+    document.title = 'Resource Library · Meridian'
+  }, [])
+
   const handleTypeFilter = useCallback((value: AssetType | '') => {
     setTypeFilter(value)
     track({ event: 'filter_applied', properties: { filter_value: value || 'all' } })

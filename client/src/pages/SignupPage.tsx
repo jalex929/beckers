@@ -43,6 +43,11 @@ export default function SignupPage() {
     if (asset) recordView(asset)
   }, [asset])
 
+  useEffect(() => {
+    if (asset) document.title = `${asset.name} · Meridian`
+    else document.title = 'Register · Meridian'
+  }, [asset])
+
   const [form, setForm] = useState<SignupPayload>(EMPTY_FORM)
   const [fieldErrors, setFieldErrors] = useState<Partial<SignupPayload>>({})
   const [submitting, setSubmitting] = useState(false)
@@ -182,7 +187,7 @@ export default function SignupPage() {
           {/* Form / Success */}
           <div className={styles.formPanel}>
             {result ? (
-              <div className={styles.success}>
+              <div className={styles.success} role="status">
                 <div className={styles.successIcon}>✓</div>
                 <h2 className={styles.successTitle}>You're registered!</h2>
                 <p className={styles.successSub}>
@@ -214,8 +219,12 @@ export default function SignupPage() {
                       onFocus={handleFieldFocus}
                       className={`${styles.input} ${fieldErrors.firstName ? styles.inputError : ''}`}
                       autoComplete="given-name"
+                      required
+                      aria-required="true"
+                      aria-invalid={!!fieldErrors.firstName}
+                      aria-describedby="firstName-error"
                     />
-                    {fieldErrors.firstName && <span className={styles.fieldError}>{fieldErrors.firstName}</span>}
+                    {fieldErrors.firstName && <span id="firstName-error" className={styles.fieldError}>{fieldErrors.firstName}</span>}
                   </div>
                   <div className={styles.field}>
                     <label htmlFor="lastName" className={styles.label}>Last name</label>
@@ -226,8 +235,12 @@ export default function SignupPage() {
                       onChange={handleChange('lastName')}
                       className={`${styles.input} ${fieldErrors.lastName ? styles.inputError : ''}`}
                       autoComplete="family-name"
+                      required
+                      aria-required="true"
+                      aria-invalid={!!fieldErrors.lastName}
+                      aria-describedby="lastName-error"
                     />
-                    {fieldErrors.lastName && <span className={styles.fieldError}>{fieldErrors.lastName}</span>}
+                    {fieldErrors.lastName && <span id="lastName-error" className={styles.fieldError}>{fieldErrors.lastName}</span>}
                   </div>
                 </div>
 
@@ -240,8 +253,12 @@ export default function SignupPage() {
                     onChange={handleChange('email')}
                     className={`${styles.input} ${fieldErrors.email ? styles.inputError : ''}`}
                     autoComplete="email"
+                    required
+                    aria-required="true"
+                    aria-invalid={!!fieldErrors.email}
+                    aria-describedby="email-error"
                   />
-                  {fieldErrors.email && <span className={styles.fieldError}>{fieldErrors.email}</span>}
+                  {fieldErrors.email && <span id="email-error" className={styles.fieldError}>{fieldErrors.email}</span>}
                 </div>
 
                 <div className={styles.field}>
@@ -253,8 +270,12 @@ export default function SignupPage() {
                     onChange={handleChange('jobTitle')}
                     className={`${styles.input} ${fieldErrors.jobTitle ? styles.inputError : ''}`}
                     autoComplete="organization-title"
+                    required
+                    aria-required="true"
+                    aria-invalid={!!fieldErrors.jobTitle}
+                    aria-describedby="jobTitle-error"
                   />
-                  {fieldErrors.jobTitle && <span className={styles.fieldError}>{fieldErrors.jobTitle}</span>}
+                  {fieldErrors.jobTitle && <span id="jobTitle-error" className={styles.fieldError}>{fieldErrors.jobTitle}</span>}
                 </div>
 
                 <div className={styles.field}>
@@ -266,11 +287,15 @@ export default function SignupPage() {
                     onChange={handleChange('companyName')}
                     className={`${styles.input} ${fieldErrors.companyName ? styles.inputError : ''}`}
                     autoComplete="organization"
+                    required
+                    aria-required="true"
+                    aria-invalid={!!fieldErrors.companyName}
+                    aria-describedby="companyName-error"
                   />
-                  {fieldErrors.companyName && <span className={styles.fieldError}>{fieldErrors.companyName}</span>}
+                  {fieldErrors.companyName && <span id="companyName-error" className={styles.fieldError}>{fieldErrors.companyName}</span>}
                 </div>
 
-                {submitError && <p className={styles.submitError}>{submitError}</p>}
+                {submitError && <p className={styles.submitError} role="alert">{submitError}</p>}
 
                 <button type="submit" disabled={submitting} className={styles.submitBtn}>
                   {submitting ? 'Submitting…' : submitLabel}

@@ -44,7 +44,7 @@ describe('AssetsPage — controls and copy', () => {
 
   it('renders sort options', () => {
     renderPage()
-    const options = ['Default', 'Newest first', 'Oldest first']
+    const options = ['Default order', 'Coming up soon', 'New to the library']
     options.forEach(label => {
       const el = screen.getByRole('option', { name: label })
       console.log(`  sort option    → ${JSON.stringify(el.textContent)}`)

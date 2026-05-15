@@ -95,6 +95,13 @@ describe('SignupPage — form copy', () => {
     console.log(`  back link      → ${JSON.stringify(el.textContent)}`)
     expect(el).toBeInTheDocument()
   })
+
+  it('renders speaker name on asset card when speakers are present', () => {
+    renderPage()
+    const el = screen.getByText('Jane Smith')
+    console.log(`  speaker name   → ${JSON.stringify(el.textContent)}`)
+    expect(el).toBeInTheDocument()
+  })
 })
 
 describe('SignupPage — error state', () => {
