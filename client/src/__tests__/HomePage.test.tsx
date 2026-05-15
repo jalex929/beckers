@@ -46,7 +46,7 @@ describe('HomePage — hero copy', () => {
 
   it('renders hero CTA link', () => {
     renderPage()
-    const el = screen.getByRole('link', { name: 'Browse the Resource Library' })
+    const el = screen.getByRole('link', { name: /browse the resource library|explore resources/i })
     console.log(`  hero CTA       → ${JSON.stringify(el.textContent)}`)
     expect(el).toHaveAttribute('href', '/assets')
   })

@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { useVariant } from '../hooks/useVariant'
 import { track } from '../utils/analytics'
 import { Link } from 'react-router-dom'
 import { useAssets } from '../hooks/useAssets'
@@ -18,6 +19,8 @@ export default function HomePage() {
   const { assets, loading, error } = useAssets()
   const { items: recentlyViewed, refresh } = useRecentlyViewed()
   const featured = assets.slice(0, 3)
+  const heroCTAVariant = useVariant('hero-cta')
+  const heroCTALabel = heroCTAVariant === 'explore' ? 'Explore Resources' : 'Browse the Resource Library'
 
   // Refresh recently viewed when returning to this page
   useEffect(() => {
@@ -34,7 +37,7 @@ export default function HomePage() {
           <p className={styles.heroSub}>
             Access expert webinars, whitepapers, and podcasts curated for healthcare professionals.
           </p>
-          <Link to="/assets" className={styles.heroCta}>Browse the Resource Library</Link>
+          <Link to="/assets" className={styles.heroCta}>{heroCTALabel}</Link>
         </div>
       </section>
 

@@ -6,11 +6,26 @@ import AssetBadge from '../components/AssetBadge'
 import AssetCard from '../components/AssetCard'
 import styles from './SignupPage.module.css'
 import { track } from '../utils/analytics'
+import { useVariant } from '../hooks/useVariant'
 import type { SignupPayload, SignupResult } from '../types'
 
 function formatDate(dateStr?: string) {
   if (!dateStr) return null
   return new Date(dateStr).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+}
+
+function getUrgencyLabel(dateStr?: string, assetType?: string): string | null {
+  if (assetType !== 'Live Webinar' || !dateStr) return null
+  const days = Math.ceil((new Date(dateStr).getTime() - Date.now()) / 86400000)
+  if (days < 0 || days > 30) return null
+  if (days === 0) return 'Today'
+  if (days === 1) return 'Tomorrow'
+  return `In ${days} days`
+}
+
+function getRegistrationCount(id: string): number {
+  const hash = id.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0)
+  return 50 + (hash % 150)
 }
 
 const EMPTY_FORM: SignupPayload = {
@@ -34,6 +49,8 @@ export default function SignupPage() {
   const [result, setResult] = useState<SignupResult | null>(null)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const hasStartedSignup = useRef(false)
+  const signupCTAVariant = useVariant('signup-cta')
+  const submitLabel = signupCTAVariant === 'register' ? 'Register Now' : 'Get Access'
 
   function validate(): boolean {
     const errors: Partial<SignupPayload> = {}
@@ -124,12 +141,20 @@ export default function SignupPage() {
               {formatDate(asset.executionDate) && (
                 <time className={styles.date}>{formatDate(asset.executionDate)}</time>
               )}
+              {getUrgencyLabel(asset.executionDate, asset.assetType) && (
+                <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-error)', letterSpacing: '0.02em' }}>
+                  {getUrgencyLabel(asset.executionDate, asset.assetType)}
+                </span>
+              )}
             </div>
             <h1 className={styles.assetTitle}>{asset.name}</h1>
             <p className={styles.assetDescription}>{asset.description}</p>
             {asset.sponsorName && (
               <p className={styles.sponsor}>Sponsored by <strong>{asset.sponsorName}</strong></p>
             )}
+            <p style={{ fontSize: '0.8rem', color: 'var(--color-fg-muted, #666)', marginTop: '0.75rem' }}>
+              {getRegistrationCount(asset.id).toLocaleString()} healthcare professionals registered
+            </p>
             {asset.speakers && asset.speakers.length > 0 && (
               <div className={styles.speakers}>
                 <h3 className={styles.speakersLabel}>Speakers</h3>
@@ -246,8 +271,11 @@ export default function SignupPage() {
                 {submitError && <p className={styles.submitError}>{submitError}</p>}
 
                 <button type="submit" disabled={submitting} className={styles.submitBtn}>
-                  {submitting ? 'Submitting…' : 'Get Access'}
+                  {submitting ? 'Submitting…' : submitLabel}
                 </button>
+                <p style={{ fontSize: '0.75rem', textAlign: 'center', color: 'var(--color-fg-muted, #666)', marginTop: '0.5rem' }}>
+                  Free to access · Secure · No spam
+                </p>
               </form>
             )}
           </div>

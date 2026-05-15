@@ -25,6 +25,7 @@ export type AnalyticsEvent =
       properties: { source_asset_id: string; clicked_asset_id: string; clicked_asset_type: string; position: number }
     }
   | { event: 'recently_viewed_cleared'; properties: { item_count: number } }
+  | { event: 'experiment_exposure'; properties: { experiment_id: string; variant: string } }
 
 declare global {
   interface Window {
