@@ -1,0 +1,26 @@
+[build]
+  base    = "client"
+  command = "npm run build"
+  publish = "dist"
+
+# Proxy /assets/* to the Railway backend.
+# This is a server-side rewrite — the browser only ever talks to Netlify,
+# so no CORS configuration is needed on the backend.
+#
+# After deploying to Railway:
+#   1. Copy your Railway app URL (e.g. https://meridian-api.up.railway.app)
+#   2. Replace the placeholder in the `to` field below
+#   3. Commit and push — Netlify redeploys automatically
+#
+[[redirects]]
+  from   = "/assets/*"
+  to     = "https://REPLACE_WITH_RAILWAY_URL/assets/:splat"
+  status = 200
+  force  = true
+
+# React Router catch-all — every non-asset path serves index.html.
+# Must come after the API redirect.
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200

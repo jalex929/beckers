@@ -1,13 +1,18 @@
 import { useState, useEffect } from 'react';
 import type { Asset, SignupPayload, SignupResult } from '../types';
 
+// Empty string in dev (Vite proxy handles /assets/*) and on Netlify (netlify.toml
+// proxy handles it). Set VITE_API_BASE to the Railway URL only when deploying to
+// a host without a proxy rule configured.
+const API_BASE = import.meta.env.VITE_API_BASE ?? ''
+
 export function useAssets() {
   const [assets, setAssets] = useState<Asset[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch('/assets')
+    fetch(`${API_BASE}/assets`)
       .then(r => r.json())
       .then(json => setAssets(json.data ?? []))
       .catch(() => setError('Failed to load assets.'))
@@ -26,7 +31,7 @@ export function useAsset(id: string) {
     if (!id) return;
     setLoading(true);
     setError(null);
-    fetch(`/assets/${id}`)
+    fetch(`${API_BASE}/assets/${id}`)
       .then(r => {
         if (!r.ok) throw new Error('Asset not found');
         return r.json();
@@ -40,7 +45,7 @@ export function useAsset(id: string) {
 }
 
 export async function submitSignup(assetId: string, payload: SignupPayload): Promise<SignupResult> {
-  const res = await fetch(`/assets/${assetId}/signup`, {
+  const res = await fetch(`${API_BASE}/assets/${assetId}/signup`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ person: payload }),

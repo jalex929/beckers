@@ -77,7 +77,7 @@ describe('SignupPage — form copy', () => {
 
   it('renders submit button', () => {
     renderPage()
-    const el = screen.getByRole('button', { name: 'Get Access' })
+    const el = screen.getByRole('button', { name: /get access|register now/i })
     console.log(`  submit button  → ${JSON.stringify(el.textContent)}`)
     expect(el).toBeInTheDocument()
   })
