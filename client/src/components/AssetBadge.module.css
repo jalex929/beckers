@@ -12,12 +12,12 @@
 }
 
 .live {
-  background: var(--mer-steel-700);
+  background: #0E7C6B;
   color: var(--mer-white);
 }
 
 .onDemand {
-  background: var(--mer-navy-700);
+  background: var(--mer-steel-700);
   color: var(--mer-white);
 }
 
@@ -28,7 +28,7 @@
 }
 
 .podcast {
-  background: var(--mer-navy-600);
+  background: var(--mer-navy-800);
   color: var(--mer-white);
 }
 
