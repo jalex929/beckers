@@ -32,3 +32,7 @@ export function useRecentlyViewed() {
 
   return { items, refresh: () => setItems(getRecentlyViewed()) }
 }
+
+export function clearRecentlyViewed() {
+  localStorage.removeItem(KEY)
+}

@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAssets } from '../hooks/useAssets'
-import { useRecentlyViewed } from '../hooks/useRecentlyViewed'
+import { useRecentlyViewed, clearRecentlyViewed } from '../hooks/useRecentlyViewed'
 import AssetCard from '../components/AssetCard'
+import SkeletonCard from '../components/SkeletonCard'
 import styles from './HomePage.module.css'
 
 const TYPES = [
@@ -42,11 +43,19 @@ export default function HomePage() {
           <div className="container">
             <div className={styles.sectionHeader}>
               <h2 className={styles.sectionTitle}>Recently Viewed</h2>
-              <Link to="/assets" className={styles.sectionLink}>View all resources →</Link>
+              <div className={styles.sectionHeaderActions}>
+                <button
+                  onClick={() => { clearRecentlyViewed(); refresh() }}
+                  className={styles.clearHistoryBtn}
+                >
+                  Clear
+                </button>
+                <Link to="/assets" className={styles.sectionLink}>View all resources →</Link>
+              </div>
             </div>
             <div className={styles.grid}>
-              {recentlyViewed.map(asset => (
-                <AssetCard key={asset.id} asset={asset} />
+              {recentlyViewed.map((asset, idx) => (
+                <AssetCard key={asset.id} asset={asset} index={idx} />
               ))}
             </div>
           </div>
@@ -60,12 +69,16 @@ export default function HomePage() {
             <h2 className={styles.sectionTitle}>Featured Resources</h2>
             <Link to="/assets" className={styles.sectionLink}>View all resources →</Link>
           </div>
-          {loading && <p className={styles.stateMsg}>Loading resources…</p>}
+          {loading && (
+            <div className={styles.grid}>
+              {[0, 1, 2].map(i => <SkeletonCard key={i} />)}
+            </div>
+          )}
           {error && <p className={styles.stateError}>{error}</p>}
           {!loading && !error && (
             <div className={styles.grid}>
-              {featured.map(asset => (
-                <AssetCard key={asset.id} asset={asset} />
+              {featured.map((asset, idx) => (
+                <AssetCard key={asset.id} asset={asset} index={idx} />
               ))}
             </div>
           )}

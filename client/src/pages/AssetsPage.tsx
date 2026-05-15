@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect, useCallback } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useAssets } from '../hooks/useAssets'
 import AssetCard from '../components/AssetCard'
+import SkeletonCard from '../components/SkeletonCard'
 import styles from './AssetsPage.module.css'
 import type { AssetType } from '../types'
 
@@ -91,6 +92,7 @@ export default function AssetsPage() {
                 key={t.value}
                 onClick={() => handleTypeFilter(t.value as AssetType | '')}
                 className={`${styles.filterBtn} ${typeFilter === t.value ? styles.filterActive : ''}`}
+                aria-pressed={typeFilter === t.value}
               >
                 {t.label}
               </button>
@@ -126,7 +128,11 @@ export default function AssetsPage() {
         )}
 
         {/* States */}
-        {loading && <p className={styles.stateMsg}>Loading resources…</p>}
+        {loading && (
+          <div className={styles.grid}>
+            {[0, 1, 2].map(i => <SkeletonCard key={i} />)}
+          </div>
+        )}
         {error && <p className={styles.stateError}>{error}</p>}
 
         {!loading && !error && filtered.length === 0 && (
@@ -142,8 +148,8 @@ export default function AssetsPage() {
         {!loading && !error && visible.length > 0 && (
           <>
             <div className={styles.grid}>
-              {visible.map(asset => (
-                <AssetCard key={asset.id} asset={asset} />
+              {visible.map((asset, idx) => (
+                <AssetCard key={asset.id} asset={asset} index={idx} highlight={search} />
               ))}
             </div>
             {hasMore && (

@@ -31,3 +31,17 @@
   background: var(--mer-navy-600);
   color: var(--mer-white);
 }
+
+.icon {
+  width: 13px;
+  height: 13px;
+  margin-right: 5px;
+  flex-shrink: 0;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+}
+
+.iconInverse {
+  filter: brightness(0) invert(1);
+}

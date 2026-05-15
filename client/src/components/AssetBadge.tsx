@@ -1,5 +1,9 @@
 import styles from './AssetBadge.module.css'
 import type { AssetType } from '../types'
+import eventsIcon from '../assets/icons/events.svg'
+import webinarsIcon from '../assets/icons/webinars.svg'
+import whitepaperIcon from '../assets/icons/whitepapers.svg'
+import podcastsIcon from '../assets/icons/podcasts.svg'
 
 const LABELS: Record<AssetType, string> = {
   'Live Webinar': 'Live Webinar',
@@ -15,13 +19,38 @@ const VARIANTS: Record<AssetType, string> = {
   'on-demand podcast': styles.podcast,
 }
 
+const ICONS: Record<AssetType, string> = {
+  'Live Webinar': eventsIcon,
+  'On-Demand Webinar': webinarsIcon,
+  'Whitepaper': whitepaperIcon,
+  'on-demand podcast': podcastsIcon,
+}
+
+// These badge variants use white text — icon must be inverted to white
+const ICON_INVERSE: Record<AssetType, boolean> = {
+  'Live Webinar': false,
+  'On-Demand Webinar': true,
+  'Whitepaper': false,
+  'on-demand podcast': true,
+}
+
 interface Props {
   type: AssetType
 }
 
 export default function AssetBadge({ type }: Props) {
+  const icon = ICONS[type]
+  const inverse = ICON_INVERSE[type]
   return (
     <span className={`${styles.badge} ${VARIANTS[type] ?? ''}`}>
+      {icon && (
+        <img
+          src={icon}
+          alt=""
+          aria-hidden="true"
+          className={`${styles.icon} ${inverse ? styles.iconInverse : ''}`}
+        />
+      )}
       {LABELS[type] ?? type}
     </span>
   )

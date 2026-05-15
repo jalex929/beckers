@@ -19,8 +19,15 @@
   display: flex;
   align-items: center;
   gap: var(--sp-4);
-  margin-bottom: var(--sp-5);
   flex-wrap: wrap;
+  position: sticky;
+  top: 64px;
+  z-index: 10;
+  background: var(--color-bg-tinted);
+  padding-top: var(--sp-4);
+  padding-bottom: var(--sp-4);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--sp-5);
 }
 
 .typeFilters {

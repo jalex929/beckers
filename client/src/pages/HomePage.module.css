@@ -142,7 +142,7 @@
 }
 
 .typeCard:hover {
-  border-color: var(--bh-navy-500);
+  border-color: var(--mer-navy-500);
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }
@@ -159,4 +159,30 @@
   .heroTitle { font-size: var(--fs-3xl); }
   .sectionHeader { flex-direction: column; }
   .grid { grid-template-columns: 1fr; }
+  .typeGrid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 420px) {
+  .typeGrid { grid-template-columns: 1fr; }
+}
+
+.sectionHeaderActions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+}
+
+.clearHistoryBtn {
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  color: var(--color-fg-subtle);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s ease;
+}
+
+.clearHistoryBtn:hover {
+  color: var(--color-error);
 }
