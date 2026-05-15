@@ -1,5 +1,5 @@
 .hero {
-  background: var(--color-bg-inverse);
+  background: radial-gradient(ellipse at 50% 40%, rgba(255,255,255,0.04) 0%, transparent 70%), var(--color-bg-inverse);
   padding: var(--sp-11) 0;
 }
 
