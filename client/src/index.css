@@ -50,7 +50,9 @@
 
   --color-kicker: var(--bh-red-800);
 
-  --font-serif: 'Noto Serif', Georgia, 'Times New Roman', serif;
+  --font-serif: 'Noto Serif', 'Source Serif Pro', Georgia, 'Times New Roman', serif;
+  --color-fg-inverse-muted: rgba(255,255,255,0.75);
+  --color-fg-inverse-subtle: rgba(255,255,255,0.6);
   --font-sans: 'Fira Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
   --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 

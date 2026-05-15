@@ -35,7 +35,7 @@
   font-family: var(--font-sans);
   font-size: var(--fs-md);
   line-height: var(--lh-loose);
-  color: rgba(255,255,255,0.75);
+  color: var(--color-fg-inverse-muted);
   max-width: 560px;
 }
 

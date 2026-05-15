@@ -35,7 +35,7 @@
   font-family: var(--font-sans);
   font-size: var(--fs-xs);
   font-weight: var(--fw-regular);
-  color: rgba(255,255,255,0.6);
+  color: var(--color-fg-inverse-subtle);
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
 }
@@ -50,7 +50,7 @@
   font-family: var(--font-sans);
   font-size: var(--fs-sm);
   font-weight: var(--fw-semibold);
-  color: rgba(255,255,255,0.75);
+  color: var(--color-fg-inverse-muted);
   text-decoration: none;
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;

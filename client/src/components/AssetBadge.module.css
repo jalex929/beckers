@@ -6,7 +6,7 @@
   font-weight: var(--fw-bold);
   letter-spacing: var(--tracking-kicker);
   text-transform: uppercase;
-  padding: 3px var(--sp-3);
+  padding: var(--sp-1) var(--sp-3);
   border-radius: var(--radius-pill);
   white-space: nowrap;
 }
