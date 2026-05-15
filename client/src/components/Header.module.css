@@ -1,0 +1,116 @@
+.header {
+  background: var(--bh-navy-800);
+  border-bottom: 3px solid var(--bh-red-800);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-7);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.brandMark {
+  width: 36px;
+  height: 36px;
+  background: var(--bh-red-800);
+  color: #fff;
+  font-family: var(--font-serif);
+  font-weight: var(--fw-bold);
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  border-radius: var(--radius-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.brandText {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.brandName {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-sm);
+  color: #fff;
+  letter-spacing: 0.01em;
+  line-height: 1;
+}
+
+.brandSub {
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  color: var(--bh-ice-200);
+  letter-spacing: var(--tracking-kicker);
+  text-transform: uppercase;
+  font-weight: var(--fw-semibold);
+  line-height: 1;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-6);
+  flex: 1;
+}
+
+.navLink {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--bh-ice-200);
+  text-decoration: none;
+  padding: 4px 0;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.navLink:hover {
+  color: #fff;
+}
+
+.navLink.active {
+  color: #fff;
+  border-bottom-color: var(--bh-red-600);
+}
+
+.cta {
+  margin-left: auto;
+  background: var(--bh-red-800);
+  color: #fff;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: background 0.15s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.cta:hover {
+  background: var(--bh-red-700);
+}
+
+@media (max-width: 640px) {
+  .brandSub { display: none; }
+  .cta { display: none; }
+  .nav { gap: var(--sp-4); }
+}

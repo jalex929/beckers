@@ -1,0 +1,108 @@
+.footer {
+  background: var(--bh-navy-800);
+  color: var(--bh-ice-200);
+  margin-top: auto;
+}
+
+.inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 48px var(--gutter) 32px;
+  display: grid;
+  grid-template-columns: 1.5fr 2fr;
+  gap: 48px;
+}
+
+.brand {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+}
+
+.brandMark {
+  width: 40px;
+  height: 40px;
+  background: var(--bh-red-800);
+  color: #fff;
+  font-family: var(--font-serif);
+  font-weight: var(--fw-bold);
+  font-size: 15px;
+  border-radius: var(--radius-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.brandName {
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-sm);
+  color: #fff;
+  line-height: 1.2;
+}
+
+.brandSub {
+  font-size: var(--fs-xs);
+  color: var(--bh-ice-300);
+  letter-spacing: var(--tracking-kicker);
+  text-transform: uppercase;
+  font-weight: var(--fw-semibold);
+  margin-top: 2px;
+}
+
+.cols {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.colLabel {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--tracking-kicker);
+  text-transform: uppercase;
+  color: #fff;
+  margin-bottom: var(--sp-2);
+}
+
+.colLink {
+  font-size: var(--fs-sm);
+  color: var(--bh-ice-200);
+  text-decoration: none;
+  transition: color 0.15s ease;
+  cursor: pointer;
+}
+
+.colLink:hover {
+  color: #fff;
+}
+
+.legal {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 16px var(--gutter) 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--fs-xs);
+  color: var(--bh-ice-300);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .inner { grid-template-columns: 1fr; gap: 32px; }
+  .cols { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 480px) {
+  .cols { grid-template-columns: 1fr; }
+  .legal { flex-direction: column; align-items: flex-start; gap: var(--sp-2); }
+}
