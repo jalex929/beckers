@@ -1,6 +1,6 @@
 .header {
-  background: var(--bh-navy-800);
-  border-bottom: 3px solid var(--bh-red-800);
+  background: var(--color-bg-inverse);
+  border-bottom: 1px solid var(--color-border-inverse);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -13,104 +13,61 @@
   height: 64px;
   display: flex;
   align-items: center;
-  gap: var(--sp-7);
+  justify-content: space-between;
 }
 
 .brand {
   display: flex;
-  align-items: center;
-  gap: var(--sp-3);
-  text-decoration: none;
-  flex-shrink: 0;
-}
-
-.brandMark {
-  width: 36px;
-  height: 36px;
-  background: var(--bh-red-800);
-  color: #fff;
-  font-family: var(--font-serif);
-  font-weight: var(--fw-bold);
-  font-size: 14px;
-  letter-spacing: 0.04em;
-  border-radius: var(--radius-xs);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.brandText {
-  display: flex;
   flex-direction: column;
-  gap: 1px;
+  text-decoration: none;
+  line-height: 1.1;
 }
 
 .brandName {
-  font-family: var(--font-sans);
+  font-family: var(--font-serif);
+  font-size: var(--fs-xl);
   font-weight: var(--fw-bold);
-  font-size: var(--fs-sm);
-  color: #fff;
-  letter-spacing: 0.01em;
-  line-height: 1;
+  color: var(--color-fg-inverse);
+  letter-spacing: var(--tracking-tight);
 }
 
 .brandSub {
   font-family: var(--font-sans);
   font-size: var(--fs-xs);
-  color: var(--bh-ice-200);
-  letter-spacing: var(--tracking-kicker);
+  font-weight: var(--fw-regular);
+  color: rgba(255,255,255,0.6);
+  letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
-  font-weight: var(--fw-semibold);
-  line-height: 1;
 }
 
 .nav {
   display: flex;
   align-items: center;
   gap: var(--sp-6);
-  flex: 1;
 }
 
 .navLink {
+  font-family: var(--font-sans);
   font-size: var(--fs-sm);
   font-weight: var(--fw-semibold);
-  color: var(--bh-ice-200);
+  color: rgba(255,255,255,0.75);
   text-decoration: none;
-  padding: 4px 0;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  transition: color 0.15s ease;
+  padding: var(--sp-2) 0;
   border-bottom: 2px solid transparent;
-  transition: color 0.15s ease, border-color 0.15s ease;
 }
 
 .navLink:hover {
-  color: #fff;
+  color: var(--color-fg-inverse);
 }
 
-.navLink.active {
-  color: #fff;
-  border-bottom-color: var(--bh-red-600);
-}
-
-.cta {
-  margin-left: auto;
-  background: var(--bh-red-800);
-  color: #fff;
-  font-size: var(--fs-sm);
-  font-weight: var(--fw-semibold);
-  padding: 8px 18px;
-  border-radius: var(--radius-sm);
-  text-decoration: none;
-  transition: background 0.15s ease;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.cta:hover {
-  background: var(--bh-red-700);
+.active {
+  color: var(--color-fg-inverse);
+  border-bottom-color: var(--color-accent);
 }
 
 @media (max-width: 640px) {
   .brandSub { display: none; }
-  .cta { display: none; }
-  .nav { gap: var(--sp-4); }
 }

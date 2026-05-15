@@ -1,14 +1,28 @@
-import type { AssetType } from '../types';
-import styles from './AssetBadge.module.css';
+import styles from './AssetBadge.module.css'
+import type { AssetType } from '../types'
 
-const CONFIG: Record<string, { label: string; cls: string }> = {
-  'Live Webinar':       { label: 'Live Webinar',       cls: 'live' },
-  'On-Demand Webinar':  { label: 'On-Demand Webinar',  cls: 'ondemand' },
-  'Whitepaper':         { label: 'Whitepaper',          cls: 'whitepaper' },
-  'on-demand podcast':  { label: 'Podcast',             cls: 'podcast' },
-};
+const LABELS: Record<AssetType, string> = {
+  'Live Webinar': 'Live Webinar',
+  'On-Demand Webinar': 'On-Demand Webinar',
+  'Whitepaper': 'Whitepaper',
+  'on-demand podcast': 'Podcast',
+}
 
-export default function AssetBadge({ type }: { type: AssetType }) {
-  const cfg = CONFIG[type] ?? { label: type, cls: 'default' };
-  return <span className={`${styles.badge} ${styles[cfg.cls]}`}>{cfg.label}</span>;
+const VARIANTS: Record<AssetType, string> = {
+  'Live Webinar': styles.live,
+  'On-Demand Webinar': styles.onDemand,
+  'Whitepaper': styles.whitepaper,
+  'on-demand podcast': styles.podcast,
+}
+
+interface Props {
+  type: AssetType
+}
+
+export default function AssetBadge({ type }: Props) {
+  return (
+    <span className={`${styles.badge} ${VARIANTS[type] ?? ''}`}>
+      {LABELS[type] ?? type}
+    </span>
+  )
 }

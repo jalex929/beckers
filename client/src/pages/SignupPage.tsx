@@ -1,186 +1,144 @@
-import { useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useAsset, useAssets, submitSignup } from '../hooks/useAssets';
-import AssetBadge from '../components/AssetBadge';
-import AssetCard from '../components/AssetCard';
-import type { SignupRecord } from '../types';
-import styles from './SignupPage.module.css';
+import { useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
+import { useAsset, useAssets, submitSignup } from '../hooks/useAssets'
+import AssetBadge from '../components/AssetBadge'
+import AssetCard from '../components/AssetCard'
+import styles from './SignupPage.module.css'
+import type { SignupPayload, SignupResult } from '../types'
 
 function formatDate(dateStr?: string) {
-  if (!dateStr) return null;
-  return new Date(dateStr).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  if (!dateStr) return null
+  return new Date(dateStr).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
 }
 
-function formatDateTime(dateStr?: string) {
-  if (!dateStr) return null;
-  return new Date(dateStr).toLocaleString('en-US', {
-    month: 'long', day: 'numeric', year: 'numeric',
-    hour: 'numeric', minute: '2-digit', timeZoneName: 'short',
-  });
+const EMPTY_FORM: SignupPayload = {
+  firstName: '', lastName: '', email: '', jobTitle: '', companyName: '',
 }
 
 export default function SignupPage() {
-  const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
-  const { asset, loading, error: assetError } = useAsset(id ?? '');
-  const { assets } = useAssets();
+  const { id } = useParams<{ id: string }>()
+  const { asset, loading, error } = useAsset(id ?? '')
+  const { assets: allAssets } = useAssets()
 
-  const [form, setForm] = useState({
-    firstName: '', lastName: '', email: '', jobTitle: '', companyName: '',
-  });
-  const [errors, setErrors] = useState<Partial<typeof form>>({});
-  const [submitting, setSubmitting] = useState(false);
-  const [apiError, setApiError] = useState<string | null>(null);
-  const [confirmation, setConfirmation] = useState<SignupRecord | null>(null);
+  const [form, setForm] = useState<SignupPayload>(EMPTY_FORM)
+  const [fieldErrors, setFieldErrors] = useState<Partial<SignupPayload>>({})
+  const [submitting, setSubmitting] = useState(false)
+  const [result, setResult] = useState<SignupResult | null>(null)
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
-  const related = assets
-    .filter(a => a.id !== id && (a.assetType === asset?.assetType || a.sponsorName === asset?.sponsorName))
-    .slice(0, 3);
-
-  function validate() {
-    const errs: Partial<typeof form> = {};
-    if (!form.firstName.trim()) errs.firstName = 'Required';
-    if (!form.lastName.trim()) errs.lastName = 'Required';
-    if (!form.email.trim()) errs.email = 'Required';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) errs.email = 'Enter a valid email';
-    if (!form.jobTitle.trim()) errs.jobTitle = 'Required';
-    if (!form.companyName.trim()) errs.companyName = 'Required';
-    return errs;
+  function validate(): boolean {
+    const errors: Partial<SignupPayload> = {}
+    if (!form.firstName.trim()) errors.firstName = 'Required'
+    if (!form.lastName.trim()) errors.lastName = 'Required'
+    if (!form.email.trim()) errors.email = 'Required'
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) errors.email = 'Enter a valid email'
+    if (!form.jobTitle.trim()) errors.jobTitle = 'Required'
+    if (!form.companyName.trim()) errors.companyName = 'Required'
+    setFieldErrors(errors)
+    return Object.keys(errors).length === 0
   }
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    const errs = validate();
-    if (Object.keys(errs).length) { setErrors(errs); return; }
-    setErrors({});
-    setApiError(null);
-    setSubmitting(true);
+    e.preventDefault()
+    if (!validate() || !id) return
+    setSubmitting(true)
+    setSubmitError(null)
     try {
-      const result = await submitSignup(id!, form);
-      setConfirmation(result);
-    } catch (err: unknown) {
-      setApiError(err instanceof Error ? err.message : 'Signup failed. Please try again.');
+      const data = await submitSignup(id, form)
+      setResult(data)
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : 'Signup failed. Please try again.')
     } finally {
-      setSubmitting(false);
+      setSubmitting(false)
     }
   }
 
-  function field(name: keyof typeof form, label: string, type = 'text') {
-    return (
-      <div className={styles.field}>
-        <label className={styles.label}>{label}</label>
-        <input
-          type={type}
-          className={`${styles.input} ${errors[name] ? styles.inputError : ''}`}
-          value={form[name]}
-          onChange={e => setForm(f => ({ ...f, [name]: e.target.value }))}
-          autoComplete={name === 'email' ? 'email' : 'off'}
-        />
-        {errors[name] && <span className={styles.fieldError}>{errors[name]}</span>}
-      </div>
-    );
+  function handleChange(field: keyof SignupPayload) {
+    return (e: React.ChangeEvent<HTMLInputElement>) => {
+      setForm(f => ({ ...f, [field]: e.target.value }))
+      if (fieldErrors[field]) setFieldErrors(fe => ({ ...fe, [field]: undefined }))
+    }
   }
+
+  const related = asset
+    ? allAssets.filter(a => a.id !== asset.id && a.assetType === asset.assetType).slice(0, 2)
+    : []
 
   if (loading) {
     return (
-      <main className={styles.main}>
-        <div className={styles.container}>
-          <div className={styles.skeletonWrap}>
-            <div className={styles.skeleton} style={{ height: 320 }} />
-            <div className={styles.skeleton} style={{ height: 480 }} />
-          </div>
+      <div className={styles.page}>
+        <div className="container">
+          <p className={styles.stateMsg}>Loading…</p>
         </div>
-      </main>
-    );
+      </div>
+    )
   }
 
-  if (assetError || !asset) {
+  if (error || !asset) {
     return (
-      <main className={styles.main}>
-        <div className={styles.container}>
-          <div className={styles.notFound}>
-            <div className={styles.notFoundTitle}>Resource not found</div>
-            <p>This resource may no longer be available.</p>
-            <Link to="/assets" className={styles.backBtn}>← Back to all resources</Link>
-          </div>
+      <div className={styles.page}>
+        <div className="container">
+          <Link to="/assets" className={styles.backLink}>← Back to Resources</Link>
+          <p className={styles.stateError}>{error ?? 'Resource not found.'}</p>
         </div>
-      </main>
-    );
+      </div>
+    )
   }
 
   return (
-    <main className={styles.main}>
-      <div className={styles.container}>
-        <div className={styles.back}>
-          <button className={styles.backLink} onClick={() => navigate(-1)}>← Back to resources</button>
-        </div>
+    <div className={styles.page}>
+      <div className="container">
+        <Link to="/assets" className={styles.backLink}>← Back to Resources</Link>
 
         <div className={styles.layout}>
-          {/* Asset summary panel */}
-          <aside className={styles.panel}>
-            <div className={styles.panelHead}>
+          {/* Asset Detail Panel */}
+          <aside className={styles.assetPanel}>
+            <div className={styles.assetMeta}>
               <AssetBadge type={asset.assetType} />
-              {asset.executionDate && (
-                <div className={styles.panelDate}>
-                  {formatDateTime(asset.executionDate)}
-                </div>
+              {formatDate(asset.executionDate) && (
+                <time className={styles.date}>{formatDate(asset.executionDate)}</time>
               )}
             </div>
-
-            <h1 className={styles.panelTitle}>{asset.name}</h1>
-            <p className={styles.panelDesc}>{asset.description}</p>
-
-            <div className={styles.panelMeta}>
-              <div className={styles.metaRow}>
-                <span className={styles.metaLabel}>Sponsor</span>
-                <span className={styles.metaValue}>{asset.sponsorName}</span>
-              </div>
-              {asset.expirationDate && (
-                <div className={styles.metaRow}>
-                  <span className={styles.metaLabel}>Available through</span>
-                  <span className={styles.metaValue}>{formatDate(asset.expirationDate)}</span>
-                </div>
-              )}
-            </div>
-
+            <h1 className={styles.assetTitle}>{asset.name}</h1>
+            <p className={styles.assetDescription}>{asset.description}</p>
+            {asset.sponsorName && (
+              <p className={styles.sponsor}>Sponsored by <strong>{asset.sponsorName}</strong></p>
+            )}
             {asset.speakers && asset.speakers.length > 0 && (
               <div className={styles.speakers}>
-                <div className={styles.speakersLabel}>Featuring</div>
-                {asset.speakers.map(s => (
-                  <div key={s.id} className={styles.speaker}>
-                    <div className={styles.speakerAvatar}>
-                      {s.firstName[0]}{s.lastName[0]}
-                    </div>
-                    <div>
-                      <div className={styles.speakerName}>{s.firstName} {s.lastName}</div>
-                      <div className={styles.speakerRole}>{s.jobTitle}, {s.companyName}</div>
-                    </div>
-                  </div>
-                ))}
+                <h3 className={styles.speakersLabel}>Speakers</h3>
+                <ul className={styles.speakerList}>
+                  {asset.speakers.map((s, i) => (
+                    <li key={i} className={styles.speaker}>
+                      <span className={styles.speakerName}>{s.name}</span>
+                      {(s.title || s.company) && (
+                        <span className={styles.speakerRole}>
+                          {[s.title, s.company].filter(Boolean).join(', ')}
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
               </div>
+            )}
+            {asset.expirationDate && (
+              <p className={styles.expiry}>Access expires {formatDate(asset.expirationDate)}</p>
             )}
           </aside>
 
-          {/* Form / Confirmation */}
-          <div className={styles.formWrap}>
-            {confirmation ? (
-              <div className={styles.confirmation}>
-                <div className={styles.confirmIcon}>✓</div>
-                <h2 className={styles.confirmTitle}>You're registered!</h2>
-                <p className={styles.confirmText}>
-                  Thank you, <strong>{confirmation.person.firstName}</strong>. Your registration for{' '}
-                  <em>{asset.name}</em> was confirmed on{' '}
-                  {formatDateTime(confirmation.signupDate)}.
+          {/* Form / Success */}
+          <div className={styles.formPanel}>
+            {result ? (
+              <div className={styles.success}>
+                <div className={styles.successIcon}>✓</div>
+                <h2 className={styles.successTitle}>You're registered!</h2>
+                <p className={styles.successSub}>
+                  Registered on {formatDate(result.signupDate)}.
+                  You'll receive access information at <strong>{result.person.email}</strong>.
                 </p>
-                <div className={styles.confirmMeta}>
-                  <span>Confirmation #{confirmation.id.slice(0, 8).toUpperCase()}</span>
-                  <span>Sent to {confirmation.person.email}</span>
-                </div>
-                <Link to="/assets" className={styles.confirmBack}>Browse more resources →</Link>
-
                 {related.length > 0 && (
                   <div className={styles.related}>
-                    <div className={styles.relatedLabel}>You might also like</div>
+                    <h3 className={styles.relatedTitle}>You might also like</h3>
                     <div className={styles.relatedGrid}>
                       {related.map(a => <AssetCard key={a.id} asset={a} />)}
                     </div>
@@ -188,39 +146,86 @@ export default function SignupPage() {
                 )}
               </div>
             ) : (
-              <>
-                <div className={styles.formHead}>
-                  <h2 className={styles.formTitle}>Register for free access</h2>
-                  <p className={styles.formSub}>All fields are required.</p>
+              <form onSubmit={handleSubmit} className={styles.form} noValidate>
+                <h2 className={styles.formTitle}>Get Access</h2>
+                <p className={styles.formSub}>Complete the form below to access this resource.</p>
+
+                <div className={styles.fieldRow}>
+                  <div className={styles.field}>
+                    <label htmlFor="firstName" className={styles.label}>First name</label>
+                    <input
+                      id="firstName"
+                      type="text"
+                      value={form.firstName}
+                      onChange={handleChange('firstName')}
+                      className={`${styles.input} ${fieldErrors.firstName ? styles.inputError : ''}`}
+                      autoComplete="given-name"
+                    />
+                    {fieldErrors.firstName && <span className={styles.fieldError}>{fieldErrors.firstName}</span>}
+                  </div>
+                  <div className={styles.field}>
+                    <label htmlFor="lastName" className={styles.label}>Last name</label>
+                    <input
+                      id="lastName"
+                      type="text"
+                      value={form.lastName}
+                      onChange={handleChange('lastName')}
+                      className={`${styles.input} ${fieldErrors.lastName ? styles.inputError : ''}`}
+                      autoComplete="family-name"
+                    />
+                    {fieldErrors.lastName && <span className={styles.fieldError}>{fieldErrors.lastName}</span>}
+                  </div>
                 </div>
 
-                <form className={styles.form} onSubmit={handleSubmit} noValidate>
-                  <div className={styles.fieldRow}>
-                    {field('firstName', 'First name')}
-                    {field('lastName', 'Last name')}
-                  </div>
-                  {field('email', 'Work email', 'email')}
-                  {field('jobTitle', 'Job title')}
-                  {field('companyName', 'Company name')}
+                <div className={styles.field}>
+                  <label htmlFor="email" className={styles.label}>Work email</label>
+                  <input
+                    id="email"
+                    type="email"
+                    value={form.email}
+                    onChange={handleChange('email')}
+                    className={`${styles.input} ${fieldErrors.email ? styles.inputError : ''}`}
+                    autoComplete="email"
+                  />
+                  {fieldErrors.email && <span className={styles.fieldError}>{fieldErrors.email}</span>}
+                </div>
 
-                  {apiError && (
-                    <div className={styles.apiError}>{apiError}</div>
-                  )}
+                <div className={styles.field}>
+                  <label htmlFor="jobTitle" className={styles.label}>Job title</label>
+                  <input
+                    id="jobTitle"
+                    type="text"
+                    value={form.jobTitle}
+                    onChange={handleChange('jobTitle')}
+                    className={`${styles.input} ${fieldErrors.jobTitle ? styles.inputError : ''}`}
+                    autoComplete="organization-title"
+                  />
+                  {fieldErrors.jobTitle && <span className={styles.fieldError}>{fieldErrors.jobTitle}</span>}
+                </div>
 
-                  <button type="submit" className={styles.submit} disabled={submitting}>
-                    {submitting ? 'Submitting…' : 'Register now'}
-                  </button>
+                <div className={styles.field}>
+                  <label htmlFor="companyName" className={styles.label}>Company</label>
+                  <input
+                    id="companyName"
+                    type="text"
+                    value={form.companyName}
+                    onChange={handleChange('companyName')}
+                    className={`${styles.input} ${fieldErrors.companyName ? styles.inputError : ''}`}
+                    autoComplete="organization"
+                  />
+                  {fieldErrors.companyName && <span className={styles.fieldError}>{fieldErrors.companyName}</span>}
+                </div>
 
-                  <p className={styles.disclaimer}>
-                    By registering, you agree to receive communications from Becker's Healthcare.
-                    You can unsubscribe at any time.
-                  </p>
-                </form>
-              </>
+                {submitError && <p className={styles.submitError}>{submitError}</p>}
+
+                <button type="submit" disabled={submitting} className={styles.submitBtn}>
+                  {submitting ? 'Submitting…' : 'Get Access'}
+                </button>
+              </form>
             )}
           </div>
         </div>
       </div>
-    </main>
-  );
+    </div>
+  )
 }

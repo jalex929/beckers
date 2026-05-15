@@ -1,32 +1,33 @@
-import { Link } from 'react-router-dom';
-import type { Asset } from '../types';
-import AssetBadge from './AssetBadge';
-import styles from './AssetCard.module.css';
+import { Link } from 'react-router-dom'
+import AssetBadge from './AssetBadge'
+import styles from './AssetCard.module.css'
+import type { Asset } from '../types'
 
-function formatDate(dateStr?: string) {
-  if (!dateStr) return null;
-  return new Date(dateStr).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+interface Props {
+  asset: Asset
 }
 
-export default function AssetCard({ asset }: { asset: Asset }) {
+function formatDate(dateStr?: string) {
+  if (!dateStr) return null
+  return new Date(dateStr).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+}
+
+export default function AssetCard({ asset }: Props) {
+  const date = formatDate(asset.executionDate)
   return (
     <article className={styles.card}>
-      <div className={styles.top}>
+      <div className={styles.meta}>
         <AssetBadge type={asset.assetType} />
-        {asset.executionDate && (
-          <span className={styles.date}>{formatDate(asset.executionDate)}</span>
-        )}
+        {date && <time className={styles.date}>{date}</time>}
       </div>
-
       <h3 className={styles.title}>{asset.name}</h3>
-      <p className={styles.desc}>{asset.description}</p>
-
-      <div className={styles.foot}>
-        <span className={styles.sponsor}>Sponsored by {asset.sponsorName}</span>
-        <Link to={`/assets/${asset.id}`} className={styles.cta}>
-          Get Access →
-        </Link>
-      </div>
+      <p className={styles.description}>{asset.description}</p>
+      {asset.sponsorName && (
+        <p className={styles.sponsor}>Sponsored by {asset.sponsorName}</p>
+      )}
+      <Link to={`/assets/${asset.id}`} className={styles.cta}>
+        Get Access →
+      </Link>
     </article>
-  );
+  )
 }

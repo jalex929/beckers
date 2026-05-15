@@ -1,84 +1,43 @@
-import { Link } from 'react-router-dom';
-import { useAssets } from '../hooks/useAssets';
-import AssetCard from '../components/AssetCard';
-import styles from './HomePage.module.css';
+import { Link } from 'react-router-dom'
+import { useAssets } from '../hooks/useAssets'
+import AssetCard from '../components/AssetCard'
+import styles from './HomePage.module.css'
 
-const TYPE_ICONS: Record<string, string> = {
-  'Live Webinar': '📡',
-  'On-Demand Webinar': '▶',
-  'Whitepaper': '📄',
-  'on-demand podcast': '🎙',
-};
+const TYPES = [
+  { label: 'Live Webinars', value: 'Live Webinar' },
+  { label: 'On-Demand Webinars', value: 'On-Demand Webinar' },
+  { label: 'Whitepapers', value: 'Whitepaper' },
+  { label: 'Podcasts', value: 'on-demand podcast' },
+]
 
 export default function HomePage() {
-  const { assets, loading } = useAssets();
-  const featured = assets.slice(0, 3);
+  const { assets, loading, error } = useAssets()
+  const featured = assets.slice(0, 3)
 
   return (
-    <main className={styles.main}>
+    <div>
       {/* Hero */}
       <section className={styles.hero}>
         <div className={styles.heroInner}>
-          <div className={styles.heroContent}>
-            <div className={styles.eyebrow}>Healthcare Intelligence Resource Center</div>
-            <h1 className={styles.heroTitle}>
-              Advance Your Practice with<br />
-              <em className={styles.heroEm}>Expert-Led Resources</em>
-            </h1>
-            <p className={styles.heroSub}>
-              Access whitepapers, webinars, and podcasts curated by healthcare leaders
-              at the forefront of clinical, financial, and operational excellence.
-            </p>
-            <div className={styles.heroActions}>
-              <Link to="/assets" className={styles.heroCta}>Browse All Resources</Link>
-              <Link to="/assets?type=Live+Webinar" className={styles.heroSecondary}>Upcoming Webinars →</Link>
-            </div>
-          </div>
-          <div className={styles.heroAside}>
-            <div className={styles.statBlock}>
-              <div className={styles.statNum}>10+</div>
-              <div className={styles.statLabel}>Expert Resources</div>
-            </div>
-            <div className={styles.statDivider} />
-            <div className={styles.statBlock}>
-              <div className={styles.statNum}>4</div>
-              <div className={styles.statLabel}>Content Formats</div>
-            </div>
-            <div className={styles.statDivider} />
-            <div className={styles.statBlock}>
-              <div className={styles.statNum}>Free</div>
-              <div className={styles.statLabel}>Access</div>
-            </div>
-          </div>
+          <p className={styles.eyebrow}>Becker's Healthcare</p>
+          <h1 className={styles.heroTitle}>Discover Healthcare's Leading Resources</h1>
+          <p className={styles.heroSub}>
+            Access expert webinars, whitepapers, and podcasts curated for healthcare professionals.
+          </p>
+          <Link to="/assets" className={styles.heroCta}>Browse the Resource Library</Link>
         </div>
       </section>
 
-      {/* Content types */}
-      <section className={styles.types}>
-        <div className={styles.container}>
-          <div className={styles.typesGrid}>
-            {Object.entries(TYPE_ICONS).map(([type, icon]) => (
-              <Link key={type} to={`/assets?type=${encodeURIComponent(type)}`} className={styles.typeCard}>
-                <span className={styles.typeIcon}>{icon}</span>
-                <span className={styles.typeLabel}>{type === 'on-demand podcast' ? 'Podcast' : type}</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Featured resources */}
+      {/* Featured Resources */}
       <section className={styles.featured}>
-        <div className={styles.container}>
-          <div className={styles.sectionHead}>
-            <div className={styles.sectionEyebrow}>Featured Resources</div>
-            <h2 className={styles.sectionTitle}>From Our Content Library</h2>
+        <div className="container">
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Featured Resources</h2>
             <Link to="/assets" className={styles.sectionLink}>View all resources →</Link>
           </div>
-
-          {loading ? (
-            <div className={styles.loading}>Loading resources…</div>
-          ) : (
+          {loading && <p className={styles.stateMsg}>Loading resources…</p>}
+          {error && <p className={styles.stateError}>{error}</p>}
+          {!loading && !error && (
             <div className={styles.grid}>
               {featured.map(asset => (
                 <AssetCard key={asset.id} asset={asset} />
@@ -88,21 +47,23 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA band */}
-      <section className={styles.ctaBand}>
-        <div className={styles.container}>
-          <div className={styles.ctaBandInner}>
-            <div>
-              <div className={styles.ctaEyebrow}>Free Access</div>
-              <h2 className={styles.ctaTitle}>Ready to get started?</h2>
-              <p className={styles.ctaText}>
-                Register for any resource in minutes. No subscription required.
-              </p>
-            </div>
-            <Link to="/assets" className={styles.ctaBtn}>Browse Resources</Link>
+      {/* Browse by Type */}
+      <section className={styles.browseSection}>
+        <div className="container">
+          <h2 className={styles.sectionTitle}>Browse by Type</h2>
+          <div className={styles.typeGrid}>
+            {TYPES.map(t => (
+              <Link
+                key={t.value}
+                to={`/assets?type=${encodeURIComponent(t.value)}`}
+                className={styles.typeCard}
+              >
+                <span className={styles.typeLabel}>{t.label}</span>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
-    </main>
-  );
+    </div>
+  )
 }

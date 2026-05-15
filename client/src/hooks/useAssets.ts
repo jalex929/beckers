@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
-import type { Asset } from '../types';
-
-const API_BASE = '';
+import type { Asset, SignupPayload, SignupResult } from '../types';
 
 export function useAssets() {
   const [assets, setAssets] = useState<Asset[]>([]);
@@ -9,9 +7,9 @@ export function useAssets() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch(`${API_BASE}/assets`)
+    fetch('/assets')
       .then(r => r.json())
-      .then(json => setAssets(json.data))
+      .then(json => setAssets(json.data ?? []))
       .catch(() => setError('Failed to load assets.'))
       .finally(() => setLoading(false));
   }, []);
@@ -28,29 +26,26 @@ export function useAsset(id: string) {
     if (!id) return;
     setLoading(true);
     setError(null);
-    fetch(`${API_BASE}/assets/${id}`)
+    fetch(`/assets/${id}`)
       .then(r => {
         if (!r.ok) throw new Error('Asset not found');
         return r.json();
       })
       .then(json => setAsset(json.data))
-      .catch(e => setError(e.message))
+      .catch((e: Error) => setError(e.message))
       .finally(() => setLoading(false));
   }, [id]);
 
   return { asset, loading, error };
 }
 
-export async function submitSignup(assetId: string, person: {
-  firstName: string; lastName: string; email: string;
-  jobTitle: string; companyName: string;
-}) {
-  const res = await fetch(`${API_BASE}/assets/${assetId}/signup`, {
+export async function submitSignup(assetId: string, payload: SignupPayload): Promise<SignupResult> {
+  const res = await fetch(`/assets/${assetId}/signup`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ person }),
+    body: JSON.stringify({ person: payload }),
   });
   const json = await res.json();
-  if (!res.ok) throw new Error(json.error || 'Signup failed');
+  if (!res.ok) throw new Error(json.error ?? 'Signup failed');
   return json.data;
 }

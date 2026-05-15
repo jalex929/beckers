@@ -1,162 +1,154 @@
-import { useState, useMemo, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { useAssets } from '../hooks/useAssets';
-import AssetCard from '../components/AssetCard';
-import type { AssetType } from '../types';
-import styles from './AssetsPage.module.css';
+import { useState, useMemo, useEffect, useCallback } from 'react'
+import { useSearchParams } from 'react-router-dom'
+import { useAssets } from '../hooks/useAssets'
+import AssetCard from '../components/AssetCard'
+import styles from './AssetsPage.module.css'
+import type { AssetType } from '../types'
 
-const ALL_TYPES: AssetType[] = ['Live Webinar', 'On-Demand Webinar', 'Whitepaper', 'on-demand podcast'];
-const TYPE_LABELS: Record<string, string> = { 'on-demand podcast': 'Podcast' };
-const PAGE_SIZE = 6;
+const ASSET_TYPES: { label: string; value: AssetType | '' }[] = [
+  { label: 'All', value: '' },
+  { label: 'Live Webinars', value: 'Live Webinar' },
+  { label: 'On-Demand Webinars', value: 'On-Demand Webinar' },
+  { label: 'Whitepapers', value: 'Whitepaper' },
+  { label: 'Podcasts', value: 'on-demand podcast' },
+]
 
-function useDebounce<T>(value: T, delay: number): T {
-  const [debounced, setDebounced] = useState(value);
-  useEffect(() => {
-    const t = setTimeout(() => setDebounced(value), delay);
-    return () => clearTimeout(t);
-  }, [value, delay]);
-  return debounced;
-}
+const PAGE_SIZE = 9
 
 export default function AssetsPage() {
-  const { assets, loading, error } = useAssets();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams()
+  const { assets, loading, error } = useAssets()
 
-  const [query, setQuery] = useState('');
-  const [activeType, setActiveType] = useState<AssetType | ''>((searchParams.get('type') as AssetType) ?? '');
-  const [page, setPage] = useState(1);
-  const [sortBy, setSortBy] = useState<'default' | 'date-asc' | 'date-desc'>('default');
+  const [typeFilter, setTypeFilter] = useState<AssetType | ''>((searchParams.get('type') as AssetType) ?? '')
+  const [searchInput, setSearchInput] = useState('')
+  const [search, setSearch] = useState('')
+  const [sort, setSort] = useState<'default' | 'asc' | 'desc'>('default')
+  const [page, setPage] = useState(1)
 
-  const debouncedQuery = useDebounce(query, 280);
-
+  // Debounce search
   useEffect(() => {
-    setPage(1);
-  }, [debouncedQuery, activeType]);
+    const timer = setTimeout(() => setSearch(searchInput), 300)
+    return () => clearTimeout(timer)
+  }, [searchInput])
 
-  function handleTypeChange(t: AssetType | '') {
-    setActiveType(t);
-    if (t) setSearchParams({ type: t });
-    else setSearchParams({});
-  }
+  // Reset page when filters change
+  useEffect(() => { setPage(1) }, [typeFilter, search, sort])
+
+  const handleTypeFilter = useCallback((value: AssetType | '') => {
+    setTypeFilter(value)
+    if (value) setSearchParams({ type: value })
+    else setSearchParams({})
+  }, [setSearchParams])
 
   const filtered = useMemo(() => {
-    let list = [...assets];
+    let result = assets
 
-    if (activeType) list = list.filter(a => a.assetType === activeType);
+    if (typeFilter) {
+      result = result.filter(a => a.assetType === typeFilter)
+    }
 
-    if (debouncedQuery.trim()) {
-      const q = debouncedQuery.toLowerCase();
-      list = list.filter(a =>
+    if (search.trim()) {
+      const q = search.toLowerCase()
+      result = result.filter(a =>
         a.name.toLowerCase().includes(q) ||
         a.description.toLowerCase().includes(q) ||
         a.sponsorName.toLowerCase().includes(q)
-      );
+      )
     }
 
-    if (sortBy === 'date-asc') {
-      list.sort((a, b) => new Date(a.executionDate ?? a.lastModifiedDate).getTime() - new Date(b.executionDate ?? b.lastModifiedDate).getTime());
-    } else if (sortBy === 'date-desc') {
-      list.sort((a, b) => new Date(b.executionDate ?? b.lastModifiedDate).getTime() - new Date(a.executionDate ?? a.lastModifiedDate).getTime());
+    if (sort === 'desc') {
+      result = [...result].sort((a, b) => {
+        const da = a.executionDate ? new Date(a.executionDate).getTime() : 0
+        const db = b.executionDate ? new Date(b.executionDate).getTime() : 0
+        return db - da
+      })
+    } else if (sort === 'asc') {
+      result = [...result].sort((a, b) => {
+        const da = a.executionDate ? new Date(a.executionDate).getTime() : 0
+        const db = b.executionDate ? new Date(b.executionDate).getTime() : 0
+        return da - db
+      })
     }
 
-    return list;
-  }, [assets, activeType, debouncedQuery, sortBy]);
+    return result
+  }, [assets, typeFilter, search, sort])
 
-  const paginated = filtered.slice(0, page * PAGE_SIZE);
-  const hasMore = paginated.length < filtered.length;
+  const visible = filtered.slice(0, page * PAGE_SIZE)
+  const hasMore = visible.length < filtered.length
 
   return (
-    <main className={styles.main}>
-      <div className={styles.pageHead}>
-        <div className={styles.container}>
-          <div className={styles.eyebrow}>Resource Library</div>
-          <h1 className={styles.title}>Healthcare Insights &amp; Resources</h1>
-          <p className={styles.subtitle}>Expert-curated content from leading health systems and sponsors.</p>
+    <div className={styles.page}>
+      <div className="container">
+        <div className={styles.pageHeader}>
+          <h1 className={styles.pageTitle}>Resource Library</h1>
         </div>
-      </div>
 
-      <div className={styles.container}>
-        {/* Controls */}
+        {/* Filters */}
         <div className={styles.controls}>
-          <div className={styles.typeFilters}>
-            <button
-              className={`${styles.typeBtn} ${activeType === '' ? styles.typeBtnActive : ''}`}
-              onClick={() => handleTypeChange('')}
-            >
-              All
-            </button>
-            {ALL_TYPES.map(t => (
+          <div className={styles.typeFilters} role="group" aria-label="Filter by type">
+            {ASSET_TYPES.map(t => (
               <button
-                key={t}
-                className={`${styles.typeBtn} ${activeType === t ? styles.typeBtnActive : ''}`}
-                onClick={() => handleTypeChange(t)}
+                key={t.value}
+                onClick={() => handleTypeFilter(t.value as AssetType | '')}
+                className={`${styles.filterBtn} ${typeFilter === t.value ? styles.filterActive : ''}`}
               >
-                {TYPE_LABELS[t] ?? t}
+                {t.label}
               </button>
             ))}
           </div>
-
-          <div className={styles.controlsRight}>
+          <div className={styles.rightControls}>
             <input
               type="search"
-              className={styles.search}
               placeholder="Search resources…"
-              value={query}
-              onChange={e => setQuery(e.target.value)}
+              value={searchInput}
+              onChange={e => setSearchInput(e.target.value)}
+              className={styles.searchInput}
+              aria-label="Search resources"
             />
             <select
-              className={styles.sort}
-              value={sortBy}
-              onChange={e => setSortBy(e.target.value as typeof sortBy)}
+              value={sort}
+              onChange={e => setSort(e.target.value as 'default' | 'asc' | 'desc')}
+              className={styles.sortSelect}
+              aria-label="Sort resources"
             >
-              <option value="default">Default order</option>
-              <option value="date-asc">Date: earliest first</option>
-              <option value="date-desc">Date: latest first</option>
+              <option value="default">Default</option>
+              <option value="desc">Newest first</option>
+              <option value="asc">Oldest first</option>
             </select>
           </div>
         </div>
 
         {/* Result count */}
-        {!loading && (
-          <div className={styles.count}>
-            Showing {Math.min(paginated.length, filtered.length)} of {filtered.length} resource{filtered.length !== 1 ? 's' : ''}
-            {activeType && <span className={styles.countFilter}> — filtered by "{TYPE_LABELS[activeType] ?? activeType}"</span>}
+        {!loading && !error && (
+          <p className={styles.resultCount}>
+            Showing {visible.length} of {filtered.length} resource{filtered.length !== 1 ? 's' : ''}
+          </p>
+        )}
+
+        {/* States */}
+        {loading && <p className={styles.stateMsg}>Loading resources…</p>}
+        {error && <p className={styles.stateError}>{error}</p>}
+
+        {!loading && !error && filtered.length === 0 && (
+          <div className={styles.emptyState}>
+            <p>No resources match your search.</p>
+            <button onClick={() => { setTypeFilter(''); setSearchInput('') }} className={styles.clearBtn}>
+              Clear filters
+            </button>
           </div>
         )}
 
         {/* Grid */}
-        {loading ? (
-          <div className={styles.loadingGrid}>
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className={styles.skeleton} />
-            ))}
-          </div>
-        ) : error ? (
-          <div className={styles.emptyState}>
-            <div className={styles.emptyIcon}>⚠</div>
-            <div className={styles.emptyTitle}>Could not load resources</div>
-            <div className={styles.emptyText}>{error}</div>
-          </div>
-        ) : filtered.length === 0 ? (
-          <div className={styles.emptyState}>
-            <div className={styles.emptyIcon}>🔍</div>
-            <div className={styles.emptyTitle}>No resources found</div>
-            <div className={styles.emptyText}>Try adjusting your search or filters.</div>
-            <button className={styles.clearBtn} onClick={() => { setQuery(''); handleTypeChange(''); }}>
-              Clear filters
-            </button>
-          </div>
-        ) : (
+        {!loading && !error && visible.length > 0 && (
           <>
             <div className={styles.grid}>
-              {paginated.map(asset => (
+              {visible.map(asset => (
                 <AssetCard key={asset.id} asset={asset} />
               ))}
             </div>
-
             {hasMore && (
               <div className={styles.loadMore}>
-                <button className={styles.loadMoreBtn} onClick={() => setPage(p => p + 1)}>
+                <button onClick={() => setPage(p => p + 1)} className={styles.loadMoreBtn}>
                   Load more resources
                 </button>
               </div>
@@ -164,6 +156,6 @@ export default function AssetsPage() {
           </>
         )}
       </div>
-    </main>
-  );
+    </div>
+  )
 }
