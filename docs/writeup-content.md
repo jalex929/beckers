@@ -45,6 +45,14 @@ Each of the following was explicitly considered and deferred — not overlooked.
 
 **Authentication / user identity.** No auth layer means no server-side personalization and no persistent user profiles. localStorage was the right call given the constraints: it gives stable variant assignment and "recently viewed" history without the overhead of an auth flow. In production, I'd stitch localStorage identity to a server-side user ID on first login.
 
+**User accounts and saved resources / favorites.** There is no account creation flow. Users cannot sign in, save resources to a personal list, or build a favorites collection. This feature requires a persistent identity layer — without it, "saved" state would be device-local and wouldn't survive a cache clear or a device switch. The signup form captures contact info per-resource, not a site-wide account. In production, this would be a natural second phase: create an account on first signup, then allow returning users to access a personalized content hub.
+
+**Email confirmation after signup.** The form POSTs to the API and receives a `signupDate` in return, which is displayed in the inline confirmation state. No transactional email is sent — there is no email service (SendGrid, Postmark, etc.) configured on the backend. The user sees confirmation on-screen but receives nothing in their inbox.
+
+**Cross-device recently viewed history.** The recently viewed rail is backed by localStorage, which is device- and browser-scoped. If a user views resources on their phone, those entries will not appear on their desktop. Persistent cross-device history requires a server-side record tied to an authenticated identity.
+
+**Admin / content management interface.** There is no CMS, no editorial dashboard, and no way to add, edit, or unpublish assets without modifying the seed data directly. The backend's asset data is static seed content. A production editorial workflow would need a headless CMS integration or an internal admin UI so the Becker's team can manage the content library without touching code.
+
 **Live analytics results.** `window.dataLayer` fires correctly on every interaction. No GTM container, GA4 property, or Amplitude destination is connected, so no data persists. The instrumentation is production-ready; the pipeline isn't wired. This is the highest-priority gap (see Section 7).
 
 **Production feature flag service.** `useVariant` mirrors the client API of LaunchDarkly or Statsig, but localStorage assignment creates holdout leakage risk — a user who clears localStorage gets re-assigned, which inflates variant exposure and makes holdout analysis unreliable. The leakage risk is documented in the decision log. Replacing the storage backend with a real flag service is a one-file change by design.
