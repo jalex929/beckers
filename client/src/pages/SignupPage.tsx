@@ -206,11 +206,11 @@ export default function SignupPage() {
             ) : (
               <form onSubmit={handleSubmit} className={styles.form} noValidate>
                 <h2 className={styles.formTitle}>Get Access</h2>
-                <p className={styles.formSub}>Complete the form below to access this resource.</p>
+                <p className={styles.formSub}>Complete the form below to access this resource. <span className={styles.requiredNote}>All fields are required.</span></p>
 
                 <div className={styles.fieldRow}>
                   <div className={styles.field}>
-                    <label htmlFor="firstName" className={styles.label}>First name</label>
+                    <label htmlFor="firstName" className={styles.label}>First name <span className={styles.required} aria-hidden="true">*</span></label>
                     <input
                       id="firstName"
                       type="text"
@@ -227,7 +227,7 @@ export default function SignupPage() {
                     {fieldErrors.firstName && <span id="firstName-error" className={styles.fieldError}>{fieldErrors.firstName}</span>}
                   </div>
                   <div className={styles.field}>
-                    <label htmlFor="lastName" className={styles.label}>Last name</label>
+                    <label htmlFor="lastName" className={styles.label}>Last name <span className={styles.required} aria-hidden="true">*</span></label>
                     <input
                       id="lastName"
                       type="text"
@@ -245,7 +245,7 @@ export default function SignupPage() {
                 </div>
 
                 <div className={styles.field}>
-                  <label htmlFor="email" className={styles.label}>Work email</label>
+                  <label htmlFor="email" className={styles.label}>Work email <span className={styles.required} aria-hidden="true">*</span></label>
                   <input
                     id="email"
                     type="email"
@@ -262,7 +262,7 @@ export default function SignupPage() {
                 </div>
 
                 <div className={styles.field}>
-                  <label htmlFor="jobTitle" className={styles.label}>Job title</label>
+                  <label htmlFor="jobTitle" className={styles.label}>Job title <span className={styles.required} aria-hidden="true">*</span></label>
                   <input
                     id="jobTitle"
                     type="text"
@@ -279,7 +279,7 @@ export default function SignupPage() {
                 </div>
 
                 <div className={styles.field}>
-                  <label htmlFor="companyName" className={styles.label}>Company</label>
+                  <label htmlFor="companyName" className={styles.label}>Company <span className={styles.required} aria-hidden="true">*</span></label>
                   <input
                     id="companyName"
                     type="text"

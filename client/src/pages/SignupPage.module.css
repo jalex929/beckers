@@ -160,6 +160,11 @@
   color: var(--color-error);
 }
 
+.requiredNote {
+  color: var(--color-fg-subtle);
+  font-style: italic;
+}
+
 .input {
   font-family: var(--font-sans);
   font-size: var(--fs-base);
