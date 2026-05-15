@@ -34,11 +34,11 @@ I invested in a typed analytics bus (`analytics.ts`), an experiment registry (`e
 
 ---
 
-## The Meridian Sub-Brand Over Reproducing BHR
+## Meridian as a Standalone Brand Rather Than a BHR Template
 
-I built a distinct sub-brand — *Meridian Health Intelligence* — rather than reproducing the Becker's Hospital Review visual identity.
+I built *Meridian Health Intelligence* as a standalone product brand rather than reproducing the Becker's Hospital Review visual identity.
 
-**Why:** A resource library is a separate product with a different editorial purpose than a news publication. Reproducing BHR's exact treatment would have produced a themed template, not a product decision. A sub-brand required making intentional calls about name, palette, and tone that could be defended on product grounds. "Meridian" implies orientation, precision, and expertise — appropriate for a library of clinical and operational content aimed at healthcare decision-makers. The palette was derived from BHR's token system (same navy family, similar type hierarchy) rather than invented wholesale, so it reads as related without being identical.
+**Why:** A resource library is a separate product with a different editorial purpose than a news publication. Reproducing BHR directly would have produced a themed template, not a product decision. Building a standalone brand required making intentional choices about name, palette, and voice that could be defended on product grounds rather than inherited from a reference. The palette was derived from BHR's token system as a deliberate design exercise — demonstrating that a coherent new system can be built from an existing one without duplication. Analogous navy and teal as the structural pair, gold as the split-complementary accent, warm neutrals as the editorial surface.
 
 ---
 

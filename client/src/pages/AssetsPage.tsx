@@ -24,7 +24,7 @@ export default function AssetsPage() {
   const [typeFilter, setTypeFilter] = useState<AssetType | ''>((searchParams.get('type') as AssetType) ?? '')
   const [searchInput, setSearchInput] = useState('')
   const [search, setSearch] = useState('')
-  const [sort, setSort] = useState<'default' | 'asc' | 'desc'>('default')
+  const [sort, setSort] = useState<'default' | 'upcoming' | 'new'>('default')
   const [page, setPage] = useState(1)
 
   // Debounce search
@@ -66,17 +66,19 @@ export default function AssetsPage() {
       )
     }
 
-    if (sort === 'desc') {
+    if (sort === 'upcoming') {
       result = [...result].sort((a, b) => {
-        const da = a.executionDate ? new Date(a.executionDate).getTime() : 0
-        const db = b.executionDate ? new Date(b.executionDate).getTime() : 0
-        return db - da
+        // Assets without executionDate go to the end
+        if (!a.executionDate && !b.executionDate) return 0
+        if (!a.executionDate) return 1
+        if (!b.executionDate) return -1
+        return new Date(a.executionDate).getTime() - new Date(b.executionDate).getTime()
       })
-    } else if (sort === 'asc') {
+    } else if (sort === 'new') {
       result = [...result].sort((a, b) => {
-        const da = a.executionDate ? new Date(a.executionDate).getTime() : 0
-        const db = b.executionDate ? new Date(b.executionDate).getTime() : 0
-        return da - db
+        const da = a.lastModifiedDate ? new Date(a.lastModifiedDate).getTime() : 0
+        const db = b.lastModifiedDate ? new Date(b.lastModifiedDate).getTime() : 0
+        return db - da
       })
     }
 
@@ -119,16 +121,16 @@ export default function AssetsPage() {
             <select
               value={sort}
               onChange={e => {
-                const v = e.target.value as 'default' | 'asc' | 'desc'
+                const v = e.target.value as 'default' | 'upcoming' | 'new'
                 setSort(v)
                 track({ event: 'sort_changed', properties: { sort_value: v } })
               }}
               className={styles.sortSelect}
               aria-label="Sort resources"
             >
-              <option value="default">Default</option>
-              <option value="desc">Newest first</option>
-              <option value="asc">Oldest first</option>
+              <option value="default">Default order</option>
+              <option value="upcoming">Coming up soon</option>
+              <option value="new">New to the library</option>
             </select>
           </div>
         </div>

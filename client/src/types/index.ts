@@ -5,9 +5,12 @@ export type AssetType =
   | 'on-demand podcast';
 
 export interface Speaker {
-  name: string;
-  title?: string;
-  company?: string;
+  id: string;
+  firstName: string;
+  lastName: string;
+  jobTitle?: string;
+  companyName?: string;
+  email?: string;
 }
 
 export interface Asset {

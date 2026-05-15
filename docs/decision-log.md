@@ -6,15 +6,15 @@ A record of non-obvious decisions made during this project — what was consider
 
 ---
 
-## 1. Sub-brand vs. replicating Becker's Hospital Review
+## 1. Standalone brand vs. replicating Becker's Hospital Review
 
 **Options considered:** Reproduce the BHR visual identity directly · Create a distinct sub-brand
 
-**Chosen:** Distinct sub-brand — *Meridian Health Intelligence*
+**Chosen:** Standalone product brand — *Meridian Health Intelligence*
 
-**Why:** A resource library is a separate product with a different editorial purpose than a news publication. Reproducing BHR directly would have produced a themed template, not a product decision. A sub-brand required making intentional choices about name, palette, and voice that could be defended on product grounds rather than inherited from a reference.
+**Why:** A resource library is a separate product with a different editorial purpose than a news publication. Reproducing BHR directly would have produced a themed template, not a product decision. Building a standalone brand required making intentional choices about name, palette, and voice that could be defended on product grounds rather than inherited from a reference. The palette was derived from BHR's token system — same navy family, similar type hierarchy — not because Meridian is a sub-brand, but as a deliberate design exercise showing that a new system can be built from an existing one coherently. Structurally: analogous navy + teal as the primary pair, gold as the split-complementary accent, warm neutrals as the editorial surface.
 
-**Trade-off accepted:** Diverges from the literal design system reference. Mitigated by deriving the palette from BHR's token system (same navy family, similar type hierarchy) so the relationship to the parent brand reads as intentional rather than arbitrary.
+**Trade-off accepted:** Diverges from the literal design system reference. Mitigated by deriving the palette from BHR's token system so the two products read as peers built from the same foundation, not as unrelated designs.
 
 ---
 

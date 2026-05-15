@@ -13,7 +13,7 @@ const MOCK_ASSET: Asset = {
   assetType: 'Live Webinar',
   sponsorName: 'Summit Health Partners',
   executionDate: '2024-06-15',
-  speakers: [{ name: 'Dr. Jane Smith', title: 'Chief Medical Officer', company: 'Summit Health' }],
+  speakers: [{ id: 'spk-1', firstName: 'Jane', lastName: 'Smith', jobTitle: 'Chief Medical Officer', companyName: 'Summit Health' }],
 }
 
 // vi.hoisted ensures these fns are available inside the vi.mock() factory

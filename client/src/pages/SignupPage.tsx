@@ -104,7 +104,9 @@ export default function SignupPage() {
   }
 
   const related = asset
-    ? allAssets.filter(a => a.id !== asset.id && a.assetType === asset.assetType).slice(0, 2)
+    ? allAssets
+        .filter(a => a.id !== asset.id && (a.assetType === asset.assetType || a.sponsorName === asset.sponsorName))
+        .slice(0, 3)
     : []
 
   if (loading) {
@@ -155,16 +157,16 @@ export default function SignupPage() {
             <p style={{ fontSize: '0.8rem', color: 'var(--color-fg-muted, #666)', marginTop: '0.75rem' }}>
               {getRegistrationCount(asset.id).toLocaleString()} healthcare professionals registered
             </p>
-            {asset.speakers && asset.speakers.some(s => s.name) && (
+            {asset.speakers && asset.speakers.length > 0 && (
               <div className={styles.speakers}>
                 <h3 className={styles.speakersLabel}>Speakers</h3>
                 <ul className={styles.speakerList}>
                   {asset.speakers.map((s, i) => (
-                    <li key={i} className={styles.speaker}>
-                      <span className={styles.speakerName}>{s.name}</span>
-                      {(s.title || s.company) && (
+                    <li key={s.id ?? i} className={styles.speaker}>
+                      <span className={styles.speakerName}>{s.firstName} {s.lastName}</span>
+                      {(s.jobTitle || s.companyName) && (
                         <span className={styles.speakerRole}>
-                          {[s.title, s.company].filter(Boolean).join(', ')}
+                          {[s.jobTitle, s.companyName].filter(Boolean).join(', ')}
                         </span>
                       )}
                     </li>
