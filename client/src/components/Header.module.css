@@ -67,8 +67,8 @@
   right: 0;
   height: 2px;
   background: var(--mer-signal-300);
-  transform: scaleX(0);
-  transition: transform 0.2s ease;
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }
 
 .navLink:hover {
@@ -80,7 +80,7 @@
 }
 
 .active::after {
-  transform: scaleX(1);
+  opacity: 1;
 }
 
 @media (max-width: 640px) {
