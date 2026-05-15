@@ -151,7 +151,7 @@ body {
   font-size: var(--fs-base);
   line-height: var(--lh-normal);
   color: var(--color-fg);
-  background: var(--color-bg);
+  background: var(--color-bg-tinted);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
