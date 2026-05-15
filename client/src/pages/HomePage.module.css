@@ -41,7 +41,7 @@
 
 .heroCta {
   display: inline-block;
-  background: var(--mer-coral-700);
+  background: var(--mer-steel-700);
   color: var(--mer-white);
   font-family: var(--font-sans);
   font-size: var(--fs-base);
@@ -54,7 +54,7 @@
 }
 
 .heroCta:hover {
-  background: var(--mer-coral-600);
+  background: var(--mer-steel-600);
   color: var(--mer-white);
 }
 
@@ -142,7 +142,7 @@
 }
 
 .typeCard:hover {
-  border-color: var(--mer-coral-700);
+  border-color: var(--mer-steel-700);
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }

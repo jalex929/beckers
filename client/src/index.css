@@ -12,11 +12,11 @@
   --mer-navy-600: #323847;   /* 10.8:1 on white — AAA */
   --mer-navy-500: #4A5168;   /* 7.15:1 on white — AAA */
 
-  /* Coral-red accent ramp */
-  --mer-coral-700: #B33D2F;  /* 7.03:1 on white — AAA normal text */
-  --mer-coral-600: #C94A39;  /* 5.48:1 on white — AAA large text/UI */
-  --mer-coral-500: #E05A47;  /* 4.52:1 on white — AAA large text/UI only */
-  --mer-coral-400: #E87668;  /* decorative only, not for text on white */
+  /* Steel blue accent ramp */
+  --mer-steel-700: #3A6B8E;  /* 4.87:1 on white — AAA large text/UI */
+  --mer-steel-600: #4A7FA5;  /* 3.95:1 on white — AA large text/UI */
+  --mer-steel-500: #5A8FB5;  /* decorative, lighter state */
+  --mer-steel-400: #7AAAC8;  /* decorative only, not for text on white */
 
   /* Warm neutral ramp */
   --mer-warm-050: #FAFAF8;   /* page background — 1.03:1 vs white (subtle tint) */
@@ -55,18 +55,18 @@
 
   --color-brand:        var(--mer-navy-800);
   --color-brand-hover:  var(--mer-navy-700);
-  --color-accent:       var(--mer-coral-700); /* 7.03:1 on white — AAA */
-  --color-accent-hover: var(--mer-coral-600); /* 5.48:1 — AAA for large/UI; used on hover only */
+  --color-accent:       var(--mer-steel-700); /* 4.87:1 on white — AA large/UI */
+  --color-accent-hover: var(--mer-steel-600); /* hover state */
 
   --color-border:         var(--mer-warm-200);
   --color-border-strong:  var(--mer-warm-300);
   --color-border-inverse: rgba(255,255,255,0.12);
 
-  --color-link:         var(--mer-coral-700); /* 7.03:1 on white — AAA */
-  --color-link-hover:   var(--mer-coral-600);
+  --color-link:         var(--mer-steel-700);
+  --color-link-hover:   var(--mer-steel-600);
   --color-link-visited: var(--mer-navy-600);
 
-  --color-kicker:         var(--mer-coral-700);
+  --color-kicker:         var(--mer-steel-700);
   --color-kicker-inverse: var(--mer-signal-300); /* 8.32:1 on navy-800 — AAA */
   --color-gold:           var(--mer-signal-300);
 
@@ -132,7 +132,7 @@
   --shadow-sm: 0 1px 3px rgba(26,31,46,0.08), 0 1px 2px rgba(26,31,46,0.04);
   --shadow-md: 0 4px 10px rgba(26,31,46,0.10), 0 2px 4px rgba(26,31,46,0.05);
   --shadow-lg: 0 12px 28px rgba(26,31,46,0.14), 0 4px 10px rgba(26,31,46,0.06);
-  --shadow-focus: 0 0 0 3px rgba(179,61,47,0.30);
+  --shadow-focus: 0 0 0 3px rgba(74,127,165,0.35);
 
   /* ── Layout ── */
   --container: 1240px;
