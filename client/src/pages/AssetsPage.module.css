@@ -72,6 +72,24 @@
   color: var(--color-fg-inverse);
 }
 
+.clearFiltersBtn {
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  color: var(--color-fg-muted);
+  background: none;
+  border: none;
+  padding: var(--sp-2) var(--sp-3);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.15s ease;
+}
+
+.clearFiltersBtn:hover {
+  color: var(--color-fg);
+}
+
 .rightControls {
   display: flex;
   gap: var(--sp-3);

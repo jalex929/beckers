@@ -113,6 +113,15 @@ export default function AssetsPage() {
                 {t.label}
               </button>
             ))}
+            {typeFilters.length > 0 && (
+              <button
+                onClick={() => handleTypeFilter('')}
+                className={styles.clearFiltersBtn}
+                aria-label="Clear all filters"
+              >
+                Clear filters
+              </button>
+            )}
           </div>
           <div className={styles.rightControls}>
             <input
