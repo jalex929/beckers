@@ -12,22 +12,22 @@
 }
 
 .live {
-  background: var(--bh-red-800);
-  color: var(--bh-white);
+  background: var(--mer-teal-800);
+  color: var(--mer-white);
 }
 
 .onDemand {
-  background: var(--bh-navy-700);
-  color: var(--bh-white);
+  background: var(--mer-navy-700);
+  color: var(--mer-white);
 }
 
 .whitepaper {
-  background: var(--bh-ice-100);
-  color: var(--bh-navy-800);
-  border: 1px solid var(--bh-ice-300);
+  background: var(--mer-ice-100);
+  color: var(--mer-navy-800);
+  border: 1px solid var(--mer-ice-300);
 }
 
 .podcast {
-  background: var(--bh-navy-600);
-  color: var(--bh-white);
+  background: var(--mer-navy-600);
+  color: var(--mer-white);
 }

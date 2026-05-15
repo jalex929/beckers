@@ -117,7 +117,7 @@
 
 .stateError {
   font-family: var(--font-sans);
-  color: var(--color-accent);
+  color: var(--color-error);
   padding: var(--sp-10) 0;
   text-align: center;
 }

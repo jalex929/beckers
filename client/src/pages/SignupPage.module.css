@@ -162,21 +162,21 @@
   box-shadow: 0 0 0 3px rgba(9,31,62,0.12);
 }
 
-.inputError { border-color: var(--color-accent); }
+.inputError { border-color: var(--color-error); }
 
 .fieldError {
   font-family: var(--font-sans);
   font-size: var(--fs-xs);
-  color: var(--color-accent);
+  color: var(--color-error);
 }
 
 .submitError {
   font-family: var(--font-sans);
   font-size: var(--fs-sm);
-  color: var(--color-accent);
+  color: var(--color-error);
   padding: var(--sp-3) var(--sp-4);
-  background: rgba(154,27,42,0.06);
-  border: 1px solid rgba(154,27,42,0.2);
+  background: var(--color-error-bg);
+  border: 1px solid rgba(153,27,27,0.25);
   border-radius: var(--radius-sm);
 }
 

@@ -1,58 +1,65 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Fira+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&display=swap');
 
 :root {
-  --bh-navy-900: #061733;
-  --bh-navy-800: #091F3E;
-  --bh-navy-700: #122A54;
-  --bh-navy-600: #1E3A6D;
-  --bh-navy-500: #2E4D86;
+  /* ── Meridian raw palette ── */
+  --mer-navy-900: #061530;
+  --mer-navy-800: #0B2D6B;   /* 13.11:1 on white — AAA */
+  --mer-navy-700: #0E3A87;   /* 10.64:1 on white — AAA */
+  --mer-navy-600: #1E4FA0;
+  --mer-navy-500: #2D63C8;
 
-  --bh-red-900: #7A1220;
-  --bh-red-800: #9A1B2A;
-  --bh-red-700: #B32437;
-  --bh-red-600: #C41E3A;
+  --mer-teal-800: #0A5968;   /* 7.95:1 on white — AAA */
+  --mer-teal-700: #0A5465;   /* 8.51:1 on white — AAA */
+  --mer-teal-100: #E0F0F4;
 
-  --bh-ice-050: #F5F8FC;
-  --bh-ice-100: #E7EEF7;
-  --bh-ice-200: #D3DEED;
-  --bh-ice-300: #B7C6DD;
+  --mer-ice-050: #F4F7FC;
+  --mer-ice-100: #E8EEF8;
+  --mer-ice-200: #D1DCF0;
+  --mer-ice-300: #B3C3E0;
 
-  --bh-gray-050: #FAFAFA;
-  --bh-gray-100: #F2F2F2;
-  --bh-gray-200: #E5E5E5;
-  --bh-gray-300: #CFCFCF;
-  --bh-gray-500: #8A8A8A;
-  --bh-gray-700: #4A4A4A;
-  --bh-gray-900: #1A1A1A;
-  --bh-white: #FFFFFF;
+  --mer-gray-900: #111827;   /* 17.74:1 on white — AAA */
+  --mer-gray-700: #374151;   /* 10.31:1 on white — AAA */
+  --mer-gray-600: #4B5563;   /* 7.56:1 on white — AAA */
+  --mer-gray-200: #E5E7EB;
+  --mer-gray-100: #F3F4F6;
+  --mer-white:    #FFFFFF;
 
-  --color-bg: var(--bh-white);
-  --color-bg-muted: var(--bh-gray-100);
-  --color-bg-tinted: var(--bh-ice-050);
-  --color-bg-inverse: var(--bh-navy-800);
+  --mer-error-800: #991B1B;  /* 8.31:1 on white — AAA */
+  --mer-error-100: #FEE2E2;
 
-  --color-fg: var(--bh-gray-900);
-  --color-fg-muted: var(--bh-gray-700);
-  --color-fg-subtle: var(--bh-gray-500);
-  --color-fg-inverse: var(--bh-white);
+  /* ── Semantic color tokens ── */
+  --color-bg:          var(--mer-white);
+  --color-bg-muted:    var(--mer-gray-100);
+  --color-bg-tinted:   var(--mer-ice-050);
+  --color-bg-inverse:  var(--mer-navy-800);
 
-  --color-brand: var(--bh-navy-800);
-  --color-accent: var(--bh-red-800);
-  --color-accent-hover: var(--bh-red-700);
+  --color-fg:          var(--mer-gray-900);
+  --color-fg-muted:    var(--mer-gray-700);
+  --color-fg-subtle:   var(--mer-gray-600);
+  --color-fg-inverse:  var(--mer-white);
+  --color-fg-inverse-muted:  rgba(255,255,255,0.75);
+  --color-fg-inverse-subtle: rgba(255,255,255,0.6);
 
-  --color-border: var(--bh-gray-200);
-  --color-border-strong: var(--bh-ice-300);
+  --color-brand:        var(--mer-navy-800);
+  --color-brand-hover:  var(--mer-navy-700);
+  --color-accent:       var(--mer-teal-800);
+  --color-accent-hover: var(--mer-teal-700);
+
+  --color-border:         var(--mer-gray-200);
+  --color-border-strong:  var(--mer-ice-300);
   --color-border-inverse: rgba(255,255,255,0.12);
 
-  --color-link: var(--bh-red-800);
-  --color-link-hover: var(--bh-red-600);
-  --color-link-visited: var(--bh-navy-700);
+  --color-link:         var(--mer-teal-800);
+  --color-link-hover:   var(--mer-teal-700);
+  --color-link-visited: var(--mer-navy-700);
 
-  --color-kicker: var(--bh-red-800);
+  --color-kicker:       var(--mer-teal-800);
 
+  --color-error:        var(--mer-error-800);
+  --color-error-bg:     var(--mer-error-100);
+
+  /* ── Typography ── */
   --font-serif: 'Noto Serif', 'Source Serif Pro', Georgia, 'Times New Roman', serif;
-  --color-fg-inverse-muted: rgba(255,255,255,0.75);
-  --color-fg-inverse-subtle: rgba(255,255,255,0.6);
   --font-sans: 'Fira Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
   --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 
@@ -83,6 +90,7 @@
   --lh-normal: 1.5;
   --lh-loose: 1.65;
 
+  /* ── Spacing ── */
   --sp-0: 0;
   --sp-1: 4px;
   --sp-2: 8px;
@@ -96,6 +104,7 @@
   --sp-10: 72px;
   --sp-11: 96px;
 
+  /* ── Radii ── */
   --radius-none: 0;
   --radius-xs: 2px;
   --radius-sm: 4px;
@@ -103,12 +112,14 @@
   --radius-lg: 8px;
   --radius-pill: 999px;
 
+  /* ── Shadows ── */
   --shadow-xs: 0 1px 2px rgba(9,31,62,0.06);
   --shadow-sm: 0 1px 3px rgba(9,31,62,0.08), 0 1px 2px rgba(9,31,62,0.04);
   --shadow-md: 0 4px 10px rgba(9,31,62,0.08), 0 2px 4px rgba(9,31,62,0.05);
   --shadow-lg: 0 12px 28px rgba(9,31,62,0.12), 0 4px 10px rgba(9,31,62,0.06);
-  --shadow-focus: 0 0 0 3px rgba(154,27,42,0.35);
+  --shadow-focus: 0 0 0 3px rgba(10,89,104,0.35);
 
+  /* ── Layout ── */
   --container: 1240px;
   --container-narrow: 880px;
   --gutter: 24px;

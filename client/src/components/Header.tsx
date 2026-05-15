@@ -6,7 +6,7 @@ export default function Header() {
     <header className={styles.header}>
       <div className={styles.inner}>
         <Link to="/" className={styles.brand}>
-          <span className={styles.brandName}>Becker's</span>
+          <span className={styles.brandName}>Meridian</span>
           <span className={styles.brandSub}>Resource Library</span>
         </Link>
         <nav className={styles.nav} aria-label="Main navigation">
