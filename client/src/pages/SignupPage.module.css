@@ -231,7 +231,7 @@
   border: none;
   cursor: pointer;
   transition: background 0.15s ease;
-  align-self: flex-start;
+  width: 100%;
 }
 
 .submitBtn:hover:not(:disabled) { background: var(--color-accent-hover); }
