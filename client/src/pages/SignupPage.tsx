@@ -142,7 +142,7 @@ export default function SignupPage() {
                 <time className={styles.date}>{formatDate(asset.executionDate)}</time>
               )}
               {getUrgencyLabel(asset.executionDate, asset.assetType) && (
-                <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-error)', letterSpacing: '0.02em' }}>
+                <span className={styles.urgencyBadge}>
                   {getUrgencyLabel(asset.executionDate, asset.assetType)}
                 </span>
               )}
@@ -155,7 +155,7 @@ export default function SignupPage() {
             <p style={{ fontSize: '0.8rem', color: 'var(--color-fg-muted, #666)', marginTop: '0.75rem' }}>
               {getRegistrationCount(asset.id).toLocaleString()} healthcare professionals registered
             </p>
-            {asset.speakers && asset.speakers.length > 0 && (
+            {asset.speakers && asset.speakers.some(s => s.name) && (
               <div className={styles.speakers}>
                 <h3 className={styles.speakersLabel}>Speakers</h3>
                 <ul className={styles.speakerList}>
@@ -273,9 +273,6 @@ export default function SignupPage() {
                 <button type="submit" disabled={submitting} className={styles.submitBtn}>
                   {submitting ? 'Submitting…' : submitLabel}
                 </button>
-                <p style={{ fontSize: '0.75rem', textAlign: 'center', color: 'var(--color-fg-muted, #666)', marginTop: '0.5rem' }}>
-                  Free to access · Secure · No spam
-                </p>
               </form>
             )}
           </div>
