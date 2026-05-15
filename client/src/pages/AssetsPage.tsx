@@ -26,7 +26,7 @@ export default function AssetsPage() {
   )
   const [searchInput, setSearchInput] = useState('')
   const [search, setSearch] = useState('')
-  const [sort, setSort] = useState<'default' | 'upcoming' | 'new'>('default')
+  const [sort, setSort] = useState<'default' | 'upcoming'>('default')
   const [page, setPage] = useState(1)
 
   // Debounce search
@@ -85,12 +85,6 @@ export default function AssetsPage() {
       result = result
         .filter(a => !!a.executionDate && new Date(a.executionDate).getTime() >= now)
         .sort((a, b) => new Date(a.executionDate!).getTime() - new Date(b.executionDate!).getTime())
-    } else if (sort === 'new') {
-      result = [...result].sort((a, b) => {
-        const da = a.lastModifiedDate ? new Date(a.lastModifiedDate).getTime() : 0
-        const db = b.lastModifiedDate ? new Date(b.lastModifiedDate).getTime() : 0
-        return db - da
-      })
     }
 
     return result
@@ -132,7 +126,7 @@ export default function AssetsPage() {
             <select
               value={sort}
               onChange={e => {
-                const v = e.target.value as 'default' | 'upcoming' | 'new'
+                const v = e.target.value as 'default' | 'upcoming'
                 setSort(v)
                 track({ event: 'sort_changed', properties: { sort_value: v } })
               }}
@@ -141,7 +135,6 @@ export default function AssetsPage() {
             >
               <option value="default">Default order</option>
               <option value="upcoming">Coming up soon</option>
-              <option value="new">New to the library</option>
             </select>
           </div>
         </div>
