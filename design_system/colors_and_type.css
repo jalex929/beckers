@@ -15,11 +15,11 @@
 
 :root {
   /* ---------- Color: Core brand ---------------------------- */
-  --bh-navy-900:       #061733;   /* darkest — deck covers, full-bleed */
-  --bh-navy-800:       #091F3E;   /* primary navy — logo, icons, nav */
-  --bh-navy-700:       #122A54;   /* hover state for navy surfaces */
-  --bh-navy-600:       #1E3A6D;   /* secondary navy — rails, sub-nav */
-  --bh-navy-500:       #2E4D86;   /* link-ish navy */
+  --bh-navy-900:       #061530;   /* deepest navy */
+  --bh-navy-800:       #0B2D6B;   /* primary navy — header, footer, hero */
+  --bh-navy-700:       #0E3A87;   /* hover state for navy surfaces */
+  --bh-navy-600:       #1E4FA0;   /* secondary navy — rails, sub-nav */
+  --bh-navy-500:       #2D63C8;   /* link-ish navy */
 
   --bh-steel-700:      #1B6B9A;   /* primary accent — links, CTAs */
   --bh-steel-600:      #2980B3;   /* hover state */

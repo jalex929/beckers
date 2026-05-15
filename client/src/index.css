@@ -5,12 +5,12 @@
      All ratios verified for WCAG AAA (7:1 normal text, 4.5:1 large/UI).
      Contrast measured against intended background surface. ── */
 
-  /* Charcoal-navy ramp (primary brand) */
-  --mer-navy-900: #141820;   /* 17.4:1 on white — AAA */
-  --mer-navy-800: #1A1F2E;   /* 15.8:1 on white — AAA */
-  --mer-navy-700: #252B3B;   /* 13.5:1 on white — AAA */
-  --mer-navy-600: #323847;   /* 10.8:1 on white — AAA */
-  --mer-navy-500: #4A5168;   /* 7.15:1 on white — AAA */
+  /* Navy ramp (primary brand — clearly blue) */
+  --mer-navy-900: #061530;   /* deepest navy */
+  --mer-navy-800: #0B2D6B;   /* header, footer, hero bg */
+  --mer-navy-700: #0E3A87;   /* hover on dark surfaces */
+  --mer-navy-600: #1E4FA0;   /* secondary dark accent */
+  --mer-navy-500: #2D63C8;   /* lighter navy for links on dark */
 
   /* Steel blue accent ramp */
   --mer-steel-700: #1B6B9A;  /* 4.76:1 on white — primary accent */
@@ -26,7 +26,7 @@
   --mer-warm-400: #A8A4A0;   /* decorative only */
 
   /* Neutral grays (cool-warm balanced) */
-  --mer-gray-900: #1A1F2E;   /* 15.8:1 on white — AAA (same as navy-800) */
+  --mer-gray-900: #111827;   /* 16.3:1 on white — AAA */
   --mer-gray-700: #3D4355;   /* 9.42:1 on white — AAA */
   --mer-gray-500: #5A5F6D;   /* 7.01:1 on white — AAA */
   --mer-gray-200: #E8E6E3;   /* same as warm-200 for consistency */
@@ -128,10 +128,10 @@
   --radius-pill: 999px;
 
   /* ── Shadows ── */
-  --shadow-xs: 0 1px 2px rgba(26,31,46,0.06);
-  --shadow-sm: 0 1px 3px rgba(26,31,46,0.08), 0 1px 2px rgba(26,31,46,0.04);
-  --shadow-md: 0 4px 10px rgba(26,31,46,0.10), 0 2px 4px rgba(26,31,46,0.05);
-  --shadow-lg: 0 12px 28px rgba(26,31,46,0.14), 0 4px 10px rgba(26,31,46,0.06);
+  --shadow-xs: 0 1px 2px rgba(6,21,48,0.06);
+  --shadow-sm: 0 1px 3px rgba(6,21,48,0.08), 0 1px 2px rgba(6,21,48,0.04);
+  --shadow-md: 0 4px 10px rgba(6,21,48,0.10), 0 2px 4px rgba(6,21,48,0.05);
+  --shadow-lg: 0 12px 28px rgba(6,21,48,0.14), 0 4px 10px rgba(6,21,48,0.06);
   --shadow-focus: 0 0 0 3px rgba(27,107,154,0.35);
 
   /* ── Layout ── */
