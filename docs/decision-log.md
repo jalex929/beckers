@@ -123,3 +123,17 @@ A record of non-obvious decisions made during this project — what was consider
 **Why:** `window.history.back()` is fragile — it goes back one step in browser history regardless of whether that step is in this application. A user who deep-links directly to an asset detail page and clicks "Back" would navigate to wherever they came from before the app, not to the resource library. `location.state.from` is set explicitly when a card is clicked (capturing the current path + search params at click time) and read on the signup page to construct the back link. This means "← Back to Resources" always returns to the exact filtered/searched listing state the user was in, not just the listing page root.
 
 **Trade-off accepted:** Only works when navigating within the app via the card's Link component. Direct links or page refreshes fall back to `/assets`. The fallback is intentional and handled explicitly.
+
+---
+
+## 11. Sort labels: "Coming up soon" / "New to the library" vs. generic asc/desc
+
+**Options considered:** Generic "Newest first" / "Oldest first" labels on executionDate · Two semantically distinct sort dimensions using executionDate and lastModifiedDate
+
+**Chosen:** Two named sorts — "Coming up soon" (executionDate ascending, null-last) and "New to the library" (lastModifiedDate descending)
+
+**Why:** "Newest first" and "Oldest first" applied to executionDate are ambiguous to the point of being misleading. Sorted by executionDate descending, "newest" actually means furthest in the future — an upcoming webinar six months out would appear first, which is the opposite of what a user scanning for something relevant soon would want. The labels named the sort direction, not the user intent.
+
+The two user intents are distinct: someone planning their calendar wants the soonest upcoming events first; someone looking for fresh content wants the most recently published resources first. These require different fields and different directions. "Coming up soon" uses executionDate ascending with null-last handling — assets without an execution date (whitepapers, podcasts) are pushed to the end rather than mixed in at the top because they have no meaningful "upcoming" status. "New to the library" uses lastModifiedDate descending, which captures both newly published content and recently updated resources.
+
+**Trade-off accepted:** Two sort options instead of a single reversible sort. The specificity is the point — vague directional labels produce low engagement because users can't predict what they'll get.

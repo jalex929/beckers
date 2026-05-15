@@ -139,6 +139,18 @@ The tool boundaries were the workflow's API contracts. Just as a design handoff 
 
 **Chose manual state management.** Five fields. The registration overhead of a form library — schema definition, resolver configuration, controlled vs. uncontrolled pattern selection — exceeds the benefit at this scale. The `handleChange` pattern is explicit, auditable, and requires no library knowledge to understand. If the form grew to 12 fields with conditional sections, that calculus reverses.
 
+### Sort labels: semantic intent over directional labels
+
+**Considered:** Generic "Newest first" / "Oldest first" controls on executionDate · Two named sorts addressing distinct user intents
+
+**Chose:** "Coming up soon" (executionDate ascending, assets without a date pushed to end) and "New to the library" (lastModifiedDate descending)
+
+**Why:** "Newest first" by executionDate descending is misleading — it surfaces events furthest in the future, which is the opposite of what someone scanning for something imminent wants. The labels described sort direction rather than user intent. Two distinct user needs exist on a content library: someone planning their schedule wants the soonest upcoming event first; someone browsing for fresh reading wants the most recently published content first. These are different fields and different directions. Naming them by intent rather than direction makes the control self-documenting.
+
+The null-last handling in "Coming up soon" is a specific UX decision: whitepapers and podcasts without an executionDate have no meaningful "upcoming" status, so they belong at the end of this sort, not mixed in at position zero alongside live webinars happening next week.
+
+**Tradeoff:** Two specific options instead of a single reversible toggle. The tradeoff is intentional — specificity produces better engagement than vague directional controls.
+
 ---
 
 ## 6. Prioritizing Learning + Shipping Good Over Perfect

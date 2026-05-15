@@ -50,6 +50,11 @@ export default function AssetCard({ asset, index = 0, highlight, context = 'asse
       {asset.sponsorName && (
         <p className={styles.sponsor}>Sponsored by {asset.sponsorName}</p>
       )}
+      {asset.speakers && asset.speakers.length > 0 && (
+        <p className={styles.speakers}>
+          {asset.speakers.map(s => `${s.firstName} ${s.lastName}`).join(' · ')}
+        </p>
+      )}
       <Link
         to={`/assets/${asset.id}`}
         state={{ from }}
