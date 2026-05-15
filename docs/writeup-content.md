@@ -151,6 +151,28 @@ The tool boundaries were the workflow's API contracts. Just as a design handoff 
 
 **Tradeoff:** Two specific options instead of a single reversible toggle. The tradeoff is intentional — specificity produces better engagement than vague directional controls.
 
+### Type filter: multi-select toggle vs. single-select
+
+**Considered:** Radio button behavior (one type at a time) · Toggle behavior (any combination active simultaneously)
+
+**Chose:** Multi-select toggle — clicking a type adds it to the active set, clicking again removes it, "All" clears everything.
+
+**Why:** Single-select forces a user who wants to browse whitepapers and podcasts together to switch back and forth. That's two trips through the filter UI to accomplish one browsing goal. Multi-select removes that friction. Active filters sync to URL via multiple `type` params, so combined views are shareable — a user can send a link that opens to Whitepapers + Podcasts simultaneously. The analytics event captures the full active set as a comma-joined string, so filter combinations are attributable in downstream analysis, not just individual type clicks.
+
+**Tradeoff:** The chip active state needs to clearly communicate "multiple things selected" — a visual treatment that only highlights one chip at a time would confuse users in a multi-select context. CSS handles the visual; the logic is correct regardless.
+
+### "New to the library": sort without a date cutoff
+
+**Considered:** Filter to assets modified within the last 30/60/90 days · Sort all assets by lastModifiedDate descending with no exclusion
+
+**Chose:** Sort only — no hard date window.
+
+**Why:** A hard cutoff on a demo dataset with fixed seed dates risks producing empty results for reasons that have nothing to do with user intent. More importantly, "new" is relative to the publishing cadence of the content team — the right threshold for a team publishing daily is different from one publishing monthly. Baking in a 30-day constant would be wrong for half of real cases. The sort gives users the directional signal without the brittle cutoff.
+
+**What this becomes in production:** A configurable recency threshold (CMS setting or feature flag) paired with a "New" badge on cards for content within that window. The badge and the sort would work together: the badge gives a scannable signal while browsing; the sort puts newest items at the top regardless of other active filters.
+
+**Tradeoff:** The "New to the library" label is only honest when the content team is actively publishing. If nothing has been added recently, the sort surfaces old content under a "new" label. Acceptable for a take-home; the badge system resolves this in production.
+
 ---
 
 ## 6. Prioritizing Learning + Shipping Good Over Perfect

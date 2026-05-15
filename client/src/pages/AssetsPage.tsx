@@ -21,7 +21,9 @@ export default function AssetsPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const { assets, loading, error } = useAssets()
 
-  const [typeFilter, setTypeFilter] = useState<AssetType | ''>((searchParams.get('type') as AssetType) ?? '')
+  const [typeFilters, setTypeFilters] = useState<AssetType[]>(
+    () => searchParams.getAll('type') as AssetType[]
+  )
   const [searchInput, setSearchInput] = useState('')
   const [search, setSearch] = useState('')
   const [sort, setSort] = useState<'default' | 'upcoming' | 'new'>('default')
@@ -34,7 +36,7 @@ export default function AssetsPage() {
   }, [searchInput])
 
   // Reset page when filters change
-  useEffect(() => { setPage(1) }, [typeFilter, search, sort])
+  useEffect(() => { setPage(1) }, [typeFilters, search, sort])
 
   useEffect(() => {
     if (search.trim()) {
@@ -48,17 +50,25 @@ export default function AssetsPage() {
   }, [])
 
   const handleTypeFilter = useCallback((value: AssetType | '') => {
-    setTypeFilter(value)
-    track({ event: 'filter_applied', properties: { filter_value: value || 'all' } })
-    if (value) setSearchParams({ type: value })
-    else setSearchParams({})
+    setTypeFilters(prev => {
+      const next = value === ''
+        ? []
+        : prev.includes(value)
+          ? prev.filter(t => t !== value)
+          : [...prev, value]
+      const params = new URLSearchParams()
+      next.forEach(t => params.append('type', t))
+      setSearchParams(params)
+      track({ event: 'filter_applied', properties: { filter_value: next.join(',') || 'all' } })
+      return next
+    })
   }, [setSearchParams])
 
   const filtered = useMemo(() => {
     let result = assets
 
-    if (typeFilter) {
-      result = result.filter(a => a.assetType === typeFilter)
+    if (typeFilters.length > 0) {
+      result = result.filter(a => typeFilters.includes(a.assetType))
     }
 
     if (search.trim()) {
@@ -84,7 +94,7 @@ export default function AssetsPage() {
     }
 
     return result
-  }, [assets, typeFilter, search, sort])
+  }, [assets, typeFilters, search, sort])
 
   const visible = filtered.slice(0, page * PAGE_SIZE)
   const hasMore = visible.length < filtered.length
@@ -103,8 +113,8 @@ export default function AssetsPage() {
               <button
                 key={t.value}
                 onClick={() => handleTypeFilter(t.value as AssetType | '')}
-                className={`${styles.filterBtn} ${typeFilter === t.value ? styles.filterActive : ''}`}
-                aria-pressed={typeFilter === t.value}
+                className={`${styles.filterBtn} ${t.value === '' ? (typeFilters.length === 0 ? styles.filterActive : '') : (typeFilters.includes(t.value as AssetType) ? styles.filterActive : '')}`}
+                aria-pressed={t.value === '' ? typeFilters.length === 0 : typeFilters.includes(t.value as AssetType)}
               >
                 {t.label}
               </button>
@@ -154,7 +164,7 @@ export default function AssetsPage() {
         {!loading && !error && filtered.length === 0 && (
           <div className={styles.emptyState}>
             <p>No resources match your search.</p>
-            <button onClick={() => { setTypeFilter(''); setSearchInput('') }} className={styles.clearBtn}>
+            <button onClick={() => { handleTypeFilter(''); setSearchInput('') }} className={styles.clearBtn}>
               Clear filters
             </button>
           </div>

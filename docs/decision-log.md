@@ -137,3 +137,29 @@ A record of non-obvious decisions made during this project — what was consider
 The two user intents are distinct: someone planning their calendar wants the soonest upcoming events first; someone looking for fresh content wants the most recently published resources first. These require different fields and different directions. "Coming up soon" filters the asset list to only show items with an executionDate in the future, then sorts them ascending — not null-last sorting, but an actual filter. Whitepapers and podcasts without an execution date don't appear at all in this view, because they have no meaningful "upcoming" status. Past events are also excluded: an event that happened three months ago is not "coming up soon" by any reasonable definition. "New to the library" uses lastModifiedDate descending, which captures both newly published content and recently updated resources.
 
 **Trade-off accepted:** "Coming up soon" reduces the visible result count to only time-bound future content — a user who selects it and sees 3 results is not seeing the full catalog. The result count ("Showing 3 of 3 resources") reflects the filtered set honestly. This is preferable to showing all 10 assets with 7 undated items at the bottom, which would make the sort feel broken rather than intentional.
+
+---
+
+## 12. Type filter: multi-select vs. single-select
+
+**Options considered:** Single active filter (radio button behavior, one type visible at a time) · Multi-select toggle (any combination of types active simultaneously)
+
+**Chosen:** Multi-select toggle
+
+**Why:** Single-select forces users to switch back and forth between types when they want to compare or browse across categories — a user who wants to see both whitepapers and podcasts has no efficient path. Multi-select toggle lets any combination of types coexist: clicking a type adds it to the active set, clicking it again removes it, clicking "All" clears the selection. The active set is synced to URL params using multiple `type` entries (`?type=Whitepaper&type=on-demand+podcast`), so combined views are shareable. The `filter_applied` analytics event sends the full active set as a joined string, so filter combinations are attributable in downstream analysis.
+
+**Trade-off accepted:** Active state visual treatment needs to communicate "multiple things selected" clearly, not just "one thing highlighted." A chip that looks the same whether one or three types are active creates ambiguity. CSS handles this; the toggle behavior is correct regardless of styling.
+
+---
+
+## 13. "New to the library": sort only, no date cutoff
+
+**Options considered:** Sort all assets by lastModifiedDate descending · Filter to assets modified within the last 30/60/90 days, then sort
+
+**Chosen:** Sort only — no hard date cutoff applied
+
+**Why:** A hard cutoff on a demo dataset with fixed seed dates would produce inconsistently empty or near-empty results depending on when the data was seeded. In production, "new" should be relative to the cadence of the content team — a publication that publishes 5 whitepapers a day has a different definition of "new" than one that publishes 2 a month. Baking in a 30-day window as a constant would be the wrong threshold for at least half of realistic cases. The sort alone (most recently modified first) gives users the directional signal they want without the risk of a filter producing zero results for reasons unrelated to their query.
+
+**What this would look like in production:** A configurable recency threshold (likely a CMS setting or feature flag) paired with a "New" badge rendered on cards for content within that window. The sort and the badge would work together — the badge gives users a scannable signal while browsing, the sort surfaces the newest items at the top regardless of what other filters are active.
+
+**Trade-off accepted:** "New to the library" can surface content that is months or years old if nothing has been recently published. The label is honest only when the content team is actively publishing. Acceptable for a take-home; would need the badge system in production.
