@@ -22,7 +22,7 @@ Visit **https://fox-beckers.netlify.app** — no setup required.
 1. Go to the repo → green **Code** button → **Codespaces** → **Create codespace on main**
 2. Run `npm install && npm run dev` in one terminal
 3. Run `npm run dev:client` in a second terminal
-4. Open port 5173 when prompted
+4. Visit localhost:5173 when prompted
 
 ### Option C — Run Locally
 
