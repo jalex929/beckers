@@ -18,8 +18,9 @@ export default function App() {
   return (
     <BrowserRouter>
       <div className="app-shell">
+        <a href="#main-content" className="skip-link">Skip to main content</a>
         <Header />
-        <main className="app-main">
+        <main id="main-content" className="app-main">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/assets" element={<AssetsPage />} />

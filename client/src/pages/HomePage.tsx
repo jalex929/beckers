@@ -9,10 +9,10 @@ import SkeletonCard from '../components/SkeletonCard'
 import styles from './HomePage.module.css'
 
 const TYPES = [
-  { label: 'Live Webinars', value: 'Live Webinar' },
-  { label: 'On-Demand Webinars', value: 'On-Demand Webinar' },
-  { label: 'Whitepapers', value: 'Whitepaper' },
-  { label: 'Podcasts', value: 'on-demand podcast' },
+  { label: 'Live Webinars', value: 'Live Webinar', description: 'Join interactive sessions with industry experts in real time.' },
+  { label: 'On-Demand Webinars', value: 'On-Demand Webinar', description: 'Watch recorded presentations at your own pace, anytime.' },
+  { label: 'Whitepapers', value: 'Whitepaper', description: 'Deep-dive research and analysis on critical healthcare topics.' },
+  { label: 'Podcasts', value: 'on-demand podcast', description: 'Listen to conversations with leaders shaping healthcare.' },
 ]
 
 export default function HomePage() {
@@ -109,6 +109,7 @@ export default function HomePage() {
                 className={styles.typeCard}
               >
                 <span className={styles.typeLabel}>{t.label}</span>
+                <span className={styles.typeDescription}>{t.description}</span>
               </Link>
             ))}
           </div>

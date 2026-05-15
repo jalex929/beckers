@@ -59,6 +59,7 @@ export default function AssetCard({ asset, index = 0, highlight, context = 'asse
         to={`/assets/${asset.id}`}
         state={{ from }}
         className={styles.cta}
+        aria-label={`Get access to ${asset.name}`}
         onClick={() => track({
           event: 'asset_card_clicked',
           properties: {

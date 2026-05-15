@@ -138,7 +138,7 @@ export default function AssetsPage() {
 
         {/* Result count */}
         {!loading && !error && (
-          <p className={styles.resultCount}>
+          <p className={styles.resultCount} aria-live="polite" aria-atomic="true">
             Showing {visible.length} of {filtered.length} resource{filtered.length !== 1 ? 's' : ''}
           </p>
         )}

@@ -186,6 +186,26 @@ button {
   min-height: 100vh;
 }
 
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 16px;
+  z-index: 9999;
+  padding: var(--sp-3) var(--sp-5);
+  background: var(--color-bg);
+  color: var(--color-brand);
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  box-shadow: var(--shadow-md);
+}
+
+.skip-link:focus {
+  top: 8px;
+}
+
 .app-main {
   flex: 1;
 }
