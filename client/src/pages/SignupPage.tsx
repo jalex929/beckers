@@ -146,7 +146,7 @@ export default function SignupPage() {
             <div className={styles.assetMeta}>
               <AssetBadge type={asset.assetType} />
               {formatDate(asset.executionDate) && (
-                <time className={styles.date}>{formatDate(asset.executionDate)}</time>
+                <time className={styles.date} dateTime={asset.executionDate}>{formatDate(asset.executionDate)}</time>
               )}
               {getUrgencyLabel(asset.executionDate, asset.assetType) && (
                 <span className={styles.urgencyBadge}>
@@ -180,7 +180,7 @@ export default function SignupPage() {
               </div>
             )}
             {asset.expirationDate && (
-              <p className={styles.expiry}>Access expires {formatDate(asset.expirationDate)}</p>
+              <p className={styles.expiry}>Access expires <time dateTime={asset.expirationDate}>{formatDate(asset.expirationDate)}</time></p>
             )}
           </aside>
 

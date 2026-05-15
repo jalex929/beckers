@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import type { Asset } from '../types'
 
 const KEY = 'meridian_recently_viewed'
@@ -30,7 +30,9 @@ export function useRecentlyViewed() {
     return () => window.removeEventListener('storage', onStorage)
   }, [])
 
-  return { items, refresh: () => setItems(getRecentlyViewed()) }
+  const refresh = useCallback(() => setItems(getRecentlyViewed()), [])
+
+  return { items, refresh }
 }
 
 export function clearRecentlyViewed() {

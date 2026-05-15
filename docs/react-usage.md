@@ -24,18 +24,21 @@ This split is not a stylistic preference — it is a load-bearing architectural 
 ### 2a. Simple local state (`AssetsPage.tsx`)
 
 ```ts
-const [typeFilter, setTypeFilter] = useState('')
+const [typeFilters, setTypeFilters] = useState<AssetType[]>(
+  () => searchParams.getAll('type') as AssetType[]
+)
 const [searchInput, setSearchInput] = useState('')
 const [search, setSearch] = useState('')
-const [sort, setSort] = useState('newest')
+const [sort, setSort] = useState<'default' | 'upcoming'>('default')
 const [page, setPage] = useState(1)
 ```
 
 Each piece of state corresponds to exactly one user action. They are kept as separate `useState` calls — not merged into a single object — because they have meaningfully different update patterns:
 
+- `typeFilters` is an array of `AssetType` values, initialized from the URL via a lazy initializer (`searchParams.getAll('type')`). This supports multi-select toggle behavior: clicking a type adds or removes it from the array rather than replacing a single value.
 - `searchInput` is updated on every keystroke; `search` is the debounced value that drives filtering.
-- `page` resets to `1` when `typeFilter` or `search` changes.
-- `sort` and `typeFilter` sync to `useSearchParams`.
+- `page` resets to `1` when `typeFilters` or `search` changes.
+- `sort` is a `'default' | 'upcoming'` union — not a generic string — and syncs to `useSearchParams` along with `typeFilters`.
 
 Merging these into `const [filters, setFilters] = useState({...})` would require spreading on every update and would obscure which field is changing. Separate declarations make each update site explicit and make the debounce relationship between `searchInput` and `search` easy to follow.
 
@@ -141,8 +144,8 @@ The `sessionStorage` guard ensures the exposure event fires at most once per ses
 const filtered = useMemo(() => {
   let result = assets
 
-  if (typeFilter) {
-    result = result.filter(a => a.type === typeFilter)
+  if (typeFilters.length > 0) {
+    result = result.filter(a => typeFilters.includes(a.type))
   }
 
   if (search) {
@@ -154,29 +157,39 @@ const filtered = useMemo(() => {
     )
   }
 
-  result = [...result].sort((a, b) =>
-    sort === 'newest'
-      ? new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
-      : new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime()
-  )
+  if (sort === 'upcoming') {
+    const now = Date.now()
+    result = result
+      .filter(a => !!a.executionDate && new Date(a.executionDate).getTime() >= now)
+      .sort((a, b) => new Date(a.executionDate!).getTime() - new Date(b.executionDate!).getTime())
+  }
 
   return result
-}, [assets, typeFilter, search, sort])
+}, [assets, typeFilters, search, sort])
 ```
 
 Without `useMemo`, this pipeline runs on every render, including renders caused by unrelated state changes (e.g., a hover state on a card). At the current data size this is cheap. The memoization is justified on two grounds beyond raw performance: it makes the dependency contract explicit — the filtered list is a pure function of exactly these four values — and it guards against performance regression if the asset list grows or the search logic becomes more expensive. The `useMemo` declaration is also a form of documentation: it signals to a future reader that this computation is intentionally derived state, not incidental.
+
+One subtlety: the `'upcoming'` sort option is not a pure sort — it is a **filter-then-sort**. It first discards assets without a future `executionDate`, then sorts the remainder chronologically by that date. This means selecting "Coming up soon" can reduce the visible result count, not just reorder it. The `typeFilters` dependency is an array; React compares dependencies by reference, so `typeFilters` must be a stable reference (initialized once, replaced on toggle) to avoid unnecessary recomputation.
 
 ---
 
 ## 6. `useCallback` — Stable Filter Handler (`AssetsPage.tsx`)
 
 ```ts
-const handleTypeFilter = useCallback((value: string) => {
-  setTypeFilter(value)
+const handleTypeFilter = useCallback((value: AssetType) => {
+  setTypeFilters(prev => {
+    const next = prev.includes(value) ? prev.filter(t => t !== value) : [...prev, value]
+    return next
+  })
   track({ event: 'filter_applied', filterType: 'type', value })
   setSearchParams(prev => {
     const next = new URLSearchParams(prev)
-    value ? next.set('type', value) : next.delete('type')
+    next.delete('type')
+    // re-derive the toggled array inline so the URL stays in sync
+    const current = prev.getAll('type') as AssetType[]
+    const updated = current.includes(value) ? current.filter(t => t !== value) : [...current, value]
+    updated.forEach(t => next.append('type', t))
     return next
   })
 }, [setSearchParams])

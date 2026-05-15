@@ -29,7 +29,7 @@ export default function HomePage() {
   // Refresh recently viewed when returning to this page
   useEffect(() => {
     refresh()
-  }, [])
+  }, [refresh])
 
   useEffect(() => {
     document.title = 'Meridian Health Intelligence'

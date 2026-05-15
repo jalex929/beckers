@@ -32,9 +32,12 @@ export function useAsset(id: string) {
     setLoading(true);
     setError(null);
     fetch(`${API_BASE}/assets/${id}`)
-      .then(r => {
-        if (!r.ok) throw new Error('Asset not found');
-        return r.json();
+      .then(async r => {
+        if (!r.ok) {
+          const json = await r.json().catch(() => ({}))
+          throw new Error(json.error ?? 'Asset not found')
+        }
+        return r.json()
       })
       .then(json => setAsset(json.data))
       .catch((e: Error) => setError(e.message))
