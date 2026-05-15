@@ -71,13 +71,10 @@ export default function AssetsPage() {
     }
 
     if (sort === 'upcoming') {
-      result = [...result].sort((a, b) => {
-        // Assets without executionDate go to the end
-        if (!a.executionDate && !b.executionDate) return 0
-        if (!a.executionDate) return 1
-        if (!b.executionDate) return -1
-        return new Date(a.executionDate).getTime() - new Date(b.executionDate).getTime()
-      })
+      const now = Date.now()
+      result = result
+        .filter(a => !!a.executionDate && new Date(a.executionDate).getTime() >= now)
+        .sort((a, b) => new Date(a.executionDate!).getTime() - new Date(b.executionDate!).getTime())
     } else if (sort === 'new') {
       result = [...result].sort((a, b) => {
         const da = a.lastModifiedDate ? new Date(a.lastModifiedDate).getTime() : 0
