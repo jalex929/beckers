@@ -5,7 +5,7 @@
     "build": "vite build && tsc -p tsconfig.server.json",
     "build:client": "vite build",
     "start": "node dist/server.js",
-    "dev": "vite build && ts-node-dev --respawn src/server.ts",
+    "dev": "vite build && ts-node-dev --respawn --project tsconfig.server.json src/server.ts",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint src/**/*.ts"
