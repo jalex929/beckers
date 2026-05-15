@@ -56,7 +56,19 @@
   text-transform: uppercase;
   transition: color 0.15s ease;
   padding: var(--sp-2) 0;
-  border-bottom: 2px solid transparent;
+  position: relative;
+}
+
+.navLink::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--mer-signal-300);
+  transform: scaleX(0);
+  transition: transform 0.2s ease;
 }
 
 .navLink:hover {
@@ -65,7 +77,10 @@
 
 .active {
   color: var(--color-fg-inverse);
-  border-bottom-color: var(--mer-signal-300);
+}
+
+.active::after {
+  transform: scaleX(1);
 }
 
 @media (max-width: 640px) {

@@ -10,6 +10,9 @@ export default function Header() {
           <span className={styles.brandSub}>Resource Library</span>
         </Link>
         <nav className={styles.nav} aria-label="Main navigation">
+          <NavLink to="/" end className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+            Home
+          </NavLink>
           <NavLink to="/assets" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
             Resources
           </NavLink>

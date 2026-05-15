@@ -68,6 +68,13 @@
   text-transform: uppercase;
 }
 
+.speakers {
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  color: var(--color-fg-muted);
+  line-height: var(--lh-normal);
+}
+
 .cta {
   display: inline-block;
   font-family: var(--font-sans);

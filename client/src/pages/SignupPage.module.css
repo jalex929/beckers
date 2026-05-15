@@ -156,6 +156,10 @@
   color: var(--color-fg);
 }
 
+.required {
+  color: var(--color-error);
+}
+
 .input {
   font-family: var(--font-sans);
   font-size: var(--fs-base);
